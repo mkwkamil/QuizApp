@@ -140,3 +140,4 @@
 /Users/kamilporebski/RiderProjects/LoginComponentBackend/LoginComponentBackend/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/kamilporebski/RiderProjects/LoginComponentBackend/LoginComponentBackend/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/kamilporebski/RiderProjects/LoginComponentBackend/LoginComponentBackend/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/kamilporebski/RiderProjects/LoginComponentBackend/LoginComponentBackend/obj/Debug/net9.0/LoginComponentBackend.sourcelink.json
