@@ -3,16 +3,19 @@ using System.Text;
 using LoginComponentBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using LoginComponentBackend.Models;
+using LoginComponentBackend.DTO;
 
 namespace LoginComponentBackend.Services;
 
 public class AuthService : IAuthService
 {
     private readonly AppDbContext _context;
+    private readonly TokenService _tokenService;
     
-    public AuthService(AppDbContext context)
+    public AuthService(AppDbContext context, TokenService tokenService)
     {
         _context = context;
+        _tokenService = tokenService;
     }
     
     public async Task<bool> Register(User user, string password)
@@ -31,7 +34,7 @@ public class AuthService : IAuthService
         if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             return null;
 
-        return "OK";
+        return _tokenService.CreateToken(user);
     }
     
     public async Task<bool> UserExists(string username)

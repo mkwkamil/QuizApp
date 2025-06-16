@@ -1,4 +1,4 @@
-namespace LoginComponentBackend.Models;
+namespace LoginComponentBackend.DTO;
 
 public class AuthResponse
 {
