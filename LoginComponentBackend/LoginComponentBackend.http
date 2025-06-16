@@ -1,0 +1,6 @@
+@LoginComponentBackend_HostAddress = http://localhost:5203
+
+GET {{LoginComponentBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
