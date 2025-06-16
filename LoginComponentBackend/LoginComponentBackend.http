@@ -1,6 +1,28 @@
-@LoginComponentBackend_HostAddress = http://localhost:5203
-
-GET {{LoginComponentBackend_HostAddress}}/weatherforecast/
-Accept: application/json
+@host = http://localhost:5203
+@contentType = application/json
+@authToken = {{login.response.body.token}}
 
 ###
+POST {{host}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "username": "sigmakamil",
+  "email": "test22@example.com",
+  "password": "Test123!"
+}
+
+###
+POST {{host}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "sigmakamil",
+  "password": "Test123!"
+}
+
+###
+GET {{host}}/api/auth/profile
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+

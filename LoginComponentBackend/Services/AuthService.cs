@@ -3,7 +3,6 @@ using System.Text;
 using LoginComponentBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using LoginComponentBackend.Models;
-using LoginComponentBackend.DTO;
 
 namespace LoginComponentBackend.Services;
 
@@ -23,12 +22,14 @@ public class AuthService : IAuthService
         CreatePasswordHash(password, out byte[] hash, out byte[] salt);
         user.PasswordHash = hash;
         user.PasswordSalt = salt;
+        user.CreatedAt = DateTime.UtcNow;
+        
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return true;
     }
     
-    public async Task<string> Login(string username, string password)
+    public async Task<string?> Login(string username, string password)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
         if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
@@ -41,6 +42,14 @@ public class AuthService : IAuthService
     {
         return await _context.Users.AnyAsync(x => x.Username == username);
     }
+    
+    public async Task<User?> GetUserByUsername(string username)
+    {
+        return await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Username == username);
+    }
+
     
     private void CreatePasswordHash(string password, out byte[] hash, out byte[] salt)
     {
