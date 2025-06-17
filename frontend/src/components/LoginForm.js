@@ -4,6 +4,7 @@ import './styles/AuthForms.css';
 import { useForm } from 'react-hook-form';
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from 'yup';
+import { Link, useNavigate } from 'react-router-dom';
 
 const schema = yup.object().shape({
     username: yup.string()
@@ -16,7 +17,9 @@ const schema = yup.object().shape({
         .min(8, 'Password must be at least 8 characters long')
 })
 
-function LoginForm({ setView }) {
+function LoginForm({ setUser }) {
+    const navigate = useNavigate();
+    
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
         resolver: yupResolver(schema)
     });
@@ -42,7 +45,12 @@ function LoginForm({ setView }) {
             });
             
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('username', response.data.username);
+            localStorage.setItem('role', response.data.role);
+            setUser(response.data.username);
             
+            navigate('/');
+
         } catch (error) {
             if (error.response?.status === 401) {
                 setServerErrors({ general: 'Invalid username or password. Please try again.' });
@@ -83,7 +91,7 @@ function LoginForm({ setView }) {
             </button>
 
             <div className="form-link">
-                Don't have an account? <span onClick={() => setView('register')} className="form-link-button">Register here</span>
+                Don't have an account? <Link to="/register" className="form-link-button">Register here</Link>
             </div>
 
             {/*<div className="server-response">*/}

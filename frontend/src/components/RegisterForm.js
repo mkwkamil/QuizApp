@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './styles/AuthForms.css';
 import { useForm } from 'react-hook-form';
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from 'yup';
+import {useNavigate} from "react-router-dom";
 
 const schema = yup.object().shape({
    username: yup.string()
@@ -24,15 +25,28 @@ const schema = yup.object().shape({
 });
 
 function RegisterForm() {
+    const navigate = useNavigate();
+    
     const {register, handleSubmit, formState: {errors}} = useForm({
         resolver: yupResolver(schema)
     });
     const [serverErrors, setServerErrors] = useState({});
-    
+    const [registerSuccess, setRegisterSuccess] = useState(false);
+
     const onSubmit = async (data) => {
         try {
             setServerErrors({});
+            setRegisterSuccess(false);
+            
             await axios.post('/api/auth/register', data);
+
+            setRegisterSuccess(true);
+            setServerErrors({
+                success: `Register successful!`,
+            });
+
+            navigate('/login', {state: {message: 'Registration successful! You can now log in.'}});
+            
         }
         catch (error) {
             if (error.response?.data?.details) {
@@ -53,6 +67,10 @@ function RegisterForm() {
             <h2>Register</h2>
             {serverErrors.general && (
                 <div className="main-error-message">{serverErrors.general}</div>
+            )}
+
+            {registerSuccess && serverErrors.success && (
+                <div className="success-message">{serverErrors.success}</div>
             )}
             
             <div className="form-group">

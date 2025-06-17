@@ -22,7 +22,7 @@ Content-Type: {{contentType}}
 }
 
 ###
-GET {{host}}/api/auth/profile
+GET {{host}}/api/user/profile
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
