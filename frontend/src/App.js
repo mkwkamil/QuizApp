@@ -9,7 +9,7 @@ function App() {
     return (
         <div>
             <Navbar setView={setView} />
-            {view === 'login' && <LoginForm />}
+            {view === 'login' && <LoginForm setView={setView} />}
             {view === 'register' && <RegisterForm />}
         </div>
     );
