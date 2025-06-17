@@ -24,6 +24,11 @@ public class AuthController : ControllerBase
     {
         try
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
             if (string.IsNullOrWhiteSpace(request.Password))
             {
                 return BadRequest("Password is required");
