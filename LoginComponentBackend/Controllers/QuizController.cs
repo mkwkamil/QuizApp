@@ -69,31 +69,18 @@ public class QuizController : ControllerBase
             Title = request.Title,
             Description = request.Description,
             IsPublic = request.IsPublic,
-            AuthorId = user.Id
-        };
-
-        if (!request.Questions.Any())
-        {
-            return BadRequest("At least one question is required.");
-        }
-
-        foreach (var questionDto in request.Questions)
-        {
-            var question = new Question
+            AuthorId = user.Id,
+            Questions = request.Questions.Select(q => new Question
             {
-                Text = questionDto.Text,
-                Quiz = quiz,
-                Answers = questionDto.Answers.Select(a => new Answer
+                Text = q.Text,
+                Answers = q.Answers.Select(a => new Answer
                 {
                     Text = a.Text,
                     IsCorrect = a.IsCorrect
                 }).ToList()
-            };
+            }).ToList()
+        };
 
-            quiz.Questions = new List<Question>();
-            quiz.Questions.Add(question);
-        }
-        
         _context.Quizzes.Add(quiz);
         await _context.SaveChangesAsync();
 
