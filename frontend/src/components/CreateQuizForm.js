@@ -43,7 +43,9 @@ function CreateQuizForm() {
             const token = localStorage.getItem('token');
             const res = await axios.post('/api/quiz', payload, {
                 headers: { Authorization: `Bearer ${token}` }
-            });
+            })
+            
+            console.log(res.data);
             alert('Quiz created with ID: ' + res.data.id);
         } catch (err) {
             console.error(err);

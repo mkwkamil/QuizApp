@@ -1,5 +1,6 @@
 using LoginComponentBackend.Data;
 using LoginComponentBackend.DTO;
+using LoginComponentBackend.Extensions;
 using LoginComponentBackend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,7 @@ public class QuizController : ControllerBase
         var quiz = await _context.Quizzes
             .Include(q => q.Questions)
             .ThenInclude(q => q.Answers)
+            .Include(q => q.Author)
             .FirstOrDefaultAsync(q => q.Id == id);
 
         if (quiz == null)
@@ -49,7 +51,7 @@ public class QuizController : ControllerBase
             return NotFound();
         }
 
-        return Ok(quiz);
+        return Ok(quiz.ToQuizResponseDto());
     }
 
     [Authorize]
@@ -84,6 +86,12 @@ public class QuizController : ControllerBase
         _context.Quizzes.Add(quiz);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetQuizById), new { id = quiz.Id }, quiz);
+        var createdQuiz = await _context.Quizzes
+            .Include(q => q.Author)
+            .Include(q => q.Questions)
+            .ThenInclude(q => q.Answers)
+            .FirstOrDefaultAsync();
+
+        return CreatedAtAction(nameof(GetQuizById), new { id = quiz.Id }, createdQuiz.ToQuizResponseDto());
     }
 }
