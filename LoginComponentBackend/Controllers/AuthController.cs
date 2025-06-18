@@ -31,12 +31,12 @@ public class AuthController : ControllerBase
             
             if (string.IsNullOrWhiteSpace(request.Password))
             {
-                return BadRequest("Password is required");
+                return BadRequest(new { message = "Password is required" });
             }
 
             if (await _authService.UserExists(request.Username))
             {
-                return Conflict("Username already exists");
+                return Conflict(new { message = "Username already exists" });
             }
             
             var user = new User

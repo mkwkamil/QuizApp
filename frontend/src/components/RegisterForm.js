@@ -27,7 +27,7 @@ const schema = yup.object().shape({
 function RegisterForm() {
     const navigate = useNavigate();
     
-    const {register, handleSubmit, formState: {errors}} = useForm({
+    const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm({
         resolver: yupResolver(schema)
     });
     const [serverErrors, setServerErrors] = useState({});
@@ -45,7 +45,9 @@ function RegisterForm() {
                 success: `Register successful!`,
             });
 
-            navigate('/login', {state: {message: 'Registration successful! You can now log in.'}});
+            setTimeout(() => {
+                navigate('/login', {state: {message: 'Registration successful! You can now log in.'}});
+            }, 2000);
             
         }
         catch (error) {
@@ -56,8 +58,11 @@ function RegisterForm() {
                 });
                 setServerErrors(backendErrors);
             }
+            else if (error.response?.data?.message) {
+                setServerErrors({ general: error.response.data.message });
+            }
             else {
-                setServerErrors({general: 'An unexpected error occurred. Please try again later.'});
+                setServerErrors({ general: 'An unexpected error occurred. Please try again later.' });
             }
         }
     }
@@ -97,7 +102,16 @@ function RegisterForm() {
                 {serverErrors.confirmPassword && <span className="error-message">{serverErrors.confirmPassword}</span>}
             </div>
 
-            <button type="submit">Register</button>
+            <button type="submit" disabled={isSubmitting || registerSuccess}>
+                {isSubmitting || registerSuccess ? (
+                    <>
+                        <span className="loading-spinner" />
+                        Registering...
+                    </>
+                ) : (
+                    'Register'
+                )}
+            </button>
             
             {/*<div className="server-response">*/}
             {/*    <strong>Server Response:</strong>*/}

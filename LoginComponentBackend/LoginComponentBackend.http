@@ -26,3 +26,7 @@ GET {{host}}/api/user/profile
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
+###
+POST {{host}}/api/quiz
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}

@@ -30,12 +30,12 @@ function LoginForm({ setUser }) {
         try {
             setServerErrors({});
             setLoginSuccess(false);
-            
+
             const response = await axios.post('/api/auth/login', {
                 username: data.username,
                 password: data.password
             });
-            
+
             setLoginSuccess(true);
             setServerErrors({
                 success: `Login successful! Welcome back, ${data.username}!`,
@@ -43,13 +43,16 @@ function LoginForm({ setUser }) {
                 username: data.username,
                 role: response.data.role
             });
-            
+
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('username', response.data.username);
             localStorage.setItem('role', response.data.role);
             setUser(response.data.username);
-            
-            navigate('/');
+
+            // Delay navigation while showing the spinner and success message
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
 
         } catch (error) {
             if (error.response?.status === 401) {
@@ -86,8 +89,15 @@ function LoginForm({ setUser }) {
                 {errors.password && <span className="error-message">{errors.password.message}</span>}
             </div>
 
-            <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Logging in...' : 'Login'}
+            <button type="submit" disabled={isSubmitting || loginSuccess}>
+                {isSubmitting || loginSuccess ? (
+                    <>
+                        <span className="loading-spinner" />
+                        Logging in...
+                    </>
+                ) : (
+                    'Login'
+                )}
             </button>
 
             <div className="form-link">
