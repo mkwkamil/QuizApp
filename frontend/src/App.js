@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
 import Navbar from './components/Navbar';
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Profile from "./components/Profile";
-import Mainpage from "./components/Mainpage";
+import LoginPage from "./pages/Auth/LoginPage";
+import RegisterPage from "./pages/Auth/RegisterPage";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MainPage from "./pages/MainPage";
+import Profile from "./pages/Dashboard/Profile";
 
 function App() {
-    const [user, setUser] = useState(localStorage.getItem('username'));
     
     return (
         <div>
             <Router>
-                <Navbar user={user} setUser={setUser} />
+                <Navbar />
                 <Routes>
-                    <Route path={"/"} element={<Mainpage />} />
-                    <Route path="/login" element={<LoginForm setUser={setUser} />} />
-                    <Route path="/register" element={<RegisterForm />} />
-                    <Route path="/profile" element={user ? <Profile />: <Navigate to="/login" />} />
+                    <Route path={"/"} element={<MainPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/profile" element={<Profile />} />
                 </Routes>
             </Router>
         </div>

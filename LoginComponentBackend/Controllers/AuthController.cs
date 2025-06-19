@@ -98,6 +98,43 @@ public class AuthController : ControllerBase
     }
 
     [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        try
+        {
+            _logger.LogInformation("Logout endpoint hit");
+
+            var authHeader = Request.Headers["Authorization"].ToString();
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+            {
+                _logger.LogWarning("Authorization header missing or malformed");
+                return Unauthorized("Missing or malformed token");
+            }
+
+            var token = authHeader.Replace("Bearer ", "");
+            _logger.LogInformation("Received token: {Token}", token);
+
+            var result = await _authService.Logout(token);
+            if (!result)
+            {
+                _logger.LogWarning("Logout failed for token: {Token}", token);
+                return BadRequest("Logout failed");
+            }
+
+            var username = User?.Identity?.Name ?? "Unknown";
+            _logger.LogInformation("User logged out: {Username}", username);
+
+            return Ok(new { Message = "Logged out successfully" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred during logout");
+            return StatusCode(500, "An internal server error occurred");
+        }
+    }
+
+    [Authorize]
     [HttpGet("profile")]
     public async Task<IActionResult> GetProfile()
     {

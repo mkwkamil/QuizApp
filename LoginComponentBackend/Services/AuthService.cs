@@ -37,6 +37,34 @@ public class AuthService : IAuthService
 
         return _tokenService.CreateToken(user);
     }
+
+    public async Task<bool> Logout(string token)
+    {
+        try
+        {
+            var principal = _tokenService.ValidateToken(token);
+            if (principal == null)
+            {
+                return false;
+            }
+
+            var blacklistedToken = new BlacklistedToken
+            {
+                Token = token,
+                ExpiryDate = DateTime.UtcNow.AddDays(1)
+            };
+        
+            _context.BlackListedTokens.Add(blacklistedToken);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during logout: {ex.Message}");
+            return false;
+        }
+    }
     
     public async Task<bool> UserExists(string username)
     {

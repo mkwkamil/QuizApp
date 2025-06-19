@@ -1,4 +1,5 @@
 using LoginComponentBackend.Data;
+using LoginComponentBackend.Middleware;
 using LoginComponentBackend.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -80,5 +81,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<JwtMiddleware>();
 
 app.Run();

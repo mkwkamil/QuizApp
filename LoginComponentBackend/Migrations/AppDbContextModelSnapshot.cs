@@ -47,6 +47,22 @@ namespace LoginComponentBackend.Migrations
                     b.ToTable("Answers");
                 });
 
+            modelBuilder.Entity("LoginComponentBackend.Models.BlacklistedToken", b =>
+                {
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Token");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.ToTable("BlackListedTokens");
+                });
+
             modelBuilder.Entity("LoginComponentBackend.Models.Comment", b =>
                 {
                     b.Property<int>("Id")

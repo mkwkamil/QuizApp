@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<Answer> Answers { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Rating> Ratings { get; set; }
+    public DbSet<BlacklistedToken> BlackListedTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -76,5 +77,9 @@ public class AppDbContext : DbContext
             .HasMany(q => q.Answers)
             .WithOne(a => a.Question)
             .HasForeignKey(a => a.QuestionId);
+        
+        modelBuilder.Entity<BlacklistedToken>()
+            .HasIndex(t => t.Token)
+            .IsUnique();
     }
 }
