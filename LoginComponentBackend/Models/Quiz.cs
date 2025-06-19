@@ -13,4 +13,6 @@ public class Quiz
     public List<Question> Questions { get; set; }
     public List<Comment> Comments { get; set; }
     public List<Rating> Ratings { get; set; }
+    
+    public List<QuizResult> Results { get; set; }
 }

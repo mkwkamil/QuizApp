@@ -103,6 +103,9 @@ function Navbar() {
                                         <ListItem button component={Link} to="/profile" onClick={toggleDrawer(false)}>
                                             <ListItemText primary="Profil" sx={{ color: '#fff' }} />
                                         </ListItem>
+                                        <ListItem button component={Link} to="/settings" onClick={toggleDrawer(false)}>
+                                            <ListItemText primary="Settings" sx={{ color: '#fff' }} />
+                                        </ListItem>
                                         <ListItem button onClick={() => { toggleDrawer(false)(); handleLogout(); }}>
                                             <ListItemText primary="Logout" sx={{ color: '#ff5252' }} />
                                         </ListItem>
@@ -207,6 +210,14 @@ function Navbar() {
                                         sx={{ color: '#fff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.05)' } }}
                                     >
                                         Profil
+                                    </MenuItem>
+                                    <MenuItem
+                                        component={Link}
+                                        to="/settings"
+                                        onClick={handleMenuClose}
+                                        sx={{ color: '#fff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.05)' } }}
+                                    >
+                                        Settings
                                     </MenuItem>
                                     <MenuItem
                                         onClick={() => {

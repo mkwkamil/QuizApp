@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<Answer> Answers { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Rating> Ratings { get; set; }
+    public DbSet<QuizResult> QuizResults { get; set; }
     public DbSet<BlacklistedToken> BlackListedTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -81,5 +82,15 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<BlacklistedToken>()
             .HasIndex(t => t.Token)
             .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.SolvedQuizzes)
+            .WithOne(qr => qr.User)
+            .HasForeignKey(qr => qr.UserId);
+
+        modelBuilder.Entity<Quiz>()
+            .HasMany(q => q.Results)
+            .WithOne(qr => qr.Quiz)
+            .HasForeignKey(qr => qr.QuizId);
     }
 }

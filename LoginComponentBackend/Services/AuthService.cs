@@ -23,6 +23,7 @@ public class AuthService : IAuthService
         user.PasswordHash = hash;
         user.PasswordSalt = salt;
         user.CreatedAt = DateTime.UtcNow;
+        user.PublicName = user.Username;
         
         _context.Users.Add(user);
         await _context.SaveChangesAsync();

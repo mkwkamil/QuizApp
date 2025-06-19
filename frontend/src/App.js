@@ -3,10 +3,9 @@ import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from "./pages/MainPage";
-import Profile from "./pages/Dashboard/Profile";
+import ProfilePage from "./pages/Dashboard/ProfilePage";
 
 function App() {
-    
     return (
         <div>
             <Router>
@@ -15,7 +14,7 @@ function App() {
                     <Route path={"/"} element={<MainPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile" element={<ProfilePage />} />
                 </Routes>
             </Router>
         </div>

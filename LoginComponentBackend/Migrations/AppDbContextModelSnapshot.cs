@@ -144,6 +144,38 @@ namespace LoginComponentBackend.Migrations
                     b.ToTable("Quizzes");
                 });
 
+            modelBuilder.Entity("LoginComponentBackend.Models.QuizResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("QuizId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("SolvedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("TotalQuestions")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("QuizResults");
+                });
+
             modelBuilder.Entity("LoginComponentBackend.Models.Rating", b =>
                 {
                     b.Property<int>("Id")
@@ -179,6 +211,12 @@ namespace LoginComponentBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Bio")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -193,6 +231,9 @@ namespace LoginComponentBackend.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("bytea");
+
+                    b.Property<string>("PublicName")
+                        .HasColumnType("text");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -262,6 +303,25 @@ namespace LoginComponentBackend.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("LoginComponentBackend.Models.QuizResult", b =>
+                {
+                    b.HasOne("LoginComponentBackend.Models.Quiz", "Quiz")
+                        .WithMany("Results")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LoginComponentBackend.Models.User", "User")
+                        .WithMany("SolvedQuizzes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LoginComponentBackend.Models.Rating", b =>
                 {
                     b.HasOne("LoginComponentBackend.Models.User", "Author")
@@ -293,6 +353,8 @@ namespace LoginComponentBackend.Migrations
                     b.Navigation("Questions");
 
                     b.Navigation("Ratings");
+
+                    b.Navigation("Results");
                 });
 
             modelBuilder.Entity("LoginComponentBackend.Models.User", b =>
@@ -302,6 +364,8 @@ namespace LoginComponentBackend.Migrations
                     b.Navigation("Quizzes");
 
                     b.Navigation("Ratings");
+
+                    b.Navigation("SolvedQuizzes");
                 });
 #pragma warning restore 612, 618
         }
