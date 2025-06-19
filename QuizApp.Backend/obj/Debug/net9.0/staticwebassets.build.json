@@ -1,0 +1,228 @@
+{
+  "Version": 1,
+  "Hash": "cqK2pGa25b+O5jzAJoUaAJBhY4kE7FfnPSYW32I7vWQ=",
+  "Source": "QuizApp.Backend",
+  "BasePath": "_content/QuizApp.Backend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "QuizApp.Backend/wwwroot",
+      "Source": "QuizApp.Backend",
+      "ContentRoot": "/Users/kamilporebski/RiderProjects/LoginComponentBackend/QuizApp.Backend/wwwroot/",
+      "BasePath": "_content/QuizApp.Backend",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/kamilporebski/RiderProjects/LoginComponentBackend/QuizApp.Backend/wwwroot/avatars/b02c14c0-71b3-4d86-b75f-1299d6f7b658.jpg",
+      "SourceId": "QuizApp.Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kamilporebski/RiderProjects/LoginComponentBackend/QuizApp.Backend/wwwroot/",
+      "BasePath": "_content/QuizApp.Backend",
+      "RelativePath": "avatars/b02c14c0-71b3-4d86-b75f-1299d6f7b658#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "zoo1vzbuk6",
+      "Integrity": "Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/avatars/b02c14c0-71b3-4d86-b75f-1299d6f7b658.jpg"
+    },
+    {
+      "Identity": "/Users/kamilporebski/RiderProjects/LoginComponentBackend/QuizApp.Backend/wwwroot/avatars/da52e2b6-9c7a-4ced-bf9f-452553acd963.jpg",
+      "SourceId": "QuizApp.Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kamilporebski/RiderProjects/LoginComponentBackend/QuizApp.Backend/wwwroot/",
+      "BasePath": "_content/QuizApp.Backend",
+      "RelativePath": "avatars/da52e2b6-9c7a-4ced-bf9f-452553acd963#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "zoo1vzbuk6",
+      "Integrity": "Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/avatars/da52e2b6-9c7a-4ced-bf9f-452553acd963.jpg"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "avatars/b02c14c0-71b3-4d86-b75f-1299d6f7b658.jpg",
+      "AssetFile": "/Users/kamilporebski/RiderProjects/LoginComponentBackend/QuizApp.Backend/wwwroot/avatars/b02c14c0-71b3-4d86-b75f-1299d6f7b658.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1306116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 19 Jun 2025 15:44:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU="
+        }
+      ]
+    },
+    {
+      "Route": "avatars/b02c14c0-71b3-4d86-b75f-1299d6f7b658.zoo1vzbuk6.jpg",
+      "AssetFile": "/Users/kamilporebski/RiderProjects/LoginComponentBackend/QuizApp.Backend/wwwroot/avatars/b02c14c0-71b3-4d86-b75f-1299d6f7b658.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1306116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 19 Jun 2025 15:44:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zoo1vzbuk6"
+        },
+        {
+          "Name": "label",
+          "Value": "avatars/b02c14c0-71b3-4d86-b75f-1299d6f7b658.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU="
+        }
+      ]
+    },
+    {
+      "Route": "avatars/da52e2b6-9c7a-4ced-bf9f-452553acd963.jpg",
+      "AssetFile": "/Users/kamilporebski/RiderProjects/LoginComponentBackend/QuizApp.Backend/wwwroot/avatars/da52e2b6-9c7a-4ced-bf9f-452553acd963.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1306116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 19 Jun 2025 14:25:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU="
+        }
+      ]
+    },
+    {
+      "Route": "avatars/da52e2b6-9c7a-4ced-bf9f-452553acd963.zoo1vzbuk6.jpg",
+      "AssetFile": "/Users/kamilporebski/RiderProjects/LoginComponentBackend/QuizApp.Backend/wwwroot/avatars/da52e2b6-9c7a-4ced-bf9f-452553acd963.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1306116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 19 Jun 2025 14:25:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zoo1vzbuk6"
+        },
+        {
+          "Name": "label",
+          "Value": "avatars/da52e2b6-9c7a-4ced-bf9f-452553acd963.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Q06tL467ouIbXUssUGYl9NEAvXAWxWrK7hs1ttjj3NU="
+        }
+      ]
+    }
+  ]
+}
