@@ -202,10 +202,9 @@ function ProfilePage() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 3,
-                height: 'calc(100vh - 128px)', // Stała wysokość równa lewej kolumnie
+                height: 'calc(100vh - 128px)', 
                 overflow: 'auto'
             }}>
-                {/* Recent Activity */}
                 <Paper sx={{
                     p: 3,
                     borderRadius: 3,
@@ -264,12 +263,7 @@ function ProfilePage() {
                     boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
                     flex: 1
                 }}>
-                    <Typography
-                        variant="h6"
-                        color="#fff"
-                        fontFamily="Poppins, sans-serif"
-                        gutterBottom
-                    >
+                    <Typography variant="h6" color="#fff" fontFamily="Poppins, sans-serif" gutterBottom>
                         My Quizzes
                     </Typography>
                     <Stack spacing={2}>
