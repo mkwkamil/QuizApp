@@ -2,7 +2,6 @@ import axios from 'axios';
 import useAuthStore from "../store/authStore";
 import {useNavigate} from "react-router-dom";
 
-const navigate = useNavigate()
 
 const api = axios.create({
     baseURL: '/api',
@@ -21,11 +20,14 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
+    
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
             const logout = useAuthStore.getState().logout;
             logout();
+            const navigate = useNavigate()
+            
             navigate('/login');
         }
         return Promise.reject(error);
