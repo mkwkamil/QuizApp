@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../config/axiosConfig';
 
 function CreateQuizForm() {
     const [title, setTitle] = useState('');
@@ -41,9 +41,7 @@ function CreateQuizForm() {
         };
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.post('/api/quiz', payload, {
-                headers: { Authorization: `Bearer ${token}` }
-            })
+            const res = await api.post('/quiz', payload);
             
             console.log(res.data);
             alert('Quiz created with ID: ' + res.data.id);

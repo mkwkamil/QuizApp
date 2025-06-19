@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import useAuthStore from '../store/authStore';
 import {Email, Person, Cake} from '@mui/icons-material';
+import api from '../config/axiosConfig';
 
 export const useProfileData = () => {
     const [profileData, setProfileData] = useState(null);
@@ -10,7 +10,7 @@ export const useProfileData = () => {
         const fetchProfileData = async () => {
             try {
                 const token = useAuthStore.getState().token;
-                const response = await axios.get('/api/user/profile', {
+                const response = await api.get('/user/profile', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

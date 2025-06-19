@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuthStore from "../store/authStore";
-import axios from "axios";
+import api from "../config/axiosConfig";
 
 export const useAuth = () => {
     const navigate = useNavigate();
@@ -9,7 +9,7 @@ export const useAuth = () => {
     
     const handleLogin = async (data, onError) => {
         try {
-            const response = await axios.post('/api/auth/login', {
+            const response = await api.post('/auth/login', {
                 username: data.username,
                 password: data.password
             });
@@ -37,11 +37,7 @@ export const useAuth = () => {
     
     const handleLogout = async () => {
         try {
-            await axios.post('api/auth/logout', null, {
-                headers: {
-                    Authorization: `Bearer ${useAuthStore.getState().token}`
-                }
-            });
+            await api.post('/auth/logout');
             logout();
             toast.success('Logout successful!');
             navigate('/');
@@ -54,7 +50,7 @@ export const useAuth = () => {
     
     const handleRegister = async(data, onError) => {
         try {
-            await axios.post('/api/auth/register', data);
+            await api.post('/auth/register', data);
             
             toast.success('Registration successful! You can now log in.');
 

@@ -8,8 +8,8 @@ import {
 } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 import { toast } from "react-toastify";
-import axios from 'axios';
 import useAuthStore from "../store/authStore";
+import api from '../config/axiosConfig';
 
 export default function AvatarWithUpload({ avatarUrl }) {
     const [open, setOpen] = useState(false);
@@ -32,12 +32,7 @@ export default function AvatarWithUpload({ avatarUrl }) {
         formData.append("file", file);
 
         try {
-            const res = await axios.post("/api/user/avatar", formData, {
-                headers: {
-                    Authorization: `Bearer ${useAuthStore.getState().token}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            const res = await api.post("/user/avatar", formData);
 
             useAuthStore.getState().setUser({ avatar: res.data.avatar });
             toast.success("Avatar updated!");

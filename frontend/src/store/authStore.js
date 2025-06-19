@@ -16,7 +16,6 @@ const useAuthStore = create(
                 logout: () => set({
                     user: null,
                     token: null,
-                    role: null
                 }),
                 
                 setUser: (data) => set(state => ({
@@ -25,8 +24,8 @@ const useAuthStore = create(
                         ...data
                     }
                 })),
-                
-                isAuthenticated: () => !!useAuthStore.getState().token
+
+                getIsAuthenticated: () => !!useAuthStore.getState().token
             }
         ),
         {
