@@ -1,5 +1,3 @@
-# Dodaj te reguły do istniejącego pliku .gitignore
-
 # .NET
 bin/
 obj/
