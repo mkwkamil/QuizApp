@@ -95,8 +95,7 @@ function Navbar() {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}
-                                PaperProps={{ sx: { backgroundColor: '#1a1a1a', width: 240 } }}>
+                        <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
                             <List>
                                 {user ? (
                                     <>

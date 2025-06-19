@@ -7,7 +7,7 @@ export const useProfileData = () => {
     const [profileData, setProfileData] = useState(null);
 
     useEffect(() => {
-        const fetchProfileData = async () => {
+        (async () => {
             try {
                 const token = useAuthStore.getState().token;
                 const response = await api.get('/user/profile', {
@@ -15,9 +15,9 @@ export const useProfileData = () => {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                
+
                 const data = response.data;
-                
+
                 setProfileData({
                     publicName: data.publicName,
                     bio: data.bio,
@@ -37,8 +37,7 @@ export const useProfileData = () => {
                 console.error('Error fetching profile data:', error);
                 setProfileData(null);
             }
-        };
-        fetchProfileData();
+        })();
     }, []);
     
     return profileData;

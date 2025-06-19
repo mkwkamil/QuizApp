@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Typography, Button, Stack, styled } from '@mui/material';
 
 const HeroContainer = styled(Box)({
