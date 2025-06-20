@@ -22,7 +22,7 @@ export const useAuth = () => {
             
             toast.success(`Login successful! Welcome back, ${data.username}!`);
 
-            navigate('/');
+            // navigate('/');
         } 
         catch (error) {
             if (error.response?.status === 401) {

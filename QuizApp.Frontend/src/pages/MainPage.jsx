@@ -1,4 +1,5 @@
 import { Box, Typography, Button, Stack, styled } from '@mui/material';
+import {useNavigate} from "react-router-dom";
 
 const HeroContainer = styled(Box)({
     height: '100vh',
@@ -41,6 +42,7 @@ const OutlineGlowButton = styled(Button)({
 });
 
 function MainPage() {
+    const navigate = useNavigate();
     return (
         <HeroContainer>
             <Typography variant="h1" sx={{
@@ -64,7 +66,7 @@ function MainPage() {
                 flexDirection: { xs: 'column', sm: 'row' },
                 '& .MuiButton-root': { mb: { xs: 2, sm: 0 } }
             }}>
-                <GlowButton variant="contained">Get Started</GlowButton>
+                <GlowButton onClick={() => navigate('/quiz')} variant="contained">Get Started</GlowButton>
                 <OutlineGlowButton variant="outlined">Learn More</OutlineGlowButton>
             </Stack>
         </HeroContainer>

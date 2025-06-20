@@ -40,7 +40,6 @@ function CreateQuizForm() {
             questions
         };
         try {
-            const token = localStorage.getItem('token');
             const res = await api.post('/quiz', payload);
             
             console.log(res.data);
