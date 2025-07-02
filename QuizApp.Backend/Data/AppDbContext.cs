@@ -92,5 +92,17 @@ public class AppDbContext : DbContext
             .HasMany(q => q.Results)
             .WithOne(qr => qr.Quiz)
             .HasForeignKey(qr => qr.QuizId);
+        
+        modelBuilder.Entity<Quiz>()
+            .Property(q => q.IsDraft)
+            .HasDefaultValue(true);
+
+        modelBuilder.Entity<Quiz>()
+            .Property(q => q.RevealAnswers)
+            .HasDefaultValue(true);
+
+        modelBuilder.Entity<Quiz>()
+            .Property(q => q.ShuffleQuestions)
+            .HasDefaultValue(false);
     }
 }
