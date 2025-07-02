@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
 using QuizApp.Backend.DTO;
 using QuizApp.Backend.Models;
@@ -44,5 +45,27 @@ public class QuizController(AppDbContext context) : ControllerBase
         await context.SaveChangesAsync();
 
         return Ok(new { quizId = quiz.Id });
+    }
+    
+    [HttpGet("mine")]
+    [Authorize]
+    public async Task<IActionResult> GetMyQuizzes()
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+        var quizzes = await context.Quizzes
+            .Where(q => q.AuthorId == userId)
+            .Select(q => new
+            {
+                q.Id,
+                q.Title,
+                q.IsDraft,
+                QuestionsCount = q.Questions.Count,
+                Plays = q.Results.Count,
+                AverageRating = q.Ratings.Any() ? q.Ratings.Average(r => r.Value) : 0.0
+            })
+            .ToListAsync();
+
+        return Ok(quizzes);
     }
 }

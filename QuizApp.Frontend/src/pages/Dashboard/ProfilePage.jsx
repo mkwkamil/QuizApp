@@ -22,12 +22,29 @@ import AvatarWithUpload from "../../components/AvatarWithUpload";
 import {useState, useEffect} from 'react';
 import {toast} from "react-toastify";
 import {updateUserProfile} from "../../hooks/updateUserProfile";
+import api from "../../config/axiosConfig";
 
 function ProfilePage() {
     const profileData = useProfileData();
     const [openEditModal, setOpenEditModal] = useState(false);
     const [name, setName] = useState('');
     const [bio, setBio] = useState('');
+    
+    const [userQuizzes, setUserQuizzes] = useState([]);
+
+    useEffect(() => {
+        const fetchQuizzes = async () => {
+            try {
+                const res = await api.get('/quiz/mine');
+                setUserQuizzes(res.data);
+                console.log(res)
+            } catch (err) {
+                console.error('Failed to load quizzes:', err);
+            }
+        };
+
+        void fetchQuizzes();
+    }, []);
 
     useEffect(() => {
         if (profileData) {
@@ -56,11 +73,6 @@ function ProfilePage() {
     const activityData = [
         { id: 1, action: "Created quiz", title: "Advanced JavaScript Patterns", time: "2h ago" },
         { id: 2, action: "Solved quiz", title: "React Hooks Challenge", score: "95%", time: "1d ago" }
-    ];
-
-    const userQuizzes = [
-        { id: 1, title: "CSS Grid Mastery", questions: 15, plays: 342, rating: 4.8 },
-        { id: 2, title: "TypeScript Basics", questions: 10, plays: 128, rating: 4.5 }
     ];
 
     const achievements = [
@@ -139,12 +151,7 @@ function ProfilePage() {
                     border: '1px solid rgba(255, 255, 255, 0.05)',
                     boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
                 }}>
-                    <Typography
-                        variant="h6"
-                        color="#fff"
-                        fontFamily="Poppins, sans-serif"
-                        gutterBottom
-                    >
+                    <Typography variant="h6" color="#fff" fontFamily="Poppins, sans-serif" gutterBottom>
                         Basic Info
                     </Typography>
                     <Stack spacing={2}>
@@ -290,12 +297,28 @@ function ProfilePage() {
                                     >
                                         {quiz.title}
                                     </Typography>
+
+                                    {quiz.isDraft && (
+                                        <Typography
+                                            variant="caption"
+                                            sx={{
+                                                color: 'orange',
+                                                fontWeight: 'bold',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: 0.5
+                                            }}
+                                        >
+                                            DRAFT
+                                        </Typography>
+                                    )}
+
                                     <Stack direction="row" spacing={1} sx={{ color: '#aaa' }}>
-                                        <Typography variant="caption">{quiz.questions} questions</Typography>
+                                        <Typography variant="caption">{quiz.questionsCount} questions</Typography>
                                         <Typography variant="caption">• {quiz.plays} plays</Typography>
-                                        <Typography variant="caption">• ⭐ {quiz.rating}</Typography>
+                                        <Typography variant="caption">• ⭐ {quiz.averageRating}</Typography>
                                     </Stack>
                                 </Box>
+
                                 <Button
                                     variant="outlined"
                                     size="small"
