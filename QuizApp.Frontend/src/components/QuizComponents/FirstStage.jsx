@@ -9,89 +9,101 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {useEffect, useState} from "react";
+import { useState } from "react";
+import {useQuizStore} from "../../store/quizStore";
 
-function FirstStage({ isFormValid, setIsFormValid, setActiveStep }) {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [category, setCategory] = useState("");
-    const [difficulty, setDifficulty] = useState("");
-    const [thumbnailUrl, setThumbnailUrl] = useState("");
-    const [error, setError] = useState("");
+const categories = ["Business", "Technology", "Science", "Arts"];
+const difficulties = ["Easy", "Medium", "Hard", "Expert"]
 
-    useEffect(() => {
-        setIsFormValid(
-            title.trim() !== "" &&
-            description.trim() !== "" &&
-            category !== "" &&
-            difficulty !== "" &&
-            thumbnailUrl !== ""
-        );
-    }, [title, description, category, difficulty, thumbnailUrl]);
+function FirstStage({ onComplete }) {
+    const { basicInfo, setBasicInfo } = useQuizStore();
+    const [error, setError] = useState('');
+    
+    const handleInputChange = (field, value) => {
+        setBasicInfo({
+            ...basicInfo,
+            [field]: value
+        });
+    };
+
+    const handleOptionChange = (optionField, value) => {
+        setBasicInfo({
+            ...basicInfo,
+            options: {
+                ...basicInfo.options,
+                [optionField]: value
+            }
+        });
+    };
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (!file) return;
 
         const img = new Image();
-        const objectUrl = URL.createObjectURL(file);
+        const reader = new FileReader();
 
-        img.onload = () => {
-            if (img.width > img.height) {
-                setThumbnailUrl(objectUrl);
-                setError("");
-            } else {
-                setThumbnailUrl("");
-                setError("Only landscape images are allowed (width > height).");
-            }
+        reader.onload = () => {
+            img.onload = () => {
+                if (file.size > 1024 * 300) {
+                    setError("Image too big");
+                    return;
+                }
+                
+                if (img.width > img.height) {
+                    handleInputChange("thumbnailUrl", reader.result);
+                    setError("");
+                }
+                else {
+                    handleInputChange("thumbnailUrl", "");
+                    setError("Only landscape images are allowed (width > height).");
+                }
+            };
+            img.src = reader.result;
         };
 
-        img.src = objectUrl;
+        reader.readAsDataURL(file);
     };
 
     const handleNext = () => {
-        if (!isFormValid) return;
+        const isValid =
+            basicInfo.title.trim() !== "" &&
+            basicInfo.description.trim() !== "" &&
+            basicInfo.category !== "" &&
+            basicInfo.difficulty !== "" &&
+            basicInfo.thumbnailUrl !== "";
 
-        const quizData = {
-            title,
-            description,
-            category,
-            difficulty,
-            thumbnailUrl,
-            options: {
-                isPublic: true,
-                revealAnswers: true,
-                shuffleQuestions: false
-            }
-        };
+        if (!isValid) return;
 
-        console.log("Quiz data to submit or pass to next step:", quizData);
-        setActiveStep(1);
+        setBasicInfo(basicInfo);
+        onComplete();
     };
     
-    
     return (
-        <Box component="form" sx={{ padding: 2, width: "80%" }}>
-            <Typography variant="h4" component="h1" gutterBottom>Quiz Info</Typography>
+        <Box sx={{ p: 4, width: '80%', mx: 'auto' }}>
+            <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+                Quiz Info
+            </Typography>
 
-            <TextField label="Quiz Title" value={title} onChange={e => setTitle(e.target.value)} variant="outlined" fullWidth margin="normal" required />
-            <TextField label="Quiz Description" value={description} onChange={e => setDescription(e.target.value)} variant="outlined" fullWidth margin="normal" required />
+            <TextField label="Quiz Title" value={basicInfo.title} onChange={e => handleInputChange("title", e.target.value)} variant="outlined" fullWidth margin="normal" required />
+            <TextField label="Quiz Description" value={basicInfo.description} onChange={e => handleInputChange("description", e.target.value)} variant="outlined" fullWidth margin="normal" required />
 
             <Box sx={{ display: "flex", flexDirection: "row", gap: 2, marginTop: 2 }}>
                 <FormControl fullWidth>
                     <InputLabel id="category-select-label">Category</InputLabel>
                     <Select
                         labelId="category-select-label"
-                        value={category}
-                        onChange={e => setCategory(e.target.value)}
+                        value={basicInfo.category}
+                        onChange={e => handleInputChange("category", e.target.value)}
                         label="Category"
                         variant="outlined"
                         required
                     >
-                        <MenuItem value="Business">Business</MenuItem>
-                        <MenuItem value="Technology">Technology</MenuItem>
-                        <MenuItem value="Science">Science</MenuItem>
-                        <MenuItem value="Arts">Arts</MenuItem>
+                        {categories.map(category => (
+                            <MenuItem key={category} value={category}>
+                                {category}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
 
@@ -99,16 +111,17 @@ function FirstStage({ isFormValid, setIsFormValid, setActiveStep }) {
                     <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
                     <Select
                         labelId="difficulty-select-label"
-                        value={difficulty}
-                        onChange={e => setDifficulty(e.target.value)}
+                        value={basicInfo.difficulty}
+                        onChange={e => handleInputChange("difficulty", e.target.value)}
                         label="Difficulty"
                         variant="outlined"
                         required
                     >
-                        <MenuItem value="Easy">Easy</MenuItem>
-                        <MenuItem value="Medium">Medium</MenuItem>
-                        <MenuItem value="Hard">Hard</MenuItem>
-                        <MenuItem value="Expert">Expert</MenuItem>
+                        {difficulties.map(difficulty => (
+                            <MenuItem key={difficulty} value={difficulty}>
+                                {difficulty}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
             </Box>
@@ -116,9 +129,23 @@ function FirstStage({ isFormValid, setIsFormValid, setActiveStep }) {
             <Box display="flex" gap={4} sx={{ mt: 4, alignItems: "flex-start" }}>
                 <Stack spacing={2} flex={1}>
                     <Typography variant="h6">Quiz Options</Typography>
-                    <FormControlLabel control={<Switch defaultChecked />} label="Make this quiz public" />
-                    <FormControlLabel control={<Switch defaultChecked />} label="Reveal answers after submission" />
-                    <FormControlLabel control={<Switch />} label="Shuffle questions order" />
+                    <FormControlLabel label="Make this quiz public" control={
+                        <Switch 
+                            checked={basicInfo.options.isPublic} 
+                            onChange={e => handleOptionChange("isPublic", e.target.checked)} 
+                        />}
+                    />
+                    <FormControlLabel label="Reveal answers after submission"  control={
+                        <Switch 
+                            checked={basicInfo.options.revealAnswers} 
+                            onChange={e => handleOptionChange("revealAnswers", e.target.checked)} />} 
+                    />
+                    <FormControlLabel label="Shuffle questions order" control={
+                        <Switch 
+                            checked={basicInfo.options.shuffleQuestions}
+                            onChange={e => handleOptionChange("shuffleQuestions", e.target.checked)}
+                        />} 
+                    />
                 </Stack>
 
                 <Stack spacing={2} flex={1} width="250px">
@@ -130,8 +157,8 @@ function FirstStage({ isFormValid, setIsFormValid, setActiveStep }) {
                                 <input hidden accept="image/*" type="file" onChange={handleImageUpload} />
                             </Button>
 
-                            {thumbnailUrl && (
-                                <Box component="img" src={thumbnailUrl} alt="Thumbnail Preview"
+                            {basicInfo.thumbnailUrl && (
+                                <Box component="img" src={basicInfo.thumbnailUrl} alt="Thumbnail Preview"
                                     sx={{
                                         width: 180,
                                         height: "auto",
@@ -153,7 +180,7 @@ function FirstStage({ isFormValid, setIsFormValid, setActiveStep }) {
             </Box>
 
             <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-                <Button fullWidth variant="contained" onClick={handleNext} disabled={!isFormValid}
+                <Button fullWidth variant="contained" onClick={handleNext}
                     sx={{
                         background: "linear-gradient(135deg, #0d47a1, #1565c0)",
                         color: "#fff",

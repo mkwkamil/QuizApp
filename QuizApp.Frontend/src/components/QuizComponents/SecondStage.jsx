@@ -21,105 +21,112 @@ import { useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import {useQuizStore} from "../../store/quizStore";
 
-function SecondStage({ setActiveStep }) {
-    const [questions, setQuestions] = useState([]);
+const QUESTION_TYPES = [
+    { value: 'single', label: 'Single Choice' },
+    { value: 'multiple', label: 'Multiple Choice' },
+    { value: 'truefalse', label: 'True/False' }
+];
+
+const INITIAL_QUESTION = {
+    text: "",
+    type: "single",
+    options: ["", ""],
+    correctAnswers: []
+};
+
+function SecondStage({ onBack, onComplete }) {
+    const { questions, setQuestions } = useQuizStore();
     const [expanded, setExpanded] = useState(null);
 
-    const handleAccordionChange = (panel) => (event, isExpanded) => {
+    const handleAccordionChange = (panel) => (_, isExpanded) => {
         setExpanded(isExpanded ? panel : null);
     };
 
     const addNewQuestion = () => {
-        const newId = `q${Date.now()}`;
         const newQuestion = {
-            id: newId,
-            text: "New Question",
-            type: "single",
-            options: ["Option 1", "Option 2"],
-            correctAnswers: []
+            ...INITIAL_QUESTION,
+            id: `q${Date.now()}`
         };
         setQuestions([...questions, newQuestion]);
-        setExpanded(newId);
+        setExpanded(newQuestion.id);
     };
-
-    const handleQuestionTextChange = (id, text) => {
-        setQuestions(questions.map(q =>
-            q.id === id ? { ...q, text } : q
+    
+    const updateQuestion = (id, updates) => {
+        setQuestions(questions.map(q => 
+            q.id === id ? { ...q, ...updates} : q
         ));
-    };
+    }
+    
+    const handleQuestionChange = (id, field, value) => {
+        if (field === 'type') {
+            const updates = { type: value };
 
-    const handleQuestionTypeChange = (questionId, newType) => {
-        setQuestions(questions.map(q => {
-            if (q.id === questionId) {
-                const options = newType === "truefalse"
-                    ? ["True", "False"]
-                    : q.type === "truefalse"
-                        ? ["Option 1", "Option 2"]
-                        : q.options;
-
-                const correctAnswers = newType === "single"
-                    ? q.correctAnswers.slice(0, 1)
-                    : newType === "truefalse"
-                        ? []
-                        : q.correctAnswers;
-
-                return {
-                    ...q,
-                    type: newType,
-                    options,
-                    correctAnswers
-                };
+            if (value === 'truefalse') {
+                updates.options = ['True', 'False'];
+                updates.correctAnswers = [];
+            } else if (value === 'single') {
+                updates.correctAnswers = questions.find(q => q.id === id)?.correctAnswers.slice(0, 1) || [];
+            } else if (questions.find(q => q.id === id)?.type === 'truefalse') {
+                updates.options = ['', ''];
             }
-            return q;
-        }));
-    };
 
-    const handleOptionChange = (questionId, optionIndex, newValue) => {
+            updateQuestion(id, updates);
+        } else {
+            updateQuestion(id, { [field]: value });
+        }
+    };
+    
+    const handleOptionChange = (questionId, index, value) => {
         setQuestions(questions.map(q => {
-            if (q.id === questionId) {
-                const newOptions = [...q.options];
-                newOptions[optionIndex] = newValue;
-                return { ...q, options: newOptions };
-            }
-            return q;
+            if (q.id !== questionId) return q;
+
+            const newOptions = [...q.options];
+            newOptions[index] = value;
+            return { ...q, options: newOptions };
         }));
     };
 
     const addOption = (questionId) => {
         setQuestions(questions.map(q =>
             q.id === questionId && q.options.length < 6
-                ? { ...q, options: [...q.options, `Option ${q.options.length + 1}`] }
+                ? { ...q, options: [...q.options, ''] }
                 : q
         ));
     };
 
-    const removeOption = (questionId, optionIndex) => {
+    const removeOption = (questionId, index) => {
         setQuestions(questions.map(q => {
-            if (q.id === questionId) {
-                const newOptions = q.options.filter((_, i) => i !== optionIndex);
-                const newCorrectAnswers = q.correctAnswers
-                    .filter(ans => ans !== optionIndex)
-                    .map(ans => ans > optionIndex ? ans - 1 : ans);
-                return { ...q, options: newOptions, correctAnswers: newCorrectAnswers };
-            }
-            return q;
+            if (q.id !== questionId) return q;
+
+            const newOptions = q.options.filter((_, i) => i !== index);
+            const newCorrectAnswers = q.correctAnswers
+                .filter(ans => ans !== index)
+                .map(ans => ans > index ? ans - 1 : ans);
+
+            return { ...q, options: newOptions, correctAnswers: newCorrectAnswers };
         }));
     };
 
-    const handleCorrectAnswerChange = (questionId, answerIndex, isChecked) => {
+    const handleCorrectAnswer = (questionId, index, checked) => {
         setQuestions(questions.map(q => {
-            if (q.id === questionId) {
-                if (q.type === "single") {
-                    return { ...q, correctAnswers: isChecked ? [answerIndex] : [] };
-                } else {
-                    const newCorrectAnswers = isChecked
-                        ? [...q.correctAnswers, answerIndex]
-                        : q.correctAnswers.filter(ans => ans !== answerIndex);
-                    return { ...q, correctAnswers: newCorrectAnswers };
-                }
+            if (q.id !== questionId) return q;
+            
+            if (q.type === 'truefalse') {
+                return { ...q, correctAnswers: [index] }
             }
-            return q;
+            
+            if (q.type === 'single') {
+                return { ...q, correctAnswers: checked ? [index] : [] };
+            }
+
+            return {
+                ...q,
+                correctAnswers: checked
+                    ? [...q.correctAnswers, index]
+                    : q.correctAnswers.filter(i => i !== index)
+            };
         }));
     };
 
@@ -128,29 +135,67 @@ function SecondStage({ setActiveStep }) {
         if (expanded === id) setExpanded(null);
     };
 
+    const renderAnswerInput = (question, index) => {
+        const InputComponent = question.type === 'multiple' ? Checkbox : Radio;
+        return (
+            <InputComponent
+                checked={question.correctAnswers.includes(index)}
+                onChange={(e) => handleCorrectAnswer(question.id, index, e.target.checked)}
+            />
+        );
+    };
+
+    const renderOptionField = (question, option, index) => (
+        <TextField
+            value={option}
+            onChange={(e) => handleOptionChange(question.id, index, e.target.value)}
+            fullWidth
+            required
+            slotProps={{
+                endAdornment: question.type !== 'truefalse' && (
+                    <InputAdornment position="end">
+                        <IconButton
+                            onClick={() => removeOption(question.id, index)}
+                            disabled={question.options.length <= 2}
+                            edge="end"
+                        >
+                            <DeleteIcon fontSize="small" />
+                        </IconButton>
+                    </InputAdornment>
+                )
+            }}
+        />
+    );
+
     const handleSubmit = () => {
+        const allValid = questions.every(q =>
+            q.text.trim() !== "" &&
+            q.options.length >= 2 &&
+            q.options.every(opt => opt.trim() !== "") &&
+            q.correctAnswers.length > 0
+        );
+
+        if (!allValid) {
+            alert("Please complete all questions, provide at least 2 options and select correct answers.");
+            return;
+        }
+
         console.log("Questions to submit:", questions);
-        setActiveStep(2);
+        onComplete();
     };
 
     return (
-        <Box component="form" sx={{ padding: 2, width: "80%" }}>
-            <Typography variant="h4" component="h1" gutterBottom>Add Questions</Typography>
+        <Box sx={{ p: 4, width: '80%', mx: 'auto' }}>
+            <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+                Add Questions
+            </Typography>
 
-            <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="subtitle1">
-                    Total questions: {questions.length}
-                </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
+                <Typography variant="h6">Total questions: {questions.length}</Typography>
                 <Button
                     variant="contained"
                     startIcon={<AddIcon />}
                     onClick={addNewQuestion}
-                    sx={{
-                        background: "linear-gradient(135deg, #0d47a1, #1565c0)",
-                        "&:hover": {
-                            background: "linear-gradient(135deg, #1565c0, #1e88e5)",
-                        }
-                    }}
                 >
                     Add Question
                 </Button>
@@ -171,22 +216,28 @@ function SecondStage({ setActiveStep }) {
             )}
 
             {questions.map((question) => (
-                <Accordion
-                    key={question.id}
-                    expanded={expanded === question.id}
-                    onChange={handleAccordionChange(question.id)}
-                    sx={{ mb: 2 }}
-                >
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Accordion key={question.id} expanded={expanded === question.id} onChange={handleAccordionChange(question.id)} sx={{ mb: 2 }}>
+                    <AccordionSummary
+                        expandIcon={
+                            <IconButton
+                                component="div"
+                                onClick={(e) => e.stopPropagation()}
+                                size="small"
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        }
+                    >
                         <Typography sx={{ flex: 1 }}>
-                            {question.text || "New Question"}
+                            {question.text || 'New Question'}
                         </Typography>
                         <IconButton
+                            component="div"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 deleteQuestion(question.id);
                             }}
-                            sx={{ mr: 1 }}
+                            sx={{ ml: 1 }}
                         >
                             <DeleteIcon color="error" />
                         </IconButton>
@@ -194,24 +245,20 @@ function SecondStage({ setActiveStep }) {
 
                     <AccordionDetails>
                         <Stack spacing={3}>
-                            <TextField
-                                label="Question Text"
-                                value={question.text}
-                                onChange={(e) => handleQuestionTextChange(question.id, e.target.value)}
-                                fullWidth
-                                required
-                            />
+                            <TextField label="Question Text" value={question.text} onChange={(e) => handleQuestionChange(question.id, 'text', e.target.value)} fullWidth required/>
 
                             <FormControl fullWidth>
                                 <InputLabel>Question Type</InputLabel>
                                 <Select variant="outlined"
                                     value={question.type}
-                                    onChange={(e) => handleQuestionTypeChange(question.id, e.target.value)}
+                                    onChange={(e) => handleQuestionChange(question.id, 'type', e.target.value)}
                                     label="Question Type"
                                 >
-                                    <MenuItem value="single">Single Choice</MenuItem>
-                                    <MenuItem value="multiple">Multiple Choice</MenuItem>
-                                    <MenuItem value="truefalse">True/False</MenuItem>
+                                    {QUESTION_TYPES.map(type => (
+                                        <MenuItem key={type.value} value={type.value}>
+                                            {type.label}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
 
@@ -219,58 +266,12 @@ function SecondStage({ setActiveStep }) {
                                 <FormLabel component="legend">Options</FormLabel>
                                 <Stack spacing={2} sx={{ mt: 1 }}>
                                     {question.options.map((option, index) => (
-                                        <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
-                                            {question.type === "single" ? (
-                                                <Radio
-                                                    checked={question.correctAnswers.includes(index)}
-                                                    onChange={(e) => handleCorrectAnswerChange(
-                                                        question.id,
-                                                        index,
-                                                        e.target.checked
-                                                    )}
-                                                />
-                                            ) : (
-                                                <Checkbox
-                                                    checked={question.correctAnswers.includes(index)}
-                                                    onChange={(e) => handleCorrectAnswerChange(
-                                                        question.id,
-                                                        index,
-                                                        e.target.checked
-                                                    )}
-                                                />
-                                            )}
-
-                                            <TextField
-                                                value={option}
-                                                onChange={(e) => handleOptionChange(question.id, index, e.target.value)}
-                                                fullWidth
-                                                required
-                                                sx={{ my: 1 }}
-                                                slotProps={{
-                                                    input: {
-                                                        endAdornment: question.type !== "truefalse" && (
-                                                            <InputAdornment position="end">
-                                                                <IconButton
-                                                                    edge="end"
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation();
-                                                                        removeOption(question.id, index);
-                                                                    }}
-                                                                    disabled={question.options.length <= 2}
-                                                                    size="small"
-                                                                    sx={{ mr: -1 }}
-                                                                >
-                                                                    <DeleteIcon fontSize="small" />
-                                                                </IconButton>
-                                                            </InputAdornment>
-                                                        ),
-                                                    },
-                                                }}
-                                            />
+                                        <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            {renderAnswerInput(question, index)}
+                                            {renderOptionField(question, option, index)}
                                         </Box>
                                     ))}
-
-                                    {question.type !== "truefalse" && question.options.length < 6 && (
+                                    {question.type !== 'truefalse' && question.options.length < 6 && (
                                         <Button
                                             startIcon={<AddIcon />}
                                             onClick={() => addOption(question.id)}
@@ -287,18 +288,11 @@ function SecondStage({ setActiveStep }) {
             ))}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
-                <Button
-                    variant="outlined"
-                    onClick={() => setActiveStep(0)}
-                    sx={{ width: '48%' }}
-                >
+                <Button variant="outlined" onClick={onBack} sx={{ width: '48%' }}>
                     Back
                 </Button>
 
-                <Button
-                    variant="contained"
-                    onClick={handleSubmit}
-                    disabled={questions.length === 0}
+                <Button variant="contained" onClick={handleSubmit} disabled={questions.length === 0}
                     sx={{
                         width: '48%',
                         background: "linear-gradient(135deg, #0d47a1, #1565c0)",
