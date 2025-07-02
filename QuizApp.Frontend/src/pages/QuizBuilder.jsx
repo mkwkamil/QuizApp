@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
-import { Box, Snackbar } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Box } from '@mui/material';
 import { useQuizStore } from '../store/quizStore';
 import { loadQuizDraft } from "../store/quizDraft";
 import QuizStepper from '../components/QuizComponents/QuizStepper';
@@ -10,25 +10,21 @@ import useAutoSafeDraft from "../hooks/useAutoSafeDraft";
 import {useQuizNavigation} from "../hooks/useQuizNavigation";
 import {useNavigate} from "react-router-dom";
 
-function QuizBuilder() {
+function QuizBuilder({ editMode = false, quizId = null }) {
     const navigate = useNavigate();
     
     const setBasicInfo = useQuizStore((state) => state.setBasicInfo);
     const setQuestions = useQuizStore((state) => state.setQuestions);
     const { activeStep, next, prev } = useQuizNavigation()
 
-    const [saveNotification, setSaveNotification] = useState(false);
     const [restoreAttempted, setRestoreAttempted] = useState(false);
 
-    const showSaveNotification = useCallback(() => {
-        setSaveNotification(true);
-    }, []);
-
-    useAutoSafeDraft(showSaveNotification);
+    useAutoSafeDraft();
 
     useEffect(() => {
         const restoreDraft = async () => {
             if (restoreAttempted) return;
+            if (editMode) return;
 
             try {
                 const draft = await loadQuizDraft();
@@ -84,15 +80,8 @@ function QuizBuilder() {
 
             {activeStep === 0 && <FirstStage onComplete={next} />}
             {activeStep === 1 && <SecondStage onBack={prev} onComplete={next} />}
-            {activeStep === 2 && <ThirdStage onBack={prev} onFinish={() => navigate("/")} />}
+            {activeStep === 2 && <ThirdStage onBack={prev} onFinish={() => navigate("/")} editMode={editMode} quizId={quizId}/>}
             
-            <Snackbar
-                open={saveNotification}
-                onClose={() => setSaveNotification(false)}
-                autoHideDuration={3000}
-                message="Quiz draft has been auto-saved"
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            />
         </Box>
     );
 }

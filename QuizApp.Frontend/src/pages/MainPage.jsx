@@ -66,8 +66,8 @@ function MainPage() {
                 flexDirection: { xs: 'column', sm: 'row' },
                 '& .MuiButton-root': { mb: { xs: 2, sm: 0 } }
             }}>
-                <GlowButton onClick={() => navigate('/quiz')} variant="contained">Get Started</GlowButton>
-                <OutlineGlowButton variant="outlined">Learn More</OutlineGlowButton>
+                <GlowButton onClick={() => navigate('/quiz')} variant="contained">Quiz Creator</GlowButton>
+                <OutlineGlowButton variant="outlined">Explore quizzes</OutlineGlowButton>
             </Stack>
         </HeroContainer>
     );

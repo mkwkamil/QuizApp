@@ -24,7 +24,7 @@ export const useQuizStore = create((set) => ({
     setQuestions: (questions) => set({ questions }),
     
     // Third Stage: Review & Publish
-    submitQuiz: async (isDraft = false) => {
+    submitQuiz: async (isEdit = false, quizId = null, isDraft = false ) => {
         const state = useQuizStore.getState();
 
         const quizData = {
@@ -44,18 +44,19 @@ export const useQuizStore = create((set) => ({
                 correctAnswers: q.correctAnswers
             }))
         };
-
+        
         try {
-            const res = await api.post('/quiz', quizData);
-            const { quizId } = res.data;
-            console.log("Quiz submitted:", quizId);
-            return { success: true, quizId };
+            let res;
+            if (isEdit && quizId) {
+                res = await api.put(`/quiz/${quizId}`, quizData);
+                console.log(`Updated quiz with ID: ${quizId}`);
+            } else {
+                res = await api.post('/quiz', quizData);
+                console.log("Created new quiz");
+            }
+            return { success: true, quizId: res.data.quizId };
         } catch (error) {
-            console.error("Quiz submission failed:", error);
-            return {
-                success: false,
-                message: error.response?.data?.message || "Unknown error"
-            };
+            return { success: false, message: error.response?.data?.message || error.message };
         }
     },
     

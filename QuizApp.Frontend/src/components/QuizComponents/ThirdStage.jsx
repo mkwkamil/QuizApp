@@ -16,17 +16,17 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import {clearQuizDraft} from "../../store/quizDraft";
 
-function ThirdStage({ onBack, onFinish }) {
+function ThirdStage({ onBack, onFinish, editMode, quizId }) {
     const { basicInfo, questions, submitQuiz, reset } = useQuizStore();
     const { title, description, category, difficulty, thumbnailUrl, options } = basicInfo;
-
+    
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
-
+    
     const handlePublish = async () => {
         setIsSubmitting(true);
         try {
-            const result = await submitQuiz();
+            const result = await submitQuiz(editMode, quizId);
             if (result.success) {
                 await clearQuizDraft();
                 reset();

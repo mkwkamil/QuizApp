@@ -23,6 +23,7 @@ import {useState, useEffect} from 'react';
 import {toast} from "react-toastify";
 import {updateUserProfile} from "../../hooks/updateUserProfile";
 import api from "../../config/axiosConfig";
+import {Link} from "react-router-dom";
 
 function ProfilePage() {
     const profileData = useProfileData();
@@ -37,7 +38,6 @@ function ProfilePage() {
             try {
                 const res = await api.get('/quiz/mine');
                 setUserQuizzes(res.data);
-                console.log(res)
             } catch (err) {
                 console.error('Failed to load quizzes:', err);
             }
@@ -67,6 +67,18 @@ function ProfilePage() {
             profileData.bio = bio;
         } catch (err) {
             toast.error('Failed to update profile');
+        }
+    };
+
+    const deleteQuiz = async (quizId) => {
+        if (!window.confirm("Are you sure you want to delete this quiz? This action cannot be undone.")) {
+            return;
+        }
+        try {
+            await api.delete(`/quiz/${quizId}`);
+            setUserQuizzes(prev => prev.filter(q => q.id !== quizId));
+        } catch (error) {
+            console.error("Failed to delete quiz", error);
         }
     };
 
@@ -315,23 +327,21 @@ function ProfilePage() {
                                     <Stack direction="row" spacing={1} sx={{ color: '#aaa' }}>
                                         <Typography variant="caption">{quiz.questionsCount} questions</Typography>
                                         <Typography variant="caption">• {quiz.plays} plays</Typography>
-                                        <Typography variant="caption">• ⭐ {quiz.averageRating}</Typography>
+                                        <Typography variant="caption">• ⭐ {quiz.averageRating.toFixed(1)}</Typography>
                                     </Stack>
                                 </Box>
 
-                                <Button
-                                    variant="outlined"
-                                    size="small"
-                                    sx={{
-                                        color: '#00e5ff',
-                                        borderColor: '#00e5ff',
-                                        '&:hover': {
-                                            bgcolor: 'rgba(0, 229, 255, 0.1)'
-                                        }
-                                    }}
-                                >
-                                    Edit
-                                </Button>
+                                <Stack direction="row" spacing={1}> 
+                                    <Link to={`/quiz/edit/${quiz.id}`}>
+                                        <Button variant="outlined" size="small" sx={{color: '#00e5ff', borderColor: '#00e5ff', '&:hover': { bgcolor: 'rgba(0, 229, 255, 0.1)' }}}>
+                                            Edit
+                                        </Button>
+                                    </Link>
+                                    <Button variant="outlined" size="small" sx={{color: '#AF1323FF', borderColor: '#AF1323FF', '&:hover': { bgcolor: 'rgba(175, 19, 35, 0.2)' }}}   onClick={() => deleteQuiz(quiz.id)}
+                                    >
+                                        Delete
+                                    </Button>
+                                </Stack>
                             </Paper>
                         ))}
                     </Stack>
