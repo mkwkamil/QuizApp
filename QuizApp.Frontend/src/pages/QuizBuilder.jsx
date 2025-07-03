@@ -95,7 +95,7 @@ function QuizBuilder({ editMode = false, quizId = null }) {
             <QuizStepper activeStep={activeStep} />
 
             {activeStep === 0 && <FirstStage onComplete={next} editMode={editMode} />}
-            {activeStep === 1 && <SecondStage onBack={prev} onComplete={next} />}
+            {activeStep === 1 && <SecondStage onBack={prev} onComplete={next} editMode={editMode} />}
             {activeStep === 2 && <ThirdStage onBack={prev} editMode={editMode} quizId={quizId} />}
 
             <RestoreDraftModal open={modalOpen} onClose={handleCloseModal} onRestore={handleRestore} draft={draft}/>

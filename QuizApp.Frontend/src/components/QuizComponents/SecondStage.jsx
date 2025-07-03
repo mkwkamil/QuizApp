@@ -37,7 +37,7 @@ const INITIAL_QUESTION = {
     correctAnswers: []
 };
 
-function SecondStage({ onBack, onComplete }) {
+function SecondStage({ onBack, onComplete, editMode = false }) {
     const isDraft = useQuizStore.getState().basicInfo.isDraft;
     const { questions, setQuestions } = useQuizStore();
     const [expanded, setExpanded] = useState(null);
@@ -296,7 +296,7 @@ function SecondStage({ onBack, onComplete }) {
                 </Accordion>
             ))}
             
-            {isDraft ? (
+            {isDraft || !editMode ? (
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, gap: 2 }}>
                     <StyledQuizNextButton fullWidth variant="contained" onClick={handleSubmit}>
                         Next Step

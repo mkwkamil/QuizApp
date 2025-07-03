@@ -197,7 +197,7 @@ function FirstStage({ onComplete, editMode = false }) {
                     </Box>
                 </Stack>
             </Box>
-            {basicInfo.isDraft ? (
+            {basicInfo.isDraft || !editMode ? (
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, gap: 2 }}>
                     <StyledQuizNextButton fullWidth variant="contained" onClick={handleNext}>
                         Next Step

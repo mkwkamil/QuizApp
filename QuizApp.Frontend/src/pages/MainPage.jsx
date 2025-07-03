@@ -39,7 +39,7 @@ function MainPage() {
                 '& .MuiButton-root': { mb: { xs: 2, sm: 0 } }
             }}>
                 <StyledMainGlowButton onClick={() => navigate('/quiz/create')} variant="contained">Quiz Creator</StyledMainGlowButton>
-                <StyledMainOutlinedButton variant="outlined">Explore quizzes</StyledMainOutlinedButton>
+                <StyledMainOutlinedButton onClick={() => navigate('/explore')} variant="outlined">Explore quizzes</StyledMainOutlinedButton>
             </Stack>
         </HeroContainer>
     );

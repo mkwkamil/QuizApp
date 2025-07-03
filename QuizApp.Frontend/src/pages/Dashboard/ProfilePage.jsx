@@ -24,12 +24,16 @@ import {toast} from "react-toastify";
 import {updateUserProfile} from "../../hooks/updateUserProfile";
 import api from "../../config/axiosConfig";
 import {Link} from "react-router-dom";
+import DeleteQuizModal from "../../components/DeleteQuizModal";
 
 function ProfilePage() {
     const profileData = useProfileData();
     const [openEditModal, setOpenEditModal] = useState(false);
     const [name, setName] = useState('');
     const [bio, setBio] = useState('');
+    
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [quizToDelete, setQuizToDelete] = useState(null);
     
     const [userQuizzes, setUserQuizzes] = useState([]);
 
@@ -69,14 +73,18 @@ function ProfilePage() {
             toast.error('Failed to update profile');
         }
     };
+    
+    const promptDeleteQuiz = (quiz) => {
+        setQuizToDelete(quiz);
+        setDeleteModalOpen(true);
+    };
 
-    const deleteQuiz = async (quizId) => {
-        if (!window.confirm("Are you sure you want to delete this quiz? This action cannot be undone.")) {
-            return;
-        }
+    const confirmDeleteQuiz = async () => {
         try {
-            await api.delete(`/quiz/${quizId}`);
-            setUserQuizzes(prev => prev.filter(q => q.id !== quizId));
+            await api.delete(`/quiz/${quizToDelete.id}`);
+            setUserQuizzes(prev => prev.filter(q => q.id !== quizToDelete.id));
+            setDeleteModalOpen(false);
+            setQuizToDelete(null);
         } catch (error) {
             console.error("Failed to delete quiz", error);
         }
@@ -337,7 +345,7 @@ function ProfilePage() {
                                             Edit
                                         </Button>
                                     </Link>
-                                    <Button variant="outlined" size="small" sx={{color: '#AF1323FF', borderColor: '#AF1323FF', '&:hover': { bgcolor: 'rgba(175, 19, 35, 0.2)' }}}   onClick={() => deleteQuiz(quiz.id)}
+                                    <Button variant="outlined" size="small" sx={{color: '#AF1323FF', borderColor: '#AF1323FF', '&:hover': { bgcolor: 'rgba(175, 19, 35, 0.2)' }}}   onClick={() => promptDeleteQuiz(quiz)}
                                     >
                                         Delete
                                     </Button>
@@ -461,7 +469,14 @@ function ProfilePage() {
                     </Box>
                 </Box>
             </Modal>
+            <DeleteQuizModal
+                open={deleteModalOpen}
+                onClose={() => setDeleteModalOpen(false)}
+                onDelete={confirmDeleteQuiz}
+                quizTitle={quizToDelete?.title}
+            ></DeleteQuizModal>
         </Box>
+        
     );
 }
 
