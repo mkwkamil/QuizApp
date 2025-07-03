@@ -13,7 +13,6 @@ import RestoreDraftModal from '../components/RestoreDraftModal';
 function QuizBuilder({ editMode = false, quizId = null }) {
     const [draft, setDraft] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
-
     const reset = useQuizStore((state) => state.reset);
     const setBasicInfo = useQuizStore((state) => state.setBasicInfo);
     const setQuestions = useQuizStore((state) => state.setQuestions);
@@ -22,6 +21,7 @@ function QuizBuilder({ editMode = false, quizId = null }) {
     useEffect(() => {
         if (!editMode) {
             reset();
+            useQuizStore.getState().setDraftId(null);
         }
     }, []);
 

@@ -6,6 +6,7 @@ import MainPage from "./pages/MainPage";
 import ProfilePage from "./pages/Dashboard/ProfilePage";
 import QuizPage from "./pages/QuizPage";
 import QuizEditPage from "./pages/QuizEditPage";
+import Loading from "./components/Loading";
 
 function App() {
     return (
@@ -17,7 +18,8 @@ function App() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/quiz" element={<QuizPage />} />
+                    <Route path="/quiz/:id" element={<Loading />} />
+                    <Route path="/quiz/create" element={<QuizPage />} />
                     <Route path="/quiz/edit/:id" element={<QuizEditPage />} />
                 </Routes>
             </Router>

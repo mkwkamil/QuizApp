@@ -41,9 +41,6 @@ public class QuizController(AppDbContext context) : ControllerBase
                 }).ToList()
             }).ToList()
         };
-
-        
-        Console.WriteLine($"UpdateQuiz calle");
         
         context.Quizzes.Add(quiz);
         await context.SaveChangesAsync();
@@ -181,5 +178,84 @@ public class QuizController(AppDbContext context) : ControllerBase
         await context.SaveChangesAsync();
 
         return NoContent();
+    }
+    
+    [Authorize]
+    [HttpPost("draft")]
+    public async Task<IActionResult> CreateDraft([FromBody] QuizDraftDto dto)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+        var draft = new Quiz
+        {
+            Title = dto.Title,
+            Description = dto.Description,
+            ThumbnailUrl = dto.ThumbnailUrl,
+            Category = dto.Category,
+            Difficulty = dto.Difficulty,
+            IsPublic = dto.IsPublic,
+            IsDraft = true,
+            RevealAnswers = dto.RevealAnswers,
+            ShuffleQuestions = dto.ShuffleQuestions,
+            AuthorId = userId,
+            Questions = dto.Questions?.Select(q => new Question
+            {
+                Text = q.Text,
+                Type = string.IsNullOrEmpty(q.Type) ? "single" : q.Type,
+                Answers = q.Options?.Select((opt, index) => new Answer
+                {
+                    Text = opt,
+                    IsCorrect = q.CorrectAnswers?.Contains(index) ?? false
+                }).ToList() ?? new List<Answer>()
+            }).ToList() ?? new List<Question>()
+        };
+
+        context.Quizzes.Add(draft);
+        await context.SaveChangesAsync();
+
+        return Ok(new { draftId = draft.Id });
+    }
+
+    [Authorize]
+    [HttpPut("draft/{id}")]
+    public async Task<IActionResult> UpdateDraft(int id, [FromBody] QuizDraftDto dto)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+        var draft = await context.Quizzes
+            .Include(q => q.Questions)
+            .ThenInclude(qn => qn.Answers)
+            .FirstOrDefaultAsync(q => q.Id == id && q.AuthorId == userId && q.IsDraft);
+
+        if (draft == null)
+            return NotFound();
+
+        draft.Title = dto.Title;
+        draft.Description = dto.Description;
+        draft.ThumbnailUrl = dto.ThumbnailUrl;
+        draft.Category = dto.Category;
+        draft.Difficulty = dto.Difficulty;
+        draft.IsPublic = dto.IsPublic;
+        draft.IsDraft = true;
+        draft.RevealAnswers = dto.RevealAnswers;
+        draft.ShuffleQuestions = dto.ShuffleQuestions;
+
+        context.Answers.RemoveRange(draft.Questions.SelectMany(q => q.Answers));
+        context.Questions.RemoveRange(draft.Questions);
+
+        draft.Questions = dto.Questions?.Select(q => new Question
+        {
+            Text = q.Text,
+            Type = string.IsNullOrEmpty(q.Type) ? "single" : q.Type,
+            Answers = q.Options?.Select((opt, index) => new Answer
+            {
+                Text = opt,
+                IsCorrect = q.CorrectAnswers?.Contains(index) ?? false
+            }).ToList() ?? new List<Answer>()
+        }).ToList() ?? new List<Question>();
+
+        await context.SaveChangesAsync();
+
+        return Ok(new { draftId = draft.Id });
     }
 }

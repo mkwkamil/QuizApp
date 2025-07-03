@@ -22,6 +22,7 @@ export function useLoadQuiz(quizId) {
                     category: data.category,
                     difficulty: data.difficulty,
                     thumbnailUrl: data.thumbnailUrl,
+                    isDraft: data.isDraft,
                     options: {
                         isPublic: data.isPublic,
                         revealAnswers: data.revealAnswers,
@@ -38,6 +39,8 @@ export function useLoadQuiz(quizId) {
                 }));
                 
                 setQuestions(questions);
+                
+                useQuizStore.getState().setDraftId(quizId);
                 
                 setLoading(false);
             } catch (err) {

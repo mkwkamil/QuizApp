@@ -38,6 +38,7 @@ const INITIAL_QUESTION = {
 };
 
 function SecondStage({ onBack, onComplete }) {
+    const isDraft = useQuizStore.getState().basicInfo.isDraft;
     const { questions, setQuestions } = useQuizStore();
     const [expanded, setExpanded] = useState(null);
 
@@ -184,10 +185,16 @@ function SecondStage({ onBack, onComplete }) {
         console.log("Questions to submit:", questions);
         onComplete();
     };
-    
-    const handleDraft = () => {
 
-        console.log("Saving draft with questions:", questions);
+    const handleDraft = async () => {
+        const result = await useQuizStore.getState().saveDraft();
+
+        if (result.success) {
+            console.log("Draft saved successfully");
+        }
+        else {
+            console.log("Failed to save draft:", result.error);
+        }
     }
 
     return (
@@ -289,17 +296,28 @@ function SecondStage({ onBack, onComplete }) {
                 </Accordion>
             ))}
             
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, gap: 2 }}>
-                <StyledQuizNextButton fullWidth variant="contained" onClick={handleSubmit}>
-                    Next Step
-                </StyledQuizNextButton>
-                <Box sx={{ display: "flex", justifyContent: "center", gap: 2, width: "100%" }}>
+            {isDraft ? (
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, gap: 2 }}>
+                    <StyledQuizNextButton fullWidth variant="contained" onClick={handleSubmit}>
+                        Next Step
+                    </StyledQuizNextButton>
+                    <Box sx={{ display: "flex", justifyContent: "center", gap: 2, width: "100%" }}>
+                        <StyledQuizBackButton fullWidth onClick={onBack} variant="outlined">
+                            Back
+                        </StyledQuizBackButton>
+                        <StyledDraftButton fullWidth variant="contained" onClick={handleDraft}>Save draft</StyledDraftButton>
+                    </Box>
+                </Box>
+            ) : (
+                <Box sx={{ display: "flex", alignItems: "center", mt: 4, gap: 2 }}>
                     <StyledQuizBackButton fullWidth onClick={onBack} variant="outlined">
                         Back
                     </StyledQuizBackButton>
-                    <StyledDraftButton fullWidth variant="contained" onClick={handleDraft}>Save draft</StyledDraftButton>
+                    <StyledQuizNextButton fullWidth variant="contained" onClick={handleSubmit}>
+                        Next Step
+                    </StyledQuizNextButton>
                 </Box>
-            </Box>
+            )}
         </Box>
     );
 }

@@ -15,19 +15,22 @@ import { useState } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import {clearQuizDraft} from "../../store/quizDraft";
+import {useNavigate} from "react-router-dom";
 
 function ThirdStage({ onBack, editMode, quizId }) {
+    const navigate = useNavigate();
     const { basicInfo, questions, submitQuiz, reset } = useQuizStore();
     const { title, description, category, difficulty, thumbnailUrl, options } = basicInfo;
     
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
-    
+
     const handlePublish = async () => {
         setIsSubmitting(true);
         try {
             const result = await submitQuiz(editMode, quizId);
             if (result.success) {
+                editMode ? navigate('/profile') : navigate(`/quiz/${quizId}`);
                 await clearQuizDraft();
                 reset();
             }

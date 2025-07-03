@@ -22,7 +22,7 @@ function FirstStage({ onComplete, editMode = false }) {
     
     const { basicInfo, setBasicInfo } = useQuizStore();
     const [error, setError] = useState('');
-    
+
     const handleInputChange = (field, value) => {
         setBasicInfo({
             ...basicInfo,
@@ -87,10 +87,15 @@ function FirstStage({ onComplete, editMode = false }) {
         editMode ? navigate('/profile') : navigate('/')
     }
     
-    const handleDraft = () => {
-        // Logic to save the draft can be implemented here
-        // For now, we will just log the basicInfo
-        console.log("Draft saved:", basicInfo);
+    const handleDraft = async () => {
+        const result = await useQuizStore.getState().saveDraft();
+        
+        if (result.success) {
+            console.log("Draft saved successfully");
+        }
+        else {
+            console.log("Failed to save draft:", result.error);
+        }
     }
     
     return (
@@ -192,16 +197,24 @@ function FirstStage({ onComplete, editMode = false }) {
                     </Box>
                 </Stack>
             </Box>
-
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, gap: 2 }}>
-                <StyledQuizNextButton fullWidth variant="contained" onClick={handleNext}>
-                    Next Step
-                </StyledQuizNextButton>
-                <Box sx={{ display: "flex", justifyContent: "center", gap: 2, width: "100%" }}>
-                    <StyledCancelButton fullWidth variant="outlined" onClick={handleCancel}>Cancel</StyledCancelButton>
-                    <StyledDraftButton fullWidth variant="contained" onClick={handleDraft}>Save draft</StyledDraftButton>
+            {basicInfo.isDraft ? (
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, gap: 2 }}>
+                    <StyledQuizNextButton fullWidth variant="contained" onClick={handleNext}>
+                        Next Step
+                    </StyledQuizNextButton>
+                    <Box sx={{ display: "flex", justifyContent: "center", gap: 2, width: "100%" }}>
+                        <StyledCancelButton fullWidth variant="outlined" onClick={handleCancel}>Cancel</StyledCancelButton>
+                        <StyledDraftButton fullWidth variant="contained" onClick={handleDraft}>Save draft</StyledDraftButton>
+                    </Box>
                 </Box>
-            </Box>
+            ) : (
+                <Box sx={{ display: "flex", alignItems: "center", mt: 4, gap: 2 }}>
+                    <StyledCancelButton fullWidth variant="outlined" onClick={handleCancel}>Cancel</StyledCancelButton>
+                    <StyledQuizNextButton fullWidth variant="contained" onClick={handleNext}>
+                        Next Step
+                    </StyledQuizNextButton>
+                </Box>
+            )}
         </Box>
     );
 }
