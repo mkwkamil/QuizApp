@@ -94,7 +94,7 @@ function QuizBuilder({ editMode = false, quizId = null }) {
             }}>
             <QuizStepper activeStep={activeStep} />
 
-            {activeStep === 0 && <FirstStage onComplete={next} />}
+            {activeStep === 0 && <FirstStage onComplete={next} editMode={editMode} />}
             {activeStep === 1 && <SecondStage onBack={prev} onComplete={next} />}
             {activeStep === 2 && <ThirdStage onBack={prev} editMode={editMode} quizId={quizId} />}
 

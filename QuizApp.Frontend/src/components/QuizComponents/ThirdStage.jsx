@@ -169,7 +169,10 @@ function ThirdStage({ onBack, editMode, quizId }) {
                         size="large"
                         sx={{ minWidth: 200 }}
                     >
-                        {isSubmitting ? 'Publishing...' : 'Publish Quiz'}
+                    {editMode
+                        ? (isSubmitting ? 'Updating...' : 'Update Quiz')
+                        : (isSubmitting ? 'Publishing...' : 'Publish Quiz')
+                    }
                     </Button>
                 </Box>
             </Box>

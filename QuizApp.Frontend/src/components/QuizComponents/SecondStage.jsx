@@ -184,6 +184,11 @@ function SecondStage({ onBack, onComplete }) {
         console.log("Questions to submit:", questions);
         onComplete();
     };
+    
+    const handleDraft = () => {
+
+        console.log("Saving draft with questions:", questions);
+    }
 
     return (
         <Box sx={{ p: 4, width: '80%', mx: 'auto' }}>
@@ -292,7 +297,7 @@ function SecondStage({ onBack, onComplete }) {
                     <StyledQuizBackButton fullWidth onClick={onBack} variant="outlined">
                         Back
                     </StyledQuizBackButton>
-                    <StyledDraftButton fullWidth variant="contained">Save draft</StyledDraftButton>
+                    <StyledDraftButton fullWidth variant="contained" onClick={handleDraft}>Save draft</StyledDraftButton>
                 </Box>
             </Box>
         </Box>

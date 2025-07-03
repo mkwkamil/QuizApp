@@ -12,11 +12,14 @@ import {
 import { useState } from "react";
 import {useQuizStore} from "../../store/quizStore";
 import {StyledCancelButton, StyledDraftButton, StyledQuizNextButton} from "../StyledButtons";
+import {useNavigate} from "react-router-dom";
 
 const categories = ["Business", "Technology", "Science", "Arts"];
 const difficulties = ["Easy", "Medium", "Hard", "Expert"]
 
-function FirstStage({ onComplete }) {
+function FirstStage({ onComplete, editMode = false }) {
+    const navigate = useNavigate();
+    
     const { basicInfo, setBasicInfo } = useQuizStore();
     const [error, setError] = useState('');
     
@@ -79,6 +82,16 @@ function FirstStage({ onComplete }) {
         setBasicInfo(basicInfo);
         onComplete();
     };
+    
+    const handleCancel = () => {
+        editMode ? navigate('/profile') : navigate('/')
+    }
+    
+    const handleDraft = () => {
+        // Logic to save the draft can be implemented here
+        // For now, we will just log the basicInfo
+        console.log("Draft saved:", basicInfo);
+    }
     
     return (
         <Box sx={{ p: 4, width: '80%', mx: 'auto' }}>
@@ -185,8 +198,8 @@ function FirstStage({ onComplete }) {
                     Next Step
                 </StyledQuizNextButton>
                 <Box sx={{ display: "flex", justifyContent: "center", gap: 2, width: "100%" }}>
-                    <StyledCancelButton fullWidth variant="outlined">Cancel</StyledCancelButton>
-                    <StyledDraftButton fullWidth variant="contained">Save draft</StyledDraftButton>
+                    <StyledCancelButton fullWidth variant="outlined" onClick={handleCancel}>Cancel</StyledCancelButton>
+                    <StyledDraftButton fullWidth variant="contained" onClick={handleDraft}>Save draft</StyledDraftButton>
                 </Box>
             </Box>
         </Box>
