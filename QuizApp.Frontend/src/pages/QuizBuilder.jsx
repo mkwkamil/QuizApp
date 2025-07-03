@@ -1,87 +1,104 @@
 import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { useQuizStore } from '../store/quizStore';
-import { loadQuizDraft } from "../store/quizDraft";
+import { loadQuizDraft } from '../store/quizDraft';
 import QuizStepper from '../components/QuizComponents/QuizStepper';
 import FirstStage from '../components/QuizComponents/FirstStage';
 import SecondStage from '../components/QuizComponents/SecondStage';
 import ThirdStage from '../components/QuizComponents/ThirdStage';
-import useAutoSafeDraft from "../hooks/useAutoSafeDraft";
-import {useQuizNavigation} from "../hooks/useQuizNavigation";
-import {useNavigate} from "react-router-dom";
+import useAutoSafeDraft from '../hooks/useAutoSafeDraft';
+import { useQuizNavigation } from '../hooks/useQuizNavigation';
+import RestoreDraftModal from '../components/RestoreDraftModal';
 
 function QuizBuilder({ editMode = false, quizId = null }) {
-    const navigate = useNavigate();
-    
+    const [draft, setDraft] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const reset = useQuizStore((state) => state.reset);
     const setBasicInfo = useQuizStore((state) => state.setBasicInfo);
     const setQuestions = useQuizStore((state) => state.setQuestions);
-    const { activeStep, next, prev } = useQuizNavigation()
-
-    const [restoreAttempted, setRestoreAttempted] = useState(false);
-
-    useAutoSafeDraft();
+    const { activeStep, next, prev } = useQuizNavigation();
 
     useEffect(() => {
-        const restoreDraft = async () => {
-            if (restoreAttempted) return;
-            if (editMode) return;
+        if (!editMode) {
+            reset();
+        }
+    }, []);
 
+    useAutoSafeDraft(editMode);
+
+    useEffect(() => {
+        if (editMode) return;
+
+        const tryLoadDraft = async () => {
             try {
-                const draft = await loadQuizDraft();
-                const isEmptyDraft =
-                    !draft ||
-                    (!draft.basicInfo?.title?.trim() && !draft.basicInfo?.description?.trim())
+                const savedDraft = await loadQuizDraft();
+                const isEmpty =
+                    !savedDraft ||
+                    (!savedDraft.basicInfo?.title?.trim() &&
+                        !savedDraft.basicInfo?.description?.trim());
 
-                if (isEmptyDraft) {
-                    setRestoreAttempted(true);
-                    return;
+                if (!isEmpty) {
+                    setDraft(savedDraft);
+                    setModalOpen(true);
                 }
-
-                const lastSaved = draft.savedAt
-                    ? new Date(draft.savedAt).toLocaleString()
-                    : "unknown";
-
-                const shouldRestore = window.confirm(
-                    `A quiz draft was found.\nLast saved: ${lastSaved}.\n\nDo you want to restore it?`
-                );
-
-                if (shouldRestore) {
-                    setBasicInfo(draft.basicInfo || {});
-                    setQuestions(draft.questions || []);
-
-                    if (draft.questions?.length > 0) {
-                        next();
-                    }
-                }
-
-                setRestoreAttempted(true);
-            } catch (error) {
-                console.error("Failed to restore quiz draft:", error);
-                setRestoreAttempted(true);
+            } catch (err) {
+                console.error('Error loading quiz draft:', err);
             }
         };
 
-        void restoreDraft();
-    }, [restoreAttempted, setBasicInfo, setQuestions, next]);
+        void tryLoadDraft();
+    }, [editMode]);
+
+    const handleRestore = () => {
+        if (draft) {
+            const defaultOptions = {
+                isPublic: true,
+                revealAnswers: true,
+                shuffleQuestions: false,
+            };
+
+            const basicInfoWithDefaults = {
+                title: '',
+                description: '',
+                category: '',
+                difficulty: '',
+                thumbnailUrl: '',
+                ...draft.basicInfo,
+                options: {
+                    ...defaultOptions,
+                    ...(draft.basicInfo?.options || {}),
+                },
+            };
+
+            setBasicInfo(basicInfoWithDefaults);
+            setQuestions(draft.questions || []);
+        }
+        setModalOpen(false);
+    };
+
+    const handleCloseModal = () => {
+        setDraft(null);
+        setModalOpen(false);
+    };
 
     return (
-        <Box
-            sx={{
-                width: "100%",
+        <Box sx={{
+                width: '100%',
                 maxWidth: 1200,
-                margin: "auto",
+                margin: 'auto',
                 padding: 2,
-                alignItems: "center",
-                display: "flex",
-                flexDirection: "column"
-            }}
-        >
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+            }}>
             <QuizStepper activeStep={activeStep} />
 
             {activeStep === 0 && <FirstStage onComplete={next} />}
             {activeStep === 1 && <SecondStage onBack={prev} onComplete={next} />}
-            {activeStep === 2 && <ThirdStage onBack={prev} onFinish={() => navigate("/")} editMode={editMode} quizId={quizId}/>}
-            
+            {activeStep === 2 && <ThirdStage onBack={prev} editMode={editMode} quizId={quizId} />}
+
+            <RestoreDraftModal open={modalOpen} onClose={handleCloseModal} onRestore={handleRestore} draft={draft}/>
         </Box>
     );
 }

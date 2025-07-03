@@ -22,6 +22,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import {useQuizStore} from "../../store/quizStore";
+import {StyledCancelButton, StyledDraftButton, StyledQuizBackButton, StyledQuizNextButton} from "../StyledButtons";
 
 const QUESTION_TYPES = [
     { value: 'single', label: 'Single Choice' },
@@ -192,11 +193,7 @@ function SecondStage({ onBack, onComplete }) {
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
                 <Typography variant="h6">Total questions: {questions.length}</Typography>
-                <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={addNewQuestion}
-                >
+                <Button variant="contained" startIcon={<AddIcon />} onClick={addNewQuestion}>
                     Add Question
                 </Button>
             </Box>
@@ -286,23 +283,17 @@ function SecondStage({ onBack, onComplete }) {
                     </AccordionDetails>
                 </Accordion>
             ))}
-
-            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
-                <Button variant="outlined" onClick={onBack} sx={{ width: '48%' }}>
-                    Back
-                </Button>
-
-                <Button variant="contained" onClick={handleSubmit} disabled={questions.length === 0}
-                    sx={{
-                        width: '48%',
-                        background: "linear-gradient(135deg, #0d47a1, #1565c0)",
-                        "&:hover": {
-                            background: "linear-gradient(135deg, #1565c0, #1e88e5)",
-                        }
-                    }}
-                >
+            
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, gap: 2 }}>
+                <StyledQuizNextButton fullWidth variant="contained" onClick={handleSubmit}>
                     Next Step
-                </Button>
+                </StyledQuizNextButton>
+                <Box sx={{ display: "flex", justifyContent: "center", gap: 2, width: "100%" }}>
+                    <StyledQuizBackButton fullWidth onClick={onBack} variant="outlined">
+                        Back
+                    </StyledQuizBackButton>
+                    <StyledDraftButton fullWidth variant="contained">Save draft</StyledDraftButton>
+                </Box>
             </Box>
         </Box>
     );

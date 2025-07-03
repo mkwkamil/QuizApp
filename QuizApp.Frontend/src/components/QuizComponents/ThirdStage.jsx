@@ -16,7 +16,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import {clearQuizDraft} from "../../store/quizDraft";
 
-function ThirdStage({ onBack, onFinish, editMode, quizId }) {
+function ThirdStage({ onBack, editMode, quizId }) {
     const { basicInfo, questions, submitQuiz, reset } = useQuizStore();
     const { title, description, category, difficulty, thumbnailUrl, options } = basicInfo;
     
@@ -30,7 +30,6 @@ function ThirdStage({ onBack, onFinish, editMode, quizId }) {
             if (result.success) {
                 await clearQuizDraft();
                 reset();
-                onFinish();
             }
         } catch (err) {
             setError("Failed to publish quiz. Please try again.");

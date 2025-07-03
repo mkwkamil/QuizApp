@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import {useQuizStore} from "../../store/quizStore";
+import {StyledCancelButton, StyledDraftButton, StyledQuizNextButton} from "../StyledButtons";
 
 const categories = ["Business", "Technology", "Science", "Arts"];
 const difficulties = ["Easy", "Medium", "Hard", "Expert"]
@@ -179,28 +180,14 @@ function FirstStage({ onComplete }) {
                 </Stack>
             </Box>
 
-            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-                <Button fullWidth variant="contained" onClick={handleNext}
-                    sx={{
-                        background: "linear-gradient(135deg, #0d47a1, #1565c0)",
-                        color: "#fff",
-                        boxShadow: "0 0 6px rgba(21, 101, 192, 0.4)",
-                        transition: "all 0.25s ease",
-                        fontWeight: 500,
-                        textTransform: "none",
-                        borderRadius: "10px",
-                        "&:hover": {
-                            background: "linear-gradient(135deg, #1565c0, #1e88e5)",
-                            boxShadow: "0 0 10px rgba(30, 136, 229, 0.5)",
-                            transform: "translateY(-1px)",
-                        },
-                        "&:active": {
-                            boxShadow: "0 0 4px rgba(21, 101, 192, 0.3)",
-                            transform: "scale(0.98)",
-                        }
-                    }}>
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, gap: 2 }}>
+                <StyledQuizNextButton fullWidth variant="contained" onClick={handleNext}>
                     Next Step
-                </Button>
+                </StyledQuizNextButton>
+                <Box sx={{ display: "flex", justifyContent: "center", gap: 2, width: "100%" }}>
+                    <StyledCancelButton fullWidth variant="outlined">Cancel</StyledCancelButton>
+                    <StyledDraftButton fullWidth variant="contained">Save draft</StyledDraftButton>
+                </Box>
             </Box>
         </Box>
     );
