@@ -188,3 +188,14 @@ export const SupportFeb = styled(Fab)({
         backgroundColor: 'rgba(24,42,159,0.7)',
     },
 });
+
+export const PaginationBox = styled(Box)({
+    position: 'absolute',
+    bottom: 100,
+    left: 0,
+    right: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    paddingBottom: 8,
+    zIndex: 100,
+});

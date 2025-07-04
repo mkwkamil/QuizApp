@@ -1,4 +1,4 @@
-import {Box, Typography, Stack, Chip, IconButton, Divider, Tooltip} from '@mui/material';
+import {Box, Typography, Stack, Chip, IconButton, Divider, Tooltip, Pagination} from '@mui/material';
 import {ChevronLeft, ChevronRight, SupportAgent} from '@mui/icons-material';
 import {StyledMainGlowButton} from "../components/StyledButtons";
 import {useNavigate} from "react-router-dom";
@@ -7,7 +7,7 @@ import {
     CategoryNav,
     FiltersBox,
     FiltersButton,
-    HeroContainer, MainContent,
+    HeroContainer, MainContent, MainPagination, PaginationBox,
     PopularQuizzesBox, ProfileAvatar, ProfileHeader, ProfileSidebar, PromoBox,
     QuizCard, QuizInfo, QuizThumbnail,
     Sidebar, StatsBox, StatsChips, SupportFeb
@@ -24,7 +24,9 @@ function ExploreQuizzesPage() {
         { id: 4, title: 'CSS Grid Mastery', questions: 15, plays: 342, rating: 4.8 },
         { id: 5, title: 'TypeScript Basics', questions: 10, plays: 128, rating: 4.5 },
         { id: 6, title: 'World History', questions: 20, plays: 211, rating: 4.7 },
+        { id: 7, title: 'World History', questions: 20, plays: 211, rating: 4.7 },
     ];
+    
     const profile = {
         avatar: '',
         name: 'Test User',
@@ -121,6 +123,9 @@ function ExploreQuizzesPage() {
                             </QuizCard>
                         ))}
                     </Stack>
+                    <PaginationBox>
+                        <Pagination count={10} />
+                    </PaginationBox>
                 </Box>
             </MainContent>
             <Sidebar>
