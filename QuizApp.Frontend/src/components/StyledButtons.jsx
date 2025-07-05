@@ -56,7 +56,7 @@ export const StyledMainGlowButton = styled(Button)({
     padding: '12px 32px',
     borderRadius: '8px',
     fontWeight: '600',
-    minWidth: '220px',
+    // minWidth: '220px',
     letterSpacing: '1px',
     boxShadow: '0 0 15px rgba(48, 79, 254, 0.5)',
     '&:hover': {
@@ -71,7 +71,7 @@ export const StyledMainOutlinedButton = styled(Button)({
     padding: '12px 32px',
     borderRadius: '8px',
     fontWeight: '600',
-    minWidth: '220px',
+    // minWidth: '220px',
     letterSpacing: '1px',
     '&:hover': {
         border: '2px solid #5c6bc0',

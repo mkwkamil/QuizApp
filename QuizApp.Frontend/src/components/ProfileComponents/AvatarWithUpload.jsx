@@ -8,8 +8,8 @@ import {
 } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 import { toast } from "react-toastify";
-import useAuthStore from "../store/authStore";
-import api from '../config/axiosConfig';
+import useAuthStore from "../../store/authStore";
+import api from '../../config/axiosConfig';
 
 export default function AvatarWithUpload({ avatarUrl }) {
     const [open, setOpen] = useState(false);

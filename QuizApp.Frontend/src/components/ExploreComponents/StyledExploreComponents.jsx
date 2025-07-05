@@ -9,10 +9,22 @@ export const HeroContainer = styled(Box)({
     backgroundColor: '#0a0a0a',
     color: '#fff',
     fontFamily: '"Poppins", sans-serif',
+    overflow: 'auto',
+    '&::-webkit-scrollbar': {
+        height: 6,
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(255,255,255,0.2)',
+        borderRadius: 3,
+    },
+    '&::-webkit-scrollbar-track': {
+        backgroundColor: 'transparent',
+    }
 });
 
 export const Sidebar = styled(Box)({
-    width: 450,
+    minWidth: 400,
+    maxWidth: 450,
     padding: 16,
     borderRadius: 12,
     display: 'flex',
@@ -42,6 +54,8 @@ export const MainContent = styled(Box)({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    minWidth: 600,
+    maxWidth: 1500,
     gap: 20,
 });
 
@@ -50,8 +64,10 @@ export const CategoryNav = styled(Stack)({
     gap: 8,
     alignItems: 'center',
     padding: '8px 16px',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     overflowX: 'auto',
+    width: '100%',
+    boxSizing: 'border-box',
     '&::-webkit-scrollbar': {
         height: 6,
     },
@@ -190,12 +206,9 @@ export const SupportFeb = styled(Fab)({
 });
 
 export const PaginationBox = styled(Box)({
-    position: 'absolute',
-    bottom: 100,
-    left: 0,
-    right: 0,
     display: 'flex',
     justifyContent: 'center',
-    paddingBottom: 8,
+    paddingBottom: 40,
+    marginTop: 50,
     zIndex: 100,
 });

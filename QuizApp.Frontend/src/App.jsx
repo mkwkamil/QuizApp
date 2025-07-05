@@ -7,7 +7,7 @@ import ProfilePage from "./pages/Dashboard/ProfilePage";
 import QuizPage from "./pages/QuizPage";
 import QuizEditPage from "./pages/QuizEditPage";
 import Loading from "./components/Loading";
-import ExploreQuizzesPage from "./pages/ExploreQuizzesPage";
+import ExplorePage from "./pages/ExplorePage";
 
 function App() {
     return (
@@ -19,7 +19,7 @@ function App() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/explore" element={<ExploreQuizzesPage />} />
+                    <Route path="/explore" element={<ExplorePage />} />
                     <Route path="/quiz/create" element={<QuizPage />} />
                     <Route path="/quiz/:id" element={<Loading />} />
                     <Route path="/quiz/edit/:id" element={<QuizEditPage />} />

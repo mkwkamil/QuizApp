@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { useQuizStore } from '../store/quizStore';
 import { loadQuizDraft } from '../store/quizDraft';
-import QuizStepper from '../components/QuizComponents/QuizStepper';
-import FirstStage from '../components/QuizComponents/FirstStage';
-import SecondStage from '../components/QuizComponents/SecondStage';
-import ThirdStage from '../components/QuizComponents/ThirdStage';
+import QuizStepper from "../components/CreatorComponents/QuizStepper";
+import FirstStage from "../components/CreatorComponents/FirstStage";
+import SecondStage from "../components/CreatorComponents/SecondStage";
+import ThirdStage from "../components/CreatorComponents/ThirdStage";
 import useAutoSafeDraft from '../hooks/useAutoSafeDraft';
 import { useQuizNavigation } from '../hooks/useQuizNavigation';
-import RestoreDraftModal from '../components/RestoreDraftModal';
+import RestoreDraftModal from "../components/ModalComponents/RestoreDraftModal";
 
 function QuizBuilder({ editMode = false, quizId = null }) {
     const [draft, setDraft] = useState(null);

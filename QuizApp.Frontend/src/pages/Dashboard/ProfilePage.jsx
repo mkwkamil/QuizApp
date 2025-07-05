@@ -5,7 +5,7 @@ import {useState, useEffect} from 'react';
 import {toast} from "react-toastify";
 import {updateUserProfile} from "../../hooks/updateUserProfile";
 import api from "../../config/axiosConfig";
-import DeleteQuizModal from "../../components/DeleteQuizModal";
+import DeleteQuizModal from "../../components/ModalComponents/DeleteQuizModal";
 import ProfileCard from "../../components/ProfileComponents/ProfileCard";
 import BasicInfoCard from "../../components/ProfileComponents/BasicInfoCard";
 import AchievementsCard from "../../components/ProfileComponents/AchievementsCard";
@@ -17,6 +17,7 @@ import {
     ProfilePageWrapper,
     ProfileSidebarContainer
 } from "../../components/ProfileComponents/ProfileContainers";
+import CreateQuizPromo from "../../components/CreatorPromoBox";
 
 function ProfilePage() {
     const profileData = useProfileData();
@@ -101,6 +102,8 @@ function ProfilePage() {
                 <BasicInfoCard basicInfo={profileData.basicInfo} />
                 
                 <AchievementsCard achievements={achievements} />
+                
+                <CreateQuizPromo />
             </ProfileSidebarContainer>
 
             <ProfileMainContainer>
