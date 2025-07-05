@@ -20,22 +20,23 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("profile")]
+    [HttpGet("data")]
     [Produces("application/json")]
-    public async Task<ActionResult<UserProfileResponse>> GetCurrentUser()
+    public async Task<ActionResult<UserDataDto>> GetCurrentUser()
     {
         var username = User.Identity?.Name;
 
         if (string.IsNullOrEmpty(username))
-        {
             return Unauthorized("Invalid or missing token");
-        }
 
         var user = await _context.Users
             .Include(u => u.Quizzes)
             .Include(u => u.SolvedQuizzes)
+            .ThenInclude(sq => sq.Quiz)
+            .Include(u => u.Followers)
+            .Include(u => u.Following)
             .FirstOrDefaultAsync(u => u.Username == username);
-        
+
         if (user == null)
         {
             _logger.LogWarning("User not found: {Username}", username);
@@ -45,7 +46,14 @@ public class UserController : ControllerBase
         int totalScore = user.SolvedQuizzes.Sum(q => q.Score);
         int totalQuestions = user.SolvedQuizzes.Sum(q => q.TotalQuestions);
 
-        var response = new UserProfileResponse
+        var favoriteCategory = user.SolvedQuizzes
+            .Where(sq => sq.Quiz.CategoryId != null)
+            .GroupBy(sq => sq.Quiz.CategoryId)
+            .OrderByDescending(g => g.Count())
+            .Select(g => g.First().Quiz.Category!.Name)
+            .FirstOrDefault() ?? "Technology";
+
+        var response = new UserDataDto
         {
             Username = user.Username,
             Email = user.Email,
@@ -56,7 +64,11 @@ public class UserController : ControllerBase
             PublicName = user.PublicName ?? user.Username,
             QuizzesCreated = user.Quizzes.Count,
             QuizzesSolved = user.SolvedQuizzes.Count,
-            Accuracy = totalQuestions > 0 ? $"{Math.Round((double)totalScore / totalQuestions * 100)}%" : "0%"
+            Accuracy = totalQuestions > 0 ? $"{Math.Round((double)totalScore / totalQuestions * 100)}%" : "0%",
+            Followers = user.Followers.Count,
+            Following = user.Following.Count,
+            FavoriteCategory = favoriteCategory,
+            UserRank = user.UserRank ?? "Beginner"
         };
 
         return Ok(response);

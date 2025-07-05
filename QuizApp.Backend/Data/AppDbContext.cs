@@ -9,6 +9,8 @@ public class AppDbContext : DbContext
     
     public DbSet<User> Users { get; set; }
     public DbSet<Quiz> Quizzes { get; set; }
+    public DbSet<QuizCategory> QuizCategories { get; set; }
+    public DbSet<QuizDifficulty> QuizDifficulties { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<Answer> Answers { get; set; }
     public DbSet<Comment> Comments { get; set; }
@@ -104,5 +106,32 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Quiz>()
             .Property(q => q.ShuffleQuestions)
             .HasDefaultValue(false);
+        
+        modelBuilder.Entity<UserFollow>()
+            .HasKey(uf => new { uf.FollowerId, uf.FollowingId });
+
+        modelBuilder.Entity<UserFollow>()
+            .HasOne(uf => uf.Follower)
+            .WithMany(u => u.Following)
+            .HasForeignKey(uf => uf.FollowerId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<UserFollow>()
+            .HasOne(uf => uf.Following)
+            .WithMany(u => u.Followers)
+            .HasForeignKey(uf => uf.FollowingId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Quiz>()
+            .HasOne(q => q.Category)
+            .WithMany(c => c.Quizzes)
+            .HasForeignKey(q => q.CategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
+        
+        modelBuilder.Entity<Quiz>()
+            .HasOne(q => q.Difficulty)
+            .WithMany(c => c.Quizzes)
+            .HasForeignKey(q => q.DifficultyId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

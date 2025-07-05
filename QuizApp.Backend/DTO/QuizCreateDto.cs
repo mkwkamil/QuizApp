@@ -6,8 +6,8 @@ public class QuizCreateDto
     public string Description { get; set; }
     public string? ThumbnailUrl { get; set; }
 
-    public string? Category { get; set; }
-    public string? Difficulty { get; set; }
+    public int? CategoryId { get; set; }
+    public int? DifficultyId { get; set; }
 
     public bool IsPublic { get; set; }
     public bool IsDraft { get; set; }

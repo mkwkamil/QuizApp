@@ -64,7 +64,7 @@ export const CategoryNav = styled(Stack)({
     gap: 8,
     alignItems: 'center',
     padding: '8px 16px',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     overflowX: 'auto',
     width: '100%',
     boxSizing: 'border-box',

@@ -8,8 +8,8 @@ export const useQuizStore = create((set) => ({
     basicInfo: {
         title: '',
         description: '',
-        category: '',
-        difficulty: '',
+        categoryId: null,
+        difficultyId: null,
         thumbnailUrl: '',
         isDraft: false,
         options: {
@@ -36,8 +36,8 @@ export const useQuizStore = create((set) => ({
             title: state.basicInfo.title,
             description: state.basicInfo.description,
             thumbnailUrl: state.basicInfo.thumbnailUrl,
-            category: state.basicInfo.category,
-            difficulty: state.basicInfo.difficulty,
+            categoryId: state.basicInfo.categoryId,
+            difficultyId: state.basicInfo.difficultyId,
             isPublic: state.basicInfo.options.isPublic,
             isDraft: isDraft,
             revealAnswers: state.basicInfo.options.revealAnswers,
@@ -72,8 +72,8 @@ export const useQuizStore = create((set) => ({
             title: state.basicInfo.title || null,
             description: state.basicInfo.description || null,
             thumbnailUrl: state.basicInfo.thumbnailUrl || null,
-            category: state.basicInfo.category || null,
-            difficulty: state.basicInfo.difficulty || null,
+            categoryId: state.basicInfo.categoryId || null,
+            difficultyId: state.basicInfo.difficultyId || null,
             isPublic: state.basicInfo.options.isPublic,
             isDraft: true,
             revealAnswers: state.basicInfo.options.revealAnswers,
@@ -105,8 +105,8 @@ export const useQuizStore = create((set) => ({
         basicInfo: {
             title: '',
             description: '',
-            category: '',
-            difficulty: '',
+            categoryId: null,
+            difficultyId: null,
             thumbnailUrl: '',
             options: {
                 isPublic: true,

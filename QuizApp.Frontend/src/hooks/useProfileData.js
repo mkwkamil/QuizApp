@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import useAuthStore from '../store/authStore';
 import {Email, Person, Cake} from '@mui/icons-material';
 import api from '../config/axiosConfig';
 
@@ -9,23 +8,22 @@ export const useProfileData = () => {
     useEffect(() => {
         (async () => {
             try {
-                const token = useAuthStore.getState().token;
-                const response = await api.get('/user/profile', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await api.get('/user/data');
 
                 const data = response.data;
 
                 setProfileData({
                     publicName: data.publicName,
                     bio: data.bio,
-                    avatar: data.avatar,
+                    avatar: data.avatar ?? '',
                     stats: {
                         quizzesCreated: data.quizzesCreated,
                         quizzesSolved: data.quizzesSolved,
                         accuracy: data.accuracy,
+                        followers: data.followers,
+                        following: data.following,
+                        favoriteCategory: data.favoriteCategory,
+                        userRank: data.userRank
                     },
                     basicInfo: [
                         { id: 'email', label: 'Email', value: data.email, icon: <Email /> },

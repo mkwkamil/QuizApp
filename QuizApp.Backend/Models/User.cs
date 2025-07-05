@@ -12,9 +12,13 @@ public class User
     public string? Bio { get; set; }
     public string? Avatar { get; set; }
     public string? PublicName { get; set; }
-    
-    public List<Quiz> Quizzes { get; set; }
-    public List<QuizResult> SolvedQuizzes { get; set; }
-    public List<Comment> Comments { get; set; }
-    public List<Rating> Ratings { get; set; }
+    public string? UserRank { get; set; }
+
+    public List<Quiz> Quizzes { get; set; } = new();
+    public List<QuizResult> SolvedQuizzes { get; set; } = new();
+    public List<Comment> Comments { get; set; } = new();
+    public List<Rating> Ratings { get; set; } = new();
+
+    public List<UserFollow> Followers { get; set; } = new();
+    public List<UserFollow> Following { get; set; } = new();
 }

@@ -13,13 +13,14 @@ import { useState } from "react";
 import {useQuizStore} from "../../store/quizStore";
 import {StyledCancelButton, StyledDraftButton, StyledQuizNextButton} from "../StyledButtons";
 import {useNavigate} from "react-router-dom";
-
-const categories = ["Business", "Technology", "Science", "Arts"];
-const difficulties = ["Easy", "Medium", "Hard", "Expert"]
+import {useCategories} from "../../hooks/useCategories";
+import {useDifficulties} from "../../hooks/useDifficulties";
 
 function FirstStage({ onComplete, editMode = false }) {
     const navigate = useNavigate();
     
+    const { categories} = useCategories();
+    const { difficulties } = useDifficulties()
     const { basicInfo, setBasicInfo } = useQuizStore();
     const [error, setError] = useState('');
 
@@ -112,15 +113,15 @@ function FirstStage({ onComplete, editMode = false }) {
                     <InputLabel id="category-select-label">Category</InputLabel>
                     <Select
                         labelId="category-select-label"
-                        value={basicInfo.category}
-                        onChange={e => handleInputChange("category", e.target.value)}
+                        value={basicInfo.categoryId ?? ''}
+                        onChange={e => handleInputChange("categoryId", e.target.value)}
                         label="Category"
                         variant="outlined"
                         required
                     >
                         {categories.map(category => (
-                            <MenuItem key={category} value={category}>
-                                {category}
+                            <MenuItem key={category.id} value={category.id}>
+                                {category.name}
                             </MenuItem>
                         ))}
                     </Select>
@@ -130,15 +131,15 @@ function FirstStage({ onComplete, editMode = false }) {
                     <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
                     <Select
                         labelId="difficulty-select-label"
-                        value={basicInfo.difficulty}
-                        onChange={e => handleInputChange("difficulty", e.target.value)}
+                        value={basicInfo.difficultyId ?? ''}
+                        onChange={e => handleInputChange("difficultyId", e.target.value)}
                         label="Difficulty"
                         variant="outlined"
                         required
                     >
                         {difficulties.map(difficulty => (
-                            <MenuItem key={difficulty} value={difficulty}>
-                                {difficulty}
+                            <MenuItem key={difficulty.id} value={difficulty.id}>
+                                {difficulty.name}
                             </MenuItem>
                         ))}
                     </Select>

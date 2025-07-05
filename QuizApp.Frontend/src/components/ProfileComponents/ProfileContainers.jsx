@@ -5,6 +5,7 @@ export const ProfileSidebarContainer = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     gap: 24,
+    minWidth: '350px',
 });
 
 export const ProfileMainContainer = styled(Box)({
@@ -12,6 +13,7 @@ export const ProfileMainContainer = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     gap: 24,
+    minWidth: '600px',
     overflow: 'auto',
 });
 
@@ -22,4 +24,15 @@ export const ProfilePageWrapper = styled(Box)({
     gap: 32,
     background: 'radial-gradient(circle at top right, #202020 0%, #121212 100%)',
     color: '#ffffff',
+    overflow: 'auto',
+    '&::-webkit-scrollbar': {
+        height: 6,
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(255,255,255,0.2)',
+        borderRadius: 3,
+    },
+    '&::-webkit-scrollbar-track': {
+        backgroundColor: 'transparent',
+    }
 });

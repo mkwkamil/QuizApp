@@ -23,8 +23,8 @@ public class QuizController(AppDbContext context) : ControllerBase
             Title = dto.Title,
             Description = dto.Description,
             ThumbnailUrl = dto.ThumbnailUrl,
-            Category = dto.Category,
-            Difficulty = dto.Difficulty,
+            CategoryId = dto.CategoryId,
+            DifficultyId = dto.DifficultyId,
             IsPublic = dto.IsPublic,
             IsDraft = dto.IsDraft,
             RevealAnswers = dto.RevealAnswers,
@@ -33,7 +33,7 @@ public class QuizController(AppDbContext context) : ControllerBase
             Questions = dto.Questions.Select(q => new Question
             {
                 Text = q.Text,
-                Type = q.Type,
+                Type = string.IsNullOrEmpty(q.Type) ? "single" : q.Type,
                 Answers = q.Options.Select((opt, index) => new Answer
                 {
                     Text = opt,
@@ -41,7 +41,7 @@ public class QuizController(AppDbContext context) : ControllerBase
                 }).ToList()
             }).ToList()
         };
-        
+
         context.Quizzes.Add(quiz);
         await context.SaveChangesAsync();
 
@@ -68,8 +68,8 @@ public class QuizController(AppDbContext context) : ControllerBase
             quiz.Title,
             quiz.Description,
             quiz.ThumbnailUrl,
-            quiz.Category,
-            quiz.Difficulty,
+            quiz.CategoryId,
+            quiz.DifficultyId,
             quiz.IsPublic,
             quiz.IsDraft,
             quiz.RevealAnswers,
@@ -106,8 +106,8 @@ public class QuizController(AppDbContext context) : ControllerBase
         quiz.Title = dto.Title;
         quiz.Description = dto.Description;
         quiz.ThumbnailUrl = dto.ThumbnailUrl;
-        quiz.Category = dto.Category;
-        quiz.Difficulty = dto.Difficulty;
+        quiz.CategoryId = dto.CategoryId;
+        quiz.DifficultyId = dto.DifficultyId;
         quiz.IsPublic = dto.IsPublic;
         quiz.IsDraft = dto.IsDraft;
         quiz.RevealAnswers = dto.RevealAnswers;
@@ -191,8 +191,8 @@ public class QuizController(AppDbContext context) : ControllerBase
             Title = dto.Title,
             Description = dto.Description,
             ThumbnailUrl = dto.ThumbnailUrl,
-            Category = dto.Category,
-            Difficulty = dto.Difficulty,
+            CategoryId = dto.CategoryId,
+            DifficultyId = dto.DifficultyId,
             IsPublic = dto.IsPublic,
             IsDraft = true,
             RevealAnswers = dto.RevealAnswers,
@@ -233,8 +233,8 @@ public class QuizController(AppDbContext context) : ControllerBase
         draft.Title = dto.Title;
         draft.Description = dto.Description;
         draft.ThumbnailUrl = dto.ThumbnailUrl;
-        draft.Category = dto.Category;
-        draft.Difficulty = dto.Difficulty;
+        draft.CategoryId = dto.CategoryId;
+        draft.DifficultyId = dto.DifficultyId;
         draft.IsPublic = dto.IsPublic;
         draft.IsDraft = true;
         draft.RevealAnswers = dto.RevealAnswers;
@@ -257,5 +257,25 @@ public class QuizController(AppDbContext context) : ControllerBase
         await context.SaveChangesAsync();
 
         return Ok(new { draftId = draft.Id });
+    }
+    
+    [HttpGet("categories")]
+    public async Task<IActionResult> GetCategories()
+    {
+        var categories = await context.QuizCategories
+            .Select(c => new { c.Id, c.Name })
+            .ToListAsync();
+
+        return Ok(categories);
+    }
+    
+    [HttpGet("difficulties")]
+    public async Task<IActionResult> GetDifficulties()
+    {
+        var difficulties = await context.QuizDifficulties
+            .Select(c => new { c.Id, c.Name })
+            .ToListAsync();
+
+        return Ok(difficulties);
     }
 }

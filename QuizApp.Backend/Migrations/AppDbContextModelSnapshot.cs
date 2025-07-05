@@ -127,14 +127,14 @@ namespace QuizApp.Backend.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Category")
-                        .HasColumnType("text");
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("Difficulty")
-                        .HasColumnType("text");
+                    b.Property<int?>("DifficultyId")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsDraft")
                         .ValueGeneratedOnAdd()
@@ -164,7 +164,48 @@ namespace QuizApp.Backend.Migrations
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("DifficultyId");
+
                     b.ToTable("Quizzes");
+                });
+
+            modelBuilder.Entity("QuizApp.Backend.Models.QuizCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuizCategories");
+                });
+
+            modelBuilder.Entity("QuizApp.Backend.Models.QuizDifficulty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuizDifficulties");
                 });
 
             modelBuilder.Entity("QuizApp.Backend.Models.QuizResult", b =>
@@ -262,6 +303,9 @@ namespace QuizApp.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("UserRank")
+                        .HasColumnType("text");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
@@ -272,6 +316,21 @@ namespace QuizApp.Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("QuizApp.Backend.Models.UserFollow", b =>
+                {
+                    b.Property<int>("FollowerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FollowingId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("FollowerId", "FollowingId");
+
+                    b.HasIndex("FollowingId");
+
+                    b.ToTable("UserFollow");
                 });
 
             modelBuilder.Entity("QuizApp.Backend.Models.Answer", b =>
@@ -323,7 +382,21 @@ namespace QuizApp.Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("QuizApp.Backend.Models.QuizCategory", "Category")
+                        .WithMany("Quizzes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("QuizApp.Backend.Models.QuizDifficulty", "Difficulty")
+                        .WithMany("Quizzes")
+                        .HasForeignKey("DifficultyId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Author");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Difficulty");
                 });
 
             modelBuilder.Entity("QuizApp.Backend.Models.QuizResult", b =>
@@ -364,6 +437,25 @@ namespace QuizApp.Backend.Migrations
                     b.Navigation("Quiz");
                 });
 
+            modelBuilder.Entity("QuizApp.Backend.Models.UserFollow", b =>
+                {
+                    b.HasOne("QuizApp.Backend.Models.User", "Follower")
+                        .WithMany("Following")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("QuizApp.Backend.Models.User", "Following")
+                        .WithMany("Followers")
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Following");
+                });
+
             modelBuilder.Entity("QuizApp.Backend.Models.Question", b =>
                 {
                     b.Navigation("Answers");
@@ -380,9 +472,23 @@ namespace QuizApp.Backend.Migrations
                     b.Navigation("Results");
                 });
 
+            modelBuilder.Entity("QuizApp.Backend.Models.QuizCategory", b =>
+                {
+                    b.Navigation("Quizzes");
+                });
+
+            modelBuilder.Entity("QuizApp.Backend.Models.QuizDifficulty", b =>
+                {
+                    b.Navigation("Quizzes");
+                });
+
             modelBuilder.Entity("QuizApp.Backend.Models.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Followers");
+
+                    b.Navigation("Following");
 
                     b.Navigation("Quizzes");
 
