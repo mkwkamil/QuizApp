@@ -22,6 +22,7 @@ function FiltersCard({ sortBy, setSortBy, includeAnswered, setIncludeAnswered })
             <Typography variant="h6" gutterBottom>
                 Filters
             </Typography>
+            <Divider sx={{ my: 2 }} />
             <Box>
                 <Stack spacing={2}>
                     {filterSections.map(section => (
