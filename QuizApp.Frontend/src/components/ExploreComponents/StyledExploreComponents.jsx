@@ -80,19 +80,21 @@ export const CategoryNav = styled(Stack)({
     }
 });
 
-export const CategoryButton = styled(Chip)({
+export const CategoryButton = styled(Chip)(({ selected }) => ({
     cursor: 'pointer',
     userSelect: 'none',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    color: '#aaa',
+    borderRadius: 24,
     fontWeight: 600,
     fontSize: 14,
     padding: '8px 16px',
+    backgroundColor: selected ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.05)',
+    color: selected ? '#fff' : '#aaa',
+    transition: 'all 0.2s ease',
     '&:hover': {
         backgroundColor: 'rgba(255,255,255,0.15)',
         color: '#fff',
     },
-});
+}));
 
 export const FiltersButton = styled(Chip)({
     cursor: 'pointer',
@@ -126,18 +128,23 @@ export const QuizCard = styled(Paper)({
 
 export const QuizThumbnail = styled(Box)({
     width: 100,
+    minWidth: 100,
     height: 80,
+    minHeight: 80,
     borderRadius: 8,
     backgroundColor: '#444',
-    backgroundSize: 'cover',
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
+    overflow: 'hidden',
 });
 
 export const QuizInfo = styled(Box)({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    overflow: 'hidden',
 });
 
 export const ProfileSidebar = styled(Paper)({

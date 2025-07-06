@@ -6,27 +6,48 @@ import MainQuizzesBox from "../components/ExploreComponents/MainQuizzesBox";
 import CreateQuizPromo from "../components/CreatorPromoBox";
 import SupportTooltip from "../components/SupportTooltip";
 import StatisticsCard from "../components/ExploreComponents/StatisticsCard";
+import {useEffect, useState} from "react";
+import {useExploreQuizzes} from "../hooks/useExploreQuizzes";
+import {useSearchParams} from "react-router-dom";
 
 function ExplorePage() {
-    const popularQuizzes = [
-        { id: 1, title: 'CSS Grid Mastery', questions: 15, plays: 342, rating: 4.8 },
-        { id: 2, title: 'TypeScript Basics', questions: 10, plays: 128, rating: 4.5 },
-        { id: 3, title: 'World History', questions: 20, plays: 211, rating: 4.7 },
-        { id: 4, title: 'CSS Grid Mastery', questions: 15, plays: 342, rating: 4.8 },
-        { id: 5, title: 'TypeScript Basics', questions: 10, plays: 128, rating: 4.5 },
-        { id: 6, title: 'World History', questions: 20, plays: 211, rating: 4.7 },
-        { id: 7, title: 'World History', questions: 20, plays: 211, rating: 4.7 },
-    ];
+    const [searchParams, setSearchParams] = useSearchParams();
+    const initialPage = parseInt(searchParams.get("page")) || 1;
+    const categoryParam = searchParams.get("categories");
+    const initialCategories = categoryParam
+        ? categoryParam.split(",").map((id) => parseInt(id))
+        : [];
 
+    const [page, setPage] = useState(initialPage);
+    const [selectedCategories, setSelectedCategories] = useState(initialCategories);
+
+    useEffect(() => {
+        const params = {};
+        if (page > 1) params.page = page;
+        if (selectedCategories.length > 0) params.categories = selectedCategories.join(",");
+        setSearchParams(params);
+    }, [page, selectedCategories]);
+
+    const { quizzes, totalPages } = useExploreQuizzes({
+        page,
+        categories: selectedCategories,
+    });
+
+    const handlePageChange = (_, value) => {
+        setPage(value);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    
     return (
+        
         <HeroContainer>
             <Sidebar>
                 <FiltersCard />
-                <PopularQuizzesCard popularQuizzes={popularQuizzes} />
+                <PopularQuizzesCard />
             </Sidebar>
             <MainContent>
-                <CategoryNavbar />
-                <MainQuizzesBox mainQuizzes={popularQuizzes} />
+                <CategoryNavbar onChange={setSelectedCategories} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
+                <MainQuizzesBox quizzes={quizzes} totalPages={totalPages} page={page} onPageChange={handlePageChange}/>
             </MainContent>
             <Sidebar>
                 <StatisticsCard />

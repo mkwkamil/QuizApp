@@ -7,6 +7,8 @@ public class Quiz
     public string? Title { get; set; }
     public string? Description { get; set; }
     public string? ThumbnailUrl { get; set; }
+    
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public int? CategoryId { get; set; }
     public QuizCategory? Category { get; set; }
