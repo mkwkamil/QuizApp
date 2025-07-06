@@ -9,8 +9,15 @@ namespace QuizApp.Backend.Controllers;
 public class ExploreController(AppDbContext context) : ControllerBase
 {
     [HttpGet("page/{pageId:int}")]
-    public async Task<IActionResult> GetQuizzesByPage(int pageId, [FromQuery] string? categories)
+    public async Task<IActionResult> GetQuizzesByPage(
+        int pageId, 
+        [FromQuery] string? categories,
+        [FromQuery] string? sort,
+        [FromQuery] bool includeAnswered = true)
     {
+        var username = User.Identity?.Name;
+        var currentUser = await context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        
         if (pageId < 1)
         {
             pageId = 1;
@@ -41,11 +48,31 @@ public class ExploreController(AppDbContext context) : ControllerBase
             }
         }
 
+        if (!includeAnswered && currentUser != null)
+        {
+            var userId = currentUser.Id;
+            query = query.Where(q => q.Results.All(r => r.UserId != userId));
+        }
+
+        query = sort?.ToLower() switch
+        {
+            "recent" => query.OrderByDescending(q => q.CreatedAt),
+            "trending" => query.OrderByDescending(q => q.Results
+                .Where(r => r.SolvedAt >= DateTime.UtcNow.AddDays(-7))
+                .Select(r => r.UserId)
+                .Distinct()
+                .Count()),
+            _ => query.OrderByDescending(q => q.Results
+                .Select(r => r.UserId)
+                .Distinct()
+                .Count())
+        };
+        
+
         var totalCount = await query.CountAsync();
         var totalPages = Math.Ceiling(totalCount / (double)pageSize);
 
         var quizzes = await query
-            .OrderByDescending(q => q.CreatedAt)
             .Skip((pageId - 1) * pageSize)
             .Take(pageSize)
             .Select(q => new

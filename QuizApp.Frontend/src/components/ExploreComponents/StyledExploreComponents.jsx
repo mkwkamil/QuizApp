@@ -96,20 +96,21 @@ export const CategoryButton = styled(Chip)(({ selected }) => ({
     },
 }));
 
-export const FiltersButton = styled(Chip)({
+export const FiltersButton = styled(Chip)(({ selected }) => ({
     cursor: 'pointer',
     userSelect: 'none',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    color: '#aaa',
+    backgroundColor: selected ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.05)',
+    color: selected ? '#fff' : '#aaa',
     fontWeight: 600,
     fontSize: 14,
     padding: '8px 16px',
     width: '50%',
+    transition: 'all 0.2s ease',
     '&:hover': {
         backgroundColor: 'rgba(255,255,255,0.15)',
         color: '#fff',
     },
-});
+}));
 
 export const QuizCard = styled(Paper)({
     display: 'flex',

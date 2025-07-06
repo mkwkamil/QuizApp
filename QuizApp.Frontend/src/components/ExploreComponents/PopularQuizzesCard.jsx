@@ -15,7 +15,7 @@ function PopularQuizzesCard() {
                     <QuizCard key={quiz.id}>
                         <QuizThumbnail sx={{ backgroundImage: `url(${quiz.thumbnailUrl})` }} />
                         <QuizInfo>
-                            <Typography variant="subtitle1" fontWeight="bold" Wrap>
+                            <Typography variant="subtitle1" fontWeight="bold">
                                 {quiz.title}
                             </Typography>
                             <Stack direction="row" spacing={1} sx={{ color: '#aaa' }}>

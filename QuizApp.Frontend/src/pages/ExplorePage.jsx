@@ -12,25 +12,35 @@ import {useSearchParams} from "react-router-dom";
 
 function ExplorePage() {
     const [searchParams, setSearchParams] = useSearchParams();
+    
     const initialPage = parseInt(searchParams.get("page")) || 1;
-    const categoryParam = searchParams.get("categories");
-    const initialCategories = categoryParam
-        ? categoryParam.split(",").map((id) => parseInt(id))
-        : [];
+    const initialCategories = searchParams.get("categories")
+        ?.split(",").map(Number).filter(Boolean) || [];
 
+    const initialSortBy = searchParams.get("sort") || "popular";
+    const initialIncludeAnswered = searchParams.get("includeAnswered") === "true";
+    
     const [page, setPage] = useState(initialPage);
     const [selectedCategories, setSelectedCategories] = useState(initialCategories);
-
+    
+    const [sortBy, setSortBy] = useState(initialSortBy);
+    const [includeAnswered, setIncludeAnswered] = useState(initialIncludeAnswered);
+    
     useEffect(() => {
         const params = {};
         if (page > 1) params.page = page;
         if (selectedCategories.length > 0) params.categories = selectedCategories.join(",");
+        if (sortBy !== "popular") params.sort = sortBy;
+        if (includeAnswered) params.includeAnswered = true;
+        
         setSearchParams(params);
-    }, [page, selectedCategories]);
+    }, [page, selectedCategories, sortBy, includeAnswered, setSearchParams]);
 
     const { quizzes, totalPages } = useExploreQuizzes({
         page,
         categories: selectedCategories,
+        sortBy,
+        includeAnswered
     });
 
     const handlePageChange = (_, value) => {
@@ -42,11 +52,11 @@ function ExplorePage() {
         
         <HeroContainer>
             <Sidebar>
-                <FiltersCard />
+                <FiltersCard sortBy={sortBy} setSortBy={setSortBy} includeAnswered={includeAnswered} setIncludeAnswered={setIncludeAnswered} />
                 <PopularQuizzesCard />
             </Sidebar>
             <MainContent>
-                <CategoryNavbar onChange={setSelectedCategories} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
+                <CategoryNavbar onChange={setSelectedCategories} selectedCategories={selectedCategories} />
                 <MainQuizzesBox quizzes={quizzes} totalPages={totalPages} page={page} onPageChange={handlePageChange}/>
             </MainContent>
             <Sidebar>
