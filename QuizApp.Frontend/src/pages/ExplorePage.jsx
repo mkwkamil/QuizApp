@@ -12,19 +12,19 @@ import {useSearchParams} from "react-router-dom";
 
 function ExplorePage() {
     const [searchParams, setSearchParams] = useSearchParams();
-    
+
     const initialPage = parseInt(searchParams.get("page")) || 1;
+    const [page, setPage] = useState(initialPage);
+
     const initialCategories = searchParams.get("categories")
         ?.split(",").map(Number).filter(Boolean) || [];
-
-    const initialSortBy = searchParams.get("sort") || "popular";
-    const initialIncludeAnswered = searchParams.get("includeAnswered") === "true";
-    
-    const [page, setPage] = useState(initialPage);
     const [selectedCategories, setSelectedCategories] = useState(initialCategories);
-    
-    const [sortBy, setSortBy] = useState(initialSortBy);
+
+    const initialIncludeAnswered = searchParams.get("includeAnswered") === "true";
     const [includeAnswered, setIncludeAnswered] = useState(initialIncludeAnswered);
+    
+    const initialSortBy = searchParams.get("sort") || "popular";
+    const [sortBy, setSortBy] = useState(initialSortBy);
     
     useEffect(() => {
         const params = {};

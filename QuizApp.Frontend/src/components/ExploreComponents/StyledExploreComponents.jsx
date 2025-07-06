@@ -1,5 +1,5 @@
 import {styled} from "@mui/system";
-import {Avatar, Box, Chip, Fab, Paper, Stack} from "@mui/material";
+import {Avatar, Box, Chip, Fab, Paper, Stack, Switch} from "@mui/material";
 
 export const HeroContainer = styled(Box)({
     display: 'flex',
@@ -64,10 +64,12 @@ export const CategoryNav = styled(Stack)({
     gap: 8,
     alignItems: 'center',
     padding: '8px 16px',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     overflowX: 'auto',
     width: '100%',
     boxSizing: 'border-box',
+    display: 'flex',
+    scrollBehavior: 'smooth',
     '&::-webkit-scrollbar': {
         height: 6,
     },
@@ -220,3 +222,36 @@ export const PaginationBox = styled(Box)({
     marginTop: 50,
     zIndex: 100,
 });
+
+export const CustomSwitch = styled(Switch)(({ theme }) => ({
+    width: 42,
+    height: 26,
+    padding: 0,
+    '& .MuiSwitch-switchBase': {
+        padding: 1,
+        '&.Mui-checked': {
+            transform: 'translateX(16px)',
+            color: '#fff',
+            '& + .MuiSwitch-track': {
+                backgroundColor: '#1976d2',
+                opacity: 1,
+                border: 0,
+            },
+        },
+    },
+    '& .MuiSwitch-thumb': {
+        backgroundColor: '#fff',
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
+    },
+    '& .MuiSwitch-track': {
+        borderRadius: 13,
+        backgroundColor: '#888',
+        opacity: 1,
+        transition: theme.transitions.create(['background-color'], {
+            duration: 200,
+        }),
+    },
+}));
