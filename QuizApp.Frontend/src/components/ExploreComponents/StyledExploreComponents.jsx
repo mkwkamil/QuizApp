@@ -23,7 +23,7 @@ export const HeroContainer = styled(Box)({
 });
 
 export const Sidebar = styled(Box)({
-    minWidth: 400,
+    minWidth: 450,
     maxWidth: 450,
     padding: 16,
     borderRadius: 12,
@@ -59,12 +59,12 @@ export const MainContent = styled(Box)({
     gap: 20,
 });
 
-export const CategoryNav = styled(Stack)({
+export const CategoryNav = styled(Stack)(({ centered }) => ({
     flexDirection: 'row',
     gap: 8,
     alignItems: 'center',
     padding: '8px 16px',
-    justifyContent: 'flex-start',
+    justifyContent: centered ? "center" : "flex-start",
     overflowX: 'auto',
     width: '100%',
     boxSizing: 'border-box',
@@ -80,7 +80,7 @@ export const CategoryNav = styled(Stack)({
     '&::-webkit-scrollbar-track': {
         backgroundColor: 'transparent',
     }
-});
+}));
 
 export const CategoryButton = styled(Chip)(({ selected }) => ({
     cursor: 'pointer',

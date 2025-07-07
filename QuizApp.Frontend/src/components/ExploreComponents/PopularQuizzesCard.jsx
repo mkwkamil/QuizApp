@@ -1,15 +1,19 @@
 import {PopularQuizzesBox, QuizCard, QuizInfo, QuizThumbnail} from "./StyledExploreComponents";
 import {Stack, Typography} from "@mui/material";
 import {usePopularQuizzes} from "../../hooks/usePopularQuizzes";
+import {QuizSkeleton} from "../SkeletonBoxes";
 
 function PopularQuizzesCard() {
-    const { popularQuizzes } = usePopularQuizzes();
+    const { popularQuizzes, loading } = usePopularQuizzes();
 
     return (
         <PopularQuizzesBox>
             <Typography variant="h6" gutterBottom marginBottom={2}>
                 Most Popular Quizzes
             </Typography>
+            {loading ? (
+                    <QuizSkeleton items={4} />
+                ) : (
             <Stack spacing={2}>
                 {popularQuizzes.slice(0, 4).map((quiz) => (
                     <QuizCard key={quiz.id}>
@@ -27,6 +31,7 @@ function PopularQuizzesCard() {
                     </QuizCard>
                 ))}
             </Stack>
+            )}
         </PopularQuizzesBox>
     )
 }

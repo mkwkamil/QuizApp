@@ -9,42 +9,61 @@ import StatisticsCard from "../components/ExploreComponents/StatisticsCard";
 import {useEffect, useState} from "react";
 import {useExploreQuizzes} from "../hooks/useExploreQuizzes";
 import {useSearchParams} from "react-router-dom";
-
+import { toast } from 'react-toastify';
 function ExplorePage() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const initialPage = parseInt(searchParams.get("page")) || 1;
-    const [page, setPage] = useState(initialPage);
+    const initialCategories = searchParams.get("categories")?.split(",").map(Number).filter(Boolean) || [];
 
-    const initialCategories = searchParams.get("categories")
-        ?.split(",").map(Number).filter(Boolean) || [];
-    const [selectedCategories, setSelectedCategories] = useState(initialCategories);
-
-    const initialIncludeAnswered = searchParams.get("includeAnswered") === "true";
-    const [includeAnswered, setIncludeAnswered] = useState(initialIncludeAnswered);
-    
+    const initialDifficulties = searchParams.get("difficulties")?.split(",").map(Number).filter(Boolean) || [];
+    const initialLengths = searchParams.get("lengths")?.split(",").map(Number).filter(Boolean) || [];
+    const initialRatings = searchParams.get("ratings") ? parseInt(searchParams.get("ratings")) : null;
     const initialSortBy = searchParams.get("sort") || "popular";
-    const [sortBy, setSortBy] = useState(initialSortBy);
+    const initialIncludeAnswered = searchParams.get("includeAnswered") === "true";
+
+    const [filters, setFilters] = useState({
+        page: initialPage,
+        selectedCategories: initialCategories,
+        includeAnswered: initialIncludeAnswered,
+        sortBy: initialSortBy,
+        selectedDifficulties: initialDifficulties,
+        selectedLengths: initialLengths,
+        selectedRatings: initialRatings
+    });
     
     useEffect(() => {
         const params = {};
-        if (page > 1) params.page = page;
-        if (selectedCategories.length > 0) params.categories = selectedCategories.join(",");
-        if (sortBy !== "popular") params.sort = sortBy;
-        if (includeAnswered) params.includeAnswered = true;
-        
-        setSearchParams(params);
-    }, [page, selectedCategories, sortBy, includeAnswered, setSearchParams]);
+        if (filters.page > 1) params.page = filters.page;
+        if (filters.selectedCategories.length > 0) params.categories = filters.selectedCategories.join(",");
 
-    const { quizzes, totalPages } = useExploreQuizzes({
-        page,
-        categories: selectedCategories,
-        sortBy,
-        includeAnswered
-    });
+        if (filters.selectedDifficulties.length > 0) params.difficulties = filters.selectedDifficulties.join(",");
+        if (filters.selectedLengths.length > 0) params.lengths = filters.selectedLengths.join(",");
+        if (filters.sortBy !== "popular") params.sort = filters.sortBy;
+        if (filters.includeAnswered) params.includeAnswered = true;
+        if (filters.selectedRatings !== null) params.ratings = filters.selectedRatings.toString();
+
+        setSearchParams(params);
+    }, [filters, setSearchParams]);
+
+    const { quizzes, totalPages, loading, error } = useExploreQuizzes(filters);
+
+    useEffect(() => {
+        if (error) {
+            toast.error("Failed to load quizzes. Please try again later.", { autoClose: 3000 });
+        }
+    }, [error]);
 
     const handlePageChange = (_, value) => {
-        setPage(value);
+        setFilters(prev => ({
+            page: value,
+            selectedCategories: prev.selectedCategories,
+            includeAnswered: prev.includeAnswered,
+            sortBy: prev.sortBy,
+            selectedDifficulties: prev.selectedDifficulties,
+            selectedLengths: prev.selectedLengths,
+            selectedRatings: prev.selectedRatings
+        }))
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
     
@@ -52,12 +71,12 @@ function ExplorePage() {
         
         <HeroContainer>
             <Sidebar>
-                <FiltersCard sortBy={sortBy} setSortBy={setSortBy} includeAnswered={includeAnswered} setIncludeAnswered={setIncludeAnswered} />
+                <FiltersCard filters={filters} setFilters={setFilters} />
                 <PopularQuizzesCard />
             </Sidebar>
             <MainContent>
-                <CategoryNavbar onChange={setSelectedCategories} selectedCategories={selectedCategories} />
-                <MainQuizzesBox quizzes={quizzes} totalPages={totalPages} page={page} onPageChange={handlePageChange}/>
+                <CategoryNavbar loading={loading} filters={filters} setFilters={setFilters} />
+                <MainQuizzesBox loading={loading} quizzes={quizzes} totalPages={totalPages} page={filters.page} onPageChange={handlePageChange}/>
             </MainContent>
             <Sidebar>
                 <StatisticsCard />
