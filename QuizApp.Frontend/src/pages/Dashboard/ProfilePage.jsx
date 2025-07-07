@@ -1,11 +1,11 @@
 import '@fontsource/poppins';
 import {useProfileData} from "../../hooks/useProfileData";
-import Loading from "../../components/Loading";
+import Loading from "../../components/common/Loading";
 import {useState, useEffect} from 'react';
 import {toast} from "react-toastify";
 import {updateUserProfile} from "../../hooks/updateUserProfile";
 import api from "../../config/axiosConfig";
-import DeleteQuizModal from "../../components/ModalComponents/DeleteQuizModal";
+import DeleteQuizModal from "../../components/modal/DeleteQuizModal";
 import ProfileCard from "../../components/ProfileComponents/ProfileCard";
 import BasicInfoCard from "../../components/ProfileComponents/BasicInfoCard";
 import AchievementsCard from "../../components/ProfileComponents/AchievementsCard";
@@ -17,7 +17,7 @@ import {
     ProfilePageWrapper,
     ProfileSidebarContainer
 } from "../../components/ProfileComponents/ProfileContainers";
-import CreateQuizPromo from "../../components/CreatorPromoBox";
+import CreateQuizPromo from "../../components/common/CreatorPromoBox";
 
 function ProfilePage() {
     const profileData = useProfileData();

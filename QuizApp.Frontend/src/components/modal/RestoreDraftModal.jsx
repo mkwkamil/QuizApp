@@ -5,7 +5,7 @@ import {
     Backdrop,
     Fade
 } from '@mui/material';
-import {StyledCancelButton, StyledQuizNextButton} from "../StyledButtons";
+import {StyledCancelButton, StyledQuizNextButton} from "../common/StyledButtons";
 
 function RestoreDraftModal({ open, onClose, onRestore, draft }) {
     if (!draft) return null;

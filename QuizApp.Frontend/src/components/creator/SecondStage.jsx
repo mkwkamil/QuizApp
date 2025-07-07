@@ -22,7 +22,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import {useQuizStore} from "../../store/quizStore";
-import {StyledCancelButton, StyledDraftButton, StyledQuizBackButton, StyledQuizNextButton} from "../StyledButtons";
+import {StyledDraftButton, StyledQuizBackButton, StyledQuizNextButton} from "../common/StyledButtons";
 
 const QUESTION_TYPES = [
     { value: 'single', label: 'Single Choice' },

@@ -1,7 +1,7 @@
 import {PopularQuizzesBox, QuizCard, QuizInfo, QuizThumbnail} from "./StyledExploreComponents";
 import {Stack, Typography} from "@mui/material";
 import {usePopularQuizzes} from "../../hooks/usePopularQuizzes";
-import {QuizSkeleton} from "../SkeletonBoxes";
+import { QuizSkeleton } from "../common/SkeletonBoxes";
 
 function PopularQuizzesCard() {
     const { popularQuizzes, loading } = usePopularQuizzes();

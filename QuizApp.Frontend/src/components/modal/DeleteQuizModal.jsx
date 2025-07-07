@@ -5,7 +5,7 @@ import {
     Backdrop,
     Fade,
 } from '@mui/material';
-import { StyledCancelButton, StyledQuizNextButton} from "../StyledButtons";
+import { StyledCancelButton, StyledQuizNextButton} from "../common/StyledButtons";
 
 function DeleteQuizModal({ open, onClose, onDelete, quizTitle }) {
     return (

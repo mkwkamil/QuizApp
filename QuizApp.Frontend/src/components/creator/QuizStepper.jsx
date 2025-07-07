@@ -1,4 +1,4 @@
-import { Stepper, Step, StepLabel, Button, Box } from "@mui/material";
+import { Stepper, Step, StepLabel, Box } from "@mui/material";
 
 const steps = ["Quiz Info", "Add Questions", "Review & Publish"];
 

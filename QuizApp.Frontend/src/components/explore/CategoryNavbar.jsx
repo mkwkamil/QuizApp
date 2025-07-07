@@ -3,7 +3,7 @@ import { Box, IconButton, Stack } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { useCategories } from "../../hooks/useCategories";
 import { useEffect, useRef, useState } from "react";
-import {CategorySkeleton} from "../SkeletonBoxes";
+import { CategorySkeleton} from "../common/SkeletonBoxes";
 
 function CategoryNavbar({ loading, filters, setFilters }) {
     const { categories } = useCategories();

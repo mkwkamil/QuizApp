@@ -24,7 +24,7 @@ import {
     CaptionError,
     MainErrorBox,
     StyledPaper
-} from "../../components/Auth/StyledMaterialComponents";
+} from "../../components/auth/StyledMaterialComponents";
 
 function RegisterPage() {
     const theme = useTheme();

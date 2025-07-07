@@ -8,7 +8,7 @@ import SecondStage from "./SecondStage";
 import ThirdStage from "./ThirdStage";
 import useAutoSafeDraft from "../../hooks/useAutoSafeDraft";
 import { useQuizNavigation } from '../../hooks/useQuizNavigation';
-import RestoreDraftModal from "../ModalComponents/RestoreDraftModal";
+import RestoreDraftModal from "../modal/RestoreDraftModal";
 
 export default function QuizForm({ editMode = false, quizId = null }) {
     const [draft, setDraft] = useState(null);

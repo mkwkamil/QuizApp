@@ -1,5 +1,5 @@
 import { Tooltip } from "@mui/material";
-import { SupportFeb} from "./ExploreComponents/StyledExploreComponents";
+import { SupportFeb } from "../explore/StyledExploreComponents";
 import { SupportAgent } from "@mui/icons-material";
 
 function SupportTooltip() {

@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {PromoBox} from "./ExploreComponents/StyledExploreComponents";
+import {PromoBox} from "../explore/StyledExploreComponents";
 import {Typography} from "@mui/material";
 import {StyledMainGlowButton} from "./StyledButtons";
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import useAuthStore from '../store/authStore';
-import { useAuth } from "../hooks/useAuth";
+import useAuthStore from "../../store/authStore";
+import { useAuth } from "../../hooks/useAuth";
 import {
     AppBar, Toolbar, Typography, Button, IconButton, InputBase, Badge,
     Menu, MenuItem, Box, Stack, Drawer, List, ListItem, ListItemText, useMediaQuery

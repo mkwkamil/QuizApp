@@ -1,6 +1,6 @@
 import { Box, Pagination, Stack, Typography } from "@mui/material";
 import { PaginationBox, QuizCard, QuizInfo, QuizThumbnail } from "./StyledExploreComponents";
-import { QuizSkeleton } from "../SkeletonBoxes";
+import { QuizSkeleton } from "../common/SkeletonBoxes";
 import { Link } from "react-router-dom";
 
 function MainQuizzesBox({ quizzes, loading, totalPages, page, onPageChange }) {

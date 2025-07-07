@@ -1,7 +1,7 @@
 import {Typography, Stack, IconButton, Chip, Paper} from "@mui/material";
 import {Edit, EmojiEvents, Quiz} from "@mui/icons-material";
 import AvatarWithUpload from "./AvatarWithUpload";
-import { StatsChips} from "../ExploreComponents/StyledExploreComponents";
+import { StatsChips} from "../explore/StyledExploreComponents";
 
 function ProfileCard({profileData, onEditClick}) {
     return (

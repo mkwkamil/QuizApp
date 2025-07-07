@@ -8,7 +8,7 @@ import {
     MainErrorBox,
     CaptionError,
     AuthFormButton
-} from "../../components/Auth/StyledMaterialComponents";
+} from "../../components/auth/StyledMaterialComponents";
 import { loginSchema } from '../../schemas/authSchema';
 import {
     Box,

@@ -1,6 +1,6 @@
 import { Box, Typography, Stack, styled } from '@mui/material';
 import {useNavigate} from "react-router-dom";
-import {StyledMainGlowButton, StyledMainOutlinedButton} from "../components/StyledButtons";
+import {StyledMainGlowButton, StyledMainOutlinedButton} from "../components/common/StyledButtons";
 
 const HeroContainer = styled(Box)({
     minHeight: "calc(100vh - 65px)",
