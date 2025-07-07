@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
-import { useQuizStore } from '../store/quizStore';
-import { loadQuizDraft } from '../store/quizDraft';
-import QuizStepper from "../components/CreatorComponents/QuizStepper";
-import FirstStage from "../components/CreatorComponents/FirstStage";
-import SecondStage from "../components/CreatorComponents/SecondStage";
-import ThirdStage from "../components/CreatorComponents/ThirdStage";
-import useAutoSafeDraft from '../hooks/useAutoSafeDraft';
-import { useQuizNavigation } from '../hooks/useQuizNavigation';
-import RestoreDraftModal from "../components/ModalComponents/RestoreDraftModal";
+import { useQuizStore} from "../../store/quizStore";
+import { loadQuizDraft } from '../../store/quizDraft';
+import QuizStepper from "./QuizStepper";
+import FirstStage from "./FirstStage";
+import SecondStage from "./SecondStage";
+import ThirdStage from "./ThirdStage";
+import useAutoSafeDraft from "../../hooks/useAutoSafeDraft";
+import { useQuizNavigation } from '../../hooks/useQuizNavigation';
+import RestoreDraftModal from "../ModalComponents/RestoreDraftModal";
 
 export default function QuizForm({ editMode = false, quizId = null }) {
     const [draft, setDraft] = useState(null);

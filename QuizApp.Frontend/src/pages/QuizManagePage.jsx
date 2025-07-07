@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useLoadQuiz} from "../hooks/useLoadQuiz";
 import LoginPage from "./Auth/LoginPage";
 import Loading from "../components/Loading";
-import QuizForm from "./QuizForm";
+import QuizForm from "../components/CreatorComponents/QuizForm";
 import useAuthStore from "../store/authStore";
 
 export default function QuizManagePage() {
