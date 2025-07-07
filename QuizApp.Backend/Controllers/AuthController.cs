@@ -24,10 +24,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             
             if (string.IsNullOrWhiteSpace(request.Password))
             {
@@ -53,12 +50,15 @@ public class AuthController : ControllerBase
                 return StatusCode(500, "An error occurred while registering the user");
             }
             
-            _logger.LogInformation($"New user registered: {user.Username}");
-            return Ok(new AuthResponse
+            var userDto = new UserDto
             {
+                Id = user.Id,
                 Username = user.Username,
-                Role = user.Role,
-            });
+                Email = user.Email,
+                Role = user.Role
+            };
+
+            return Ok(new AuthResponse { User = userDto });
 
         }
         catch (Exception ex)
@@ -75,24 +75,28 @@ public class AuthController : ControllerBase
         {
             var token = await _authService.Login(request.Username, request.Password);
             
-            if (token == null)
-            {
-                return Unauthorized("Invalid credentials");
-            }
+            if (token == null) return Unauthorized("Invalid credentials");
             
             var user = await _authService.GetUserByUsername(request.Username);
             
-            _logger.LogInformation($"User logged in: {user?.Username ?? request.Username}");
+            if (user == null) return Unauthorized("User not found");
+            
+            var userDto = new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role,
+            };
+            
             return Ok(new AuthResponse
             {
                 Token = token,
-                Username = user?.Username ?? request.Username,
-                Role = user?.Role ?? "User",
+                User = userDto
             });
         }
-        catch (Exception ex)
+        catch
         {
-            _logger.LogError(ex, "An error occurred during login");
             return StatusCode(500, "An internal server error occurred");
         }
     }
@@ -122,7 +126,7 @@ public class AuthController : ControllerBase
                 return BadRequest("Logout failed");
             }
 
-            var username = User?.Identity?.Name ?? "Unknown";
+            var username = User.Identity?.Name ?? "Unknown";
             _logger.LogInformation("User logged out: {Username}", username);
 
             return Ok(new { Message = "Logged out successfully" });

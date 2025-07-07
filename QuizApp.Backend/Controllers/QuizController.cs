@@ -49,15 +49,12 @@ public class QuizController(AppDbContext context) : ControllerBase
     }
     
     [HttpGet("{id}")]
-    [Authorize]
     public async Task<IActionResult> GetQuiz(int id)
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
         var quiz = await context.Quizzes
             .Include(q => q.Questions)
             .ThenInclude(qn => qn.Answers)
-            .FirstOrDefaultAsync(q => q.Id == id && q.AuthorId == userId);
+            .FirstOrDefaultAsync(q => q.Id == id && q.IsPublic && !q.IsDraft);
 
         if (quiz == null)
             return NotFound();
@@ -72,6 +69,7 @@ public class QuizController(AppDbContext context) : ControllerBase
             quiz.DifficultyId,
             quiz.IsPublic,
             quiz.IsDraft,
+            quiz.AuthorId,
             quiz.RevealAnswers,
             quiz.ShuffleQuestions,
             Questions = quiz.Questions.Select(qn => new

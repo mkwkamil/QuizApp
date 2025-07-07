@@ -4,10 +4,9 @@ import RegisterPage from "./pages/Auth/RegisterPage";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from "./pages/MainPage";
 import ProfilePage from "./pages/Dashboard/ProfilePage";
-import QuizPage from "./pages/QuizPage";
-import QuizEditPage from "./pages/QuizEditPage";
-import Loading from "./components/Loading";
 import ExplorePage from "./pages/ExplorePage";
+import QuizManagePage from "./pages/QuizManagePage";
+import QuizPage from "./pages/QuizPage";
 
 function App() {
     return (
@@ -20,9 +19,9 @@ function App() {
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/explore" element={<ExplorePage />} />
-                    <Route path="/quiz/create" element={<QuizPage />} />
-                    <Route path="/quiz/:id" element={<Loading />} />
-                    <Route path="/quiz/edit/:id" element={<QuizEditPage />} />
+                    <Route path="/quiz/create" element={<QuizManagePage />} />
+                    <Route path="/quiz/edit/:id" element={<QuizManagePage />} />
+                    <Route path="/quiz/:id" element={<QuizPage />} />
                 </Routes>
             </Router>
         </div>

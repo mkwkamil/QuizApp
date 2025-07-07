@@ -13,17 +13,14 @@ export const useAuth = () => {
                 username: data.username,
                 password: data.password
             });
-            
+
             login({
                 token: response.data.token,
-                username: response.data.username,
-                role: response.data.role
+                ...response.data.user
             });
             
             toast.success(`Login successful! Welcome back, ${data.username}!`);
-
-            // navigate('/');
-        } 
+        }
         catch (error) {
             if (error.response?.status === 401) {
                 onError('Invalid username or password. Please try again.');

@@ -10,7 +10,8 @@ import {useEffect, useState} from "react";
 import {useExploreQuizzes} from "../hooks/useExploreQuizzes";
 import {useSearchParams} from "react-router-dom";
 import { toast } from 'react-toastify';
-function ExplorePage() {
+
+export default function ExplorePage() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const initialPage = parseInt(searchParams.get("page")) || 1;
@@ -68,7 +69,6 @@ function ExplorePage() {
     };
     
     return (
-        
         <HeroContainer>
             <Sidebar>
                 <FiltersCard filters={filters} setFilters={setFilters} />
@@ -86,5 +86,3 @@ function ExplorePage() {
         </HeroContainer>
     );
 }
-
-export default ExplorePage;

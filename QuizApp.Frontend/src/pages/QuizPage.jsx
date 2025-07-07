@@ -1,11 +1,9 @@
-import useAuthStore from "../store/authStore";
-import LoginPage from "./Auth/LoginPage";
-import QuizBuilder from "./QuizBuilder";
+import {useParams} from "react-router-dom";
 
-function QuizPage() {
-    const user = useAuthStore(state => state.user);
-
-    return user ? <QuizBuilder /> : <LoginPage />;
+export default function QuizPage() {
+    const { id } = useParams();
+    
+    return (
+        <div>{id}</div>
+    )
 }
-
-export default QuizPage;

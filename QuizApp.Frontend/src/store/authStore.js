@@ -5,12 +5,17 @@ const useAuthStore = create(
     persist(
         (set) => (
             {
-                user: null,
                 token: null,
+                user: null,
 
                 login: data => set({
                     token: data.token,
-                    user: { username: data.username }
+                    user: {
+                        id: data.id,
+                        username: data.username,
+                        email: data.email,
+                        role: data.role
+                    }
                 }),
                 
                 logout: () => set({

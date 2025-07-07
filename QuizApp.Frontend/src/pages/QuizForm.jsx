@@ -10,7 +10,7 @@ import useAutoSafeDraft from '../hooks/useAutoSafeDraft';
 import { useQuizNavigation } from '../hooks/useQuizNavigation';
 import RestoreDraftModal from "../components/ModalComponents/RestoreDraftModal";
 
-function QuizBuilder({ editMode = false, quizId = null }) {
+export default function QuizForm({ editMode = false, quizId = null }) {
     const [draft, setDraft] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const reset = useQuizStore((state) => state.reset);
@@ -102,5 +102,3 @@ function QuizBuilder({ editMode = false, quizId = null }) {
         </Box>
     );
 }
-
-export default QuizBuilder;
