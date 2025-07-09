@@ -32,7 +32,7 @@ export default function ExplorePage() {
         selectedLengths: initialLengths,
         selectedRatings: initialRatings
     });
-    
+
     useEffect(() => {
         const params = {};
         if (filters.page > 1) params.page = filters.page;
@@ -67,7 +67,7 @@ export default function ExplorePage() {
         }))
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
-    
+
     return (
         <HeroContainer>
             <Sidebar>
