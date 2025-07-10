@@ -1,7 +1,23 @@
 import { Typography, Stack } from "@mui/material";
 import { SectionBox, StyledCommentButton, MatchedCommentField } from "./StyledQuizPageComponents";
+import {useState} from "react";
+import {useAddComment} from "../../hooks/useAddComment";
 
-export default function CommentForm() {
+export default function CommentForm({ quizId }) {
+    const [text, setText] = useState("");
+    const { mutate: addComment, isLoading } = useAddComment();
+
+    const handleSubmit = () => {
+        if (text.trim()) {
+            addComment(
+                { quizId, content: text },
+                {
+                    onSuccess: () => setText("")
+                }
+            );
+        }
+    };
+    
     return (
         <SectionBox>
             <Typography variant="h6" mb={2}>Add a comment</Typography>
@@ -13,9 +29,11 @@ export default function CommentForm() {
                     minRows={2}
                     maxRows={6}
                     variant="outlined"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
                 />
-                <StyledCommentButton>
-                    Submit
+                <StyledCommentButton onClick={handleSubmit} disabled={isLoading || !text.trim()}>
+                    {isLoading ? "Sending..." : "Submit"}
                 </StyledCommentButton>
             </Stack>
         </SectionBox>

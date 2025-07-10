@@ -15,7 +15,11 @@ export default function AuthorCard({ author }) {
                             {author.name}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                            Joined on Jul 27, 2023
+                            Joined on {new Date(author.joinedAt).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric"
+                            })}
                         </Typography>
                     </Box>
                 </Stack>

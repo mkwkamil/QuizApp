@@ -127,6 +127,9 @@ namespace QuizApp.Backend.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("AverageScore")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 
@@ -146,6 +149,9 @@ namespace QuizApp.Backend.Migrations
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("Plays")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("RevealAnswers")
                         .ValueGeneratedOnAdd()

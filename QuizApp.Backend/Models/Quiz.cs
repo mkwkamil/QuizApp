@@ -11,15 +11,18 @@ public class Quiz
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public int? CategoryId { get; set; }
-    public QuizCategory? Category { get; set; }
+    public QuizCategory Category { get; set; } = default!;
     
     public int? DifficultyId { get; set; }
-    public QuizDifficulty? Difficulty { get; set; }
+    public QuizDifficulty Difficulty { get; set; } = default!;
 
     public bool IsPublic { get; set; }
     public bool IsDraft { get; set; } = true;
     public bool RevealAnswers { get; set; } = true;
     public bool ShuffleQuestions { get; set; } = false;
+    
+    public int Plays { get; set; } = 0;
+    public int AverageScore { get; set; } = 0;
 
     public int AuthorId { get; set; }
     public User Author { get; set; }

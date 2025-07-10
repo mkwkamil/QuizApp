@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
 using QuizApp.Backend.DTO;
 using QuizApp.Backend.Models;
+using QuizApp.Backend.Services;
 
 namespace QuizApp.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class QuizController(AppDbContext context) : ControllerBase
+public class QuizController(AppDbContext context, QuizService quizService) : ControllerBase
 {
     [Authorize]
     [HttpPost]
@@ -47,46 +48,7 @@ public class QuizController(AppDbContext context) : ControllerBase
 
         return Ok(new { quizId = quiz.Id });
     }
-    
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetQuiz(int id)
-    {
-        var quiz = await context.Quizzes
-            .Include(q => q.Questions)
-            .ThenInclude(qn => qn.Answers)
-            .FirstOrDefaultAsync(q => q.Id == id && q.IsPublic && !q.IsDraft);
 
-        if (quiz == null)
-            return NotFound();
-
-        return Ok(new
-        {
-            quiz.Id,
-            quiz.Title,
-            quiz.Description,
-            quiz.ThumbnailUrl,
-            quiz.CategoryId,
-            quiz.DifficultyId,
-            quiz.IsPublic,
-            quiz.IsDraft,
-            quiz.AuthorId,
-            quiz.RevealAnswers,
-            quiz.ShuffleQuestions,
-            Questions = quiz.Questions.Select(qn => new
-            {
-                qn.Id,
-                qn.Text,
-                qn.Type,
-                Options = qn.Answers.Select(a => a.Text).ToList(),
-                CorrectAnswers = qn.Answers
-                    .Select((a, i) => new { a.IsCorrect, Index = i })
-                    .Where(x => x.IsCorrect)
-                    .Select(x => x.Index)
-                    .ToList()
-            }).ToList()
-        });
-    }
-    
     [HttpPut("{id}")]
     [Authorize]
     public async Task<IActionResult> UpdateQuiz(int id, [FromBody] QuizCreateDto dto)
@@ -131,7 +93,7 @@ public class QuizController(AppDbContext context) : ControllerBase
 
         return Ok(new { quizId = quiz.Id });
     }
-    
+
     [HttpGet("mine")]
     [Authorize]
     public async Task<IActionResult> GetMyQuizzes()
@@ -153,7 +115,7 @@ public class QuizController(AppDbContext context) : ControllerBase
 
         return Ok(quizzes);
     }
-    
+
     [HttpDelete("{id}")]
     [Authorize]
     public async Task<IActionResult> DeleteQuiz(int id)
@@ -177,7 +139,7 @@ public class QuizController(AppDbContext context) : ControllerBase
 
         return NoContent();
     }
-    
+
     [Authorize]
     [HttpPost("draft")]
     public async Task<IActionResult> CreateDraft([FromBody] QuizDraftDto dto)
@@ -256,7 +218,7 @@ public class QuizController(AppDbContext context) : ControllerBase
 
         return Ok(new { draftId = draft.Id });
     }
-    
+
     [HttpGet("categories")]
     public async Task<IActionResult> GetCategories()
     {
@@ -266,7 +228,7 @@ public class QuizController(AppDbContext context) : ControllerBase
 
         return Ok(categories);
     }
-    
+
     [HttpGet("difficulties")]
     public async Task<IActionResult> GetDifficulties()
     {
@@ -276,4 +238,55 @@ public class QuizController(AppDbContext context) : ControllerBase
 
         return Ok(difficulties);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetQuiz(int id)
+    {
+        var quiz = await context.Quizzes
+            .Include(q => q.Questions)
+            .ThenInclude(qn => qn.Answers)
+            .FirstOrDefaultAsync(q => q.Id == id && q.IsPublic && !q.IsDraft);
+
+        if (quiz == null)
+            return NotFound();
+
+        return Ok(new
+        {
+            quiz.Id,
+            quiz.Title,
+            quiz.Description,
+            quiz.ThumbnailUrl,
+            quiz.CategoryId,
+            quiz.DifficultyId,
+            quiz.IsPublic,
+            quiz.IsDraft,
+            quiz.AuthorId,
+            quiz.RevealAnswers,
+            quiz.ShuffleQuestions,
+            Questions = quiz.Questions.Select(qn => new
+            {
+                qn.Id,
+                qn.Text,
+                qn.Type,
+                Options = qn.Answers.Select(a => a.Text).ToList(),
+                CorrectAnswers = qn.Answers
+                    .Select((a, i) => new { a.IsCorrect, Index = i })
+                    .Where(x => x.IsCorrect)
+                    .Select(x => x.Index)
+                    .ToList()
+            }).ToList()
+        });
+    }
+
+    [HttpGet("{id}/summary")]
+    public async Task<IActionResult> GetQuizSummary(int id)
+    {
+        var summary = await quizService.GetQuizSummaryAsync(id);
+        
+        if (summary == null)
+            return NotFound(new { message = "Quiz not found or unavailable." });
+
+        return Ok(summary);
+    }
+    
 }

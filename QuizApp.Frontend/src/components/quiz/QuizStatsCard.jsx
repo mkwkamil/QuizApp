@@ -6,18 +6,18 @@ import CategoryIcon from '@mui/icons-material/Category';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import BarChartIcon from '@mui/icons-material/BarChart';
 
-export default function QuizStatsCard({ stats, questionCount, category, difficulty, plays }) {
+export default function QuizStatsCard({ quizData }) {
     return (
         <SidebarCard>
             <Typography variant="h6" fontWeight={700} gutterBottom mb={2}>
                 Quiz Info
             </Typography>
             <Stack spacing={1.5}>
-                <InfoRow icon={<PeopleAltIcon />} label="Plays" value={plays} />
-                <InfoRow icon={<CategoryIcon />} label="Category" value={category} />
-                <InfoRow icon={<HelpOutlineIcon />} label="Difficulty" value={difficulty} />
-                <InfoRow icon={<BarChartIcon />} label="Avg Score" value={`${stats.avgScore}%`} />
-                <InfoRow icon={<SportsScoreIcon />} label="Questions" value={questionCount} />
+                <InfoRow icon={<PeopleAltIcon />} label="Plays" value={quizData.plays} />
+                <InfoRow icon={<CategoryIcon />} label="Category" value={quizData.category} />
+                <InfoRow icon={<HelpOutlineIcon />} label="Difficulty" value={quizData.difficulty} />
+                <InfoRow icon={<BarChartIcon />} label="Avg Score" value={`${quizData.averageScore}%`} />
+                <InfoRow icon={<SportsScoreIcon />} label="Questions" value={quizData.questionCount} />
             </Stack>
         </SidebarCard>
     );
