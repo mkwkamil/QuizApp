@@ -7,7 +7,7 @@ import { ResultBox, TryAgainButton, ExploreButton} from "./StyledQuizResultCompo
 export default function QuizResultCard({ correctAnswers, totalQuestions, percentage, formattedTime }) {
     const { id } = useParams();
     const navigate = useNavigate();
-    const passed = true;
+    const passed = percentage >= 50;
 
     return (
         <ResultBox passed={passed}>
