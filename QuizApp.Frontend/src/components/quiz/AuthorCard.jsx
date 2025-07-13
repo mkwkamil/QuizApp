@@ -1,4 +1,4 @@
-import { Typography, Stack, Avatar, Box, Button } from "@mui/material";
+import { Typography, Stack, Avatar, Box } from "@mui/material";
 import {SidebarCard, StyledFollowButton, StyledMessageButton, UserInfoBox} from "./StyledQuizPageComponents";
 
 export default function AuthorCard({ author }) {

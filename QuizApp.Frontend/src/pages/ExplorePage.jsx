@@ -55,19 +55,6 @@ export default function ExplorePage() {
         }
     }, [error]);
 
-    const handlePageChange = (_, value) => {
-        setFilters(prev => ({
-            page: value,
-            selectedCategories: prev.selectedCategories,
-            includeAnswered: prev.includeAnswered,
-            sortBy: prev.sortBy,
-            selectedDifficulties: prev.selectedDifficulties,
-            selectedLengths: prev.selectedLengths,
-            selectedRatings: prev.selectedRatings
-        }))
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
     return (
         <HeroContainer>
             <Sidebar>
@@ -76,7 +63,7 @@ export default function ExplorePage() {
             </Sidebar>
             <MainContent>
                 <CategoryNavbar loading={loading} filters={filters} setFilters={setFilters} />
-                <MainQuizzesBox loading={loading} quizzes={quizzes} totalPages={totalPages} page={filters.page} onPageChange={handlePageChange}/>
+                <MainQuizzesBox loading={loading} quizzes={quizzes} totalPages={totalPages} page={filters.page} setFilters={setFilters}/>
             </MainContent>
             <Sidebar>
                 <StatisticsCard />

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
 using QuizApp.Backend.DTO;
+using QuizApp.Backend.Models;
 
 namespace QuizApp.Backend.Services;
 
@@ -42,6 +43,80 @@ public class QuizService(AppDbContext context, RatingService ratingService, Comm
                 JoinedAt = quiz.Author.CreatedAt
             },
             Comments = comments
+        };
+    }
+
+    public async Task<QuizSolveDto?> GetQuizForSolvingAsync(int quizId)
+    {
+        var quiz = await context.Quizzes
+            .Include(q => q.Questions)
+            .ThenInclude(q => q.Answers)
+            .FirstOrDefaultAsync(q => q.Id == quizId && q.IsPublic && !q.IsDraft);
+
+        if (quiz == null) return null;
+
+        return new QuizSolveDto
+        {
+            Id = quiz.Id,
+            Title = quiz.Title ?? "Untitled Quiz",
+            Description = quiz.Description ?? "No description available.",
+            ThumbnailUrl = quiz.ThumbnailUrl ?? "default-thumbnail.png",
+            Questions = quiz.Questions.Select(q => new QuestionDto
+            {
+                Id = q.Id,
+                Text = q.Text ?? "No question text.",
+                Type = q.Type ?? "single",
+                Answers = q.Answers.Select(a => new AnswerDto
+                {
+                    Id = a.Id,
+                    Text = a.Text ?? "No answer text."
+                }).ToList()
+            }).ToList()
+        };
+    }
+
+    public async Task<QuizSubmissionResultDto?> SubmitQuizResultAsync(int userId, QuizSubmissionDto submission)
+    {
+        var quiz = await context.Quizzes
+            .Include(q => q.Questions)
+            .ThenInclude(q => q.Answers)
+            .FirstOrDefaultAsync(q => q.Id == submission.QuizId && q.IsPublic && !q.IsDraft);
+        
+        if (quiz == null) return null;
+        
+        int correctAnswers = 0;
+
+        foreach (var submitted in submission.Answers)
+        {
+            var question = quiz.Questions.FirstOrDefault(q => q.Id == submitted.QuestionId);
+            if (question == null) continue;
+
+            var correctIds = question.Answers.Where(a => a.IsCorrect).Select(a => a.Id).ToHashSet();
+            var selectedIds = submitted.SelectedAnswerIds.ToHashSet();
+            
+            if (correctIds.SetEquals(selectedIds)) correctAnswers++;
+        }
+
+        var result = new QuizResult
+        {
+            QuizId = quiz.Id,
+            UserId = userId,
+            TotalQuestions = quiz.Questions.Count,
+            CorrectAnswers = correctAnswers,
+            TimeTaken = submission.TimeTaken,
+            SolvedAt = DateTime.UtcNow
+        };
+
+        context.QuizResults.Add(result);
+
+        quiz.Plays++;
+        await context.SaveChangesAsync();
+
+        return new QuizSubmissionResultDto
+        {
+            CorrectAnswers = correctAnswers,
+            TotalQuestions = quiz.Questions.Count,
+            TimeTaken = submission.TimeTaken,
         };
     }
 }

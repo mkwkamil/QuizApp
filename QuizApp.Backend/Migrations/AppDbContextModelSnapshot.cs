@@ -225,14 +225,17 @@ namespace QuizApp.Backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("QuizId")
+                    b.Property<int>("CorrectAnswers")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Score")
+                    b.Property<int>("QuizId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("SolvedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("TimeTaken")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TotalQuestions")
                         .HasColumnType("integer");

@@ -3,7 +3,20 @@ import { PaginationBox, QuizCard, QuizInfo, QuizThumbnail } from "./StyledExplor
 import { QuizSkeleton } from "../common/SkeletonBoxes";
 import { Link } from "react-router-dom";
 
-function MainQuizzesBox({ quizzes, loading, totalPages, page, onPageChange }) {
+function MainQuizzesBox({ quizzes, loading, totalPages, page, setFilters }) {
+    const handlePageChange = (_, value) => {
+        setFilters(prev => ({
+            page: value,
+            selectedCategories: prev.selectedCategories,
+            includeAnswered: prev.includeAnswered,
+            sortBy: prev.sortBy,
+            selectedDifficulties: prev.selectedDifficulties,
+            selectedLengths: prev.selectedLengths,
+            selectedRatings: prev.selectedRatings
+        }))
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    
     return (
         <Box>
             <Typography variant="h5" marginBottom={3} gutterBottom>
@@ -20,7 +33,7 @@ function MainQuizzesBox({ quizzes, loading, totalPages, page, onPageChange }) {
                 <>
                     <Stack spacing={2}>
                         {quizzes.map((quiz) => (
-                            <Link to={`/quiz/${quiz.id}`} style={{ textDecoration: 'none' }}>
+                            <Link to={`/quiz/${quiz.id}`} key={quiz.id} style={{ textDecoration: 'none' }}>
                                 <QuizCard key={quiz.id}>
                                     <QuizThumbnail sx={{ backgroundImage: `url(${quiz.thumbnailUrl})` }} />
                                     <QuizInfo>
@@ -51,7 +64,7 @@ function MainQuizzesBox({ quizzes, loading, totalPages, page, onPageChange }) {
                         ))}
                     </Stack>
                     <PaginationBox>
-                        <Pagination count={totalPages} page={page} onChange={onPageChange} />
+                        <Pagination count={totalPages} page={page} onChange={handlePageChange} />
                     </PaginationBox>
                 </>
             )}

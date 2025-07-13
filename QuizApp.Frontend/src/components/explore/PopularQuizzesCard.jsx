@@ -18,7 +18,7 @@ function PopularQuizzesCard() {
             ) : (
             <Stack spacing={2}>
                 {popularQuizzes.slice(0, 4).map((quiz) => (
-                    <Link to={`/quiz/${quiz.id}`} style={{ textDecoration: 'none' }}>
+                    <Link to={`/quiz/${quiz.id}`} key={quiz.id} style={{ textDecoration: 'none' }}>
                         <QuizCard key={quiz.id}>
                             <QuizThumbnail sx={{ backgroundImage: `url(${quiz.thumbnailUrl})` }} />
                             <QuizInfo>

@@ -1,8 +1,8 @@
 import { Typography, Stack } from "@mui/material";
+import { Link } from "react-router-dom";
 import { QuizHeaderBox, QuizImage, StartQuizButton } from "./StyledQuizPageComponents";
 
 export default function QuizHeader({ quizData }) {
-
     return (
         <QuizHeaderBox>
             <QuizImage sx={{ backgroundImage: `url(${quizData.thumbnailUrl})` }} />
@@ -15,7 +15,11 @@ export default function QuizHeader({ quizData }) {
                         {quizData.description}
                     </Typography>
                 </div>
-                <StartQuizButton>Start Quiz</StartQuizButton>
+                <Link to={`/quiz/${quizData.id}/play`}>
+                    <StartQuizButton fullWidth>
+                        Start Quiz
+                    </StartQuizButton>
+                </Link>
             </Stack>
         </QuizHeaderBox>
     );

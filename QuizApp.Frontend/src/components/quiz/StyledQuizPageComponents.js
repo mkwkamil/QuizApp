@@ -66,7 +66,7 @@ export const SidebarBox = styled(Box)({
 
 export const SidebarCard = styled(Paper)({
     padding: 28,
-    minWidth: 450,
+    minWidth: 350,
     borderRadius: 12,
     background: "#1c1c1c",
 });

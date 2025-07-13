@@ -43,7 +43,7 @@ public class UserController : ControllerBase
             return NotFound("User not found");
         }
 
-        int totalScore = user.SolvedQuizzes.Sum(q => q.Score);
+        int totalScore = user.SolvedQuizzes.Sum(q => q.CorrectAnswers);
         int totalQuestions = user.SolvedQuizzes.Sum(q => q.TotalQuestions);
 
         var favoriteCategory = user.SolvedQuizzes

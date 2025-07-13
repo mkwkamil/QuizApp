@@ -42,7 +42,7 @@ function CategoryNavbar({ loading, filters, setFilters }) {
         <Stack direction="row" alignItems="center" spacing={1} justifyContent="center">
             {!center && <IconButton onClick={scrollLeft}><ChevronLeft sx={{ color: '#888' }} /></IconButton>}
             <Box sx={{ flexGrow: 1, maxWidth: "100%" }}>
-                <CategoryNav ref={scrollRef} centered={center}>
+                <CategoryNav className={center ? "centered" : "leftAligned"} ref={scrollRef}>
                     {loading ? (
                         <CategorySkeleton items={8} />
                     ) : (

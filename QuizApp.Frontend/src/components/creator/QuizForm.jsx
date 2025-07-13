@@ -23,7 +23,7 @@ export default function QuizForm({ editMode = false, quizId = null }) {
             reset();
             useQuizStore.getState().setDraftId(null);
         }
-    }, []);
+    }, [editMode, reset]);
 
     useAutoSafeDraft(editMode);
 

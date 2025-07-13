@@ -288,5 +288,28 @@ public class QuizController(AppDbContext context, QuizService quizService) : Con
 
         return Ok(summary);
     }
-    
+
+    [HttpGet("{id}/play")]
+    public async Task<ActionResult<QuizSolveDto>> GetQuizForPlay(int id)
+    {
+        var quiz = await quizService.GetQuizForSolvingAsync(id);
+        
+        if (quiz == null) return NotFound( new { message = "Quiz not found or unavailable." });
+
+        return Ok(quiz);
+    }
+
+    [Authorize]
+    [HttpPost("submit")]
+    public async Task<IActionResult> SubmitQuiz([FromBody] QuizSubmissionDto submission)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        
+        var result = await quizService.SubmitQuizResultAsync(userId, submission);
+        
+        if (result == null)
+            return NotFound(new { message = "Quiz not found or unavailable." });
+
+        return Ok(result);
+    }
 }

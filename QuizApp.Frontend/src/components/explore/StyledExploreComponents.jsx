@@ -59,17 +59,22 @@ export const MainContent = styled(Box)({
     gap: 20,
 });
 
-export const CategoryNav = styled(Stack)(({ centered }) => ({
+export const CategoryNav = styled(Stack)({
     flexDirection: 'row',
     gap: 8,
     alignItems: 'center',
     padding: '8px 16px',
-    justifyContent: centered ? "center" : "flex-start",
     overflowX: 'auto',
     width: '100%',
     boxSizing: 'border-box',
     display: 'flex',
     scrollBehavior: 'smooth',
+    '&.centered': {
+        justifyContent: 'center',
+    },
+    '&.leftAligned': {
+        justifyContent: 'flex-start',
+    },
     '&::-webkit-scrollbar': {
         height: 6,
     },
@@ -79,8 +84,8 @@ export const CategoryNav = styled(Stack)(({ centered }) => ({
     },
     '&::-webkit-scrollbar-track': {
         backgroundColor: 'transparent',
-    }
-}));
+    },
+});
 
 export const CategoryButton = styled(Chip)(({ selected }) => ({
     cursor: 'pointer',
