@@ -20,7 +20,7 @@ export default function CommentForm({ quizId }) {
     
     return (
         <SectionBox>
-            <Typography variant="h6" mb={2}>Add a comment</Typography>
+            <Typography variant="h6" fontWeight="600" mb={2}>Add a comment</Typography>
             <Stack direction="row" spacing={2} alignItems="flex-start">
                 <MatchedCommentField
                     fullWidth

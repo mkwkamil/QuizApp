@@ -69,6 +69,9 @@ export const SidebarCard = styled(Paper)({
     minWidth: 350,
     borderRadius: 12,
     background: "#1c1c1c",
+    display: "flex",
+    flexDirection: "column",
+    gap: 14,
 });
 
 export const RatingBarBackground = styled(Box)({

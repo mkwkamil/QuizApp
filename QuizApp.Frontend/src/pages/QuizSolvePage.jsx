@@ -1,6 +1,6 @@
 import { useQuizSolve } from "../hooks/useQuizSolve";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { Pagination } from "@mui/material";
 import {
     LayoutWrapper,
@@ -21,8 +21,9 @@ import { useSubmitQuizAnswers } from "../hooks/useSubmitQuizAnswers";
 
 export default function QuizPlayPage() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const { data: quizData, isLoading } = useQuizSolve(id);
-    const { mutate: submitAnswers } = useSubmitQuizAnswers();
+    const { mutateAsync: submitAnswers } = useSubmitQuizAnswers();
     
     const [current, setCurrent] = useState(0);
     const [answers, setAnswers] = useState({});
@@ -58,14 +59,27 @@ export default function QuizPlayPage() {
         }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const payload = {
             quizId: parseInt(id),
             answers: preparePayload(),
             timeTaken: secondsElapsed,
         };
 
-        submitAnswers(payload);
+        try {
+            // noinspection JSCheckFunctionSignatures
+            const result = await submitAnswers(payload);
+            navigate(`/quiz/${id}/result`, {
+                state: {
+                    ...result,
+                    title: quizData.title,
+                    description: quizData.description,
+                    thumbnailUrl: quizData.thumbnailUrl,
+                }
+            });
+        } catch (error) {
+            console.error("Error submitting quiz answers:", error);
+        }
     };
 
     return (

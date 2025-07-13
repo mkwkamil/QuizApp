@@ -4,8 +4,6 @@ import { formatDistanceToNow } from "date-fns";
 import QuizComment from "./QuizComment";
 
 export default function CommentsSection({ comments }) {
-
-    console.log(comments)
     return (
         <SectionBox>
             <Typography variant="h6" mb={2}>User Comments</Typography>
