@@ -14,7 +14,7 @@ public class QuizSummaryDto
     
     public int QuestionCount { get; set; }
     public int Plays { get; set; }
-    public int AverageScore { get; set; }
+    public double AverageScore { get; set; }
     
     public AuthorDto Author { get; set; } = default!;
     public List<CommentDto> Comments { get; set; } = new();

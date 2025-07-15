@@ -29,8 +29,6 @@ const useAuthStore = create(
                         ...data
                     }
                 })),
-
-                getIsAuthenticated: () => !!useAuthStore.getState().token
             }
         ),
         {

@@ -44,14 +44,13 @@ export default function QuizResultPage() {
                     percentage={percentage}
                     formattedTime={formattedTime}
                 />
-            <ReviewAnswersCard />
-
+                <ReviewAnswersCard />
             </MainWrapper>
 
             <SidebarWrapper  sx={{ minWidth: "500px" }}>
                 <QuizInfoCard quizData={{title, description, thumbnailUrl}} th={220} />
-                <RateQuiz />
-                <CommentForm />
+                <RateQuiz quizId={id} />
+                <CommentForm quizId={id} />
             </SidebarWrapper>
         </LayoutWrapper>
     );

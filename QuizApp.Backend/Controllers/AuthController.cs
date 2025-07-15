@@ -137,29 +137,4 @@ public class AuthController : ControllerBase
             return StatusCode(500, "An internal server error occurred");
         }
     }
-
-    [Authorize]
-    [HttpGet("profile")]
-    public async Task<IActionResult> GetProfile()
-    {
-        var username = User.Identity?.Name;
-        if (string.IsNullOrEmpty(username))
-        {
-            return Unauthorized("User not authenticated");
-        }
-
-        var user = await _authService.GetUserByUsername(username);
-        if (user == null)
-        {
-            return NotFound("User not found");
-        }
-        
-        return Ok(new
-        {
-            user.Username,
-            user.Email,
-            user.Role,
-            JoinDate = user.CreatedAt.ToString("yyyy-MM-dd")
-        });
-    }
 }

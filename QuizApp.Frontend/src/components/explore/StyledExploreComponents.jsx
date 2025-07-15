@@ -166,6 +166,21 @@ export const ProfileSidebar = styled(Paper)({
     overflowY: 'auto',
 });
 
+export const LoginSidebar = styled(Paper)({
+    padding: "30px 30px",
+    borderRadius: 16,
+    border: "1px solid rgba(255,255,255,0.05)",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    overflowY: "auto",
+    textAlign: "center",
+    color: "#fff",
+});
+
 export const ProfileHeader = styled(Box)({
     display: 'flex',
     alignItems: 'center',

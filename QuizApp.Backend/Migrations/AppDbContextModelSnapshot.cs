@@ -127,8 +127,8 @@ namespace QuizApp.Backend.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("AverageScore")
-                        .HasColumnType("integer");
+                    b.Property<double>("AverageScore")
+                        .HasColumnType("double precision");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
@@ -151,6 +151,9 @@ namespace QuizApp.Backend.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<int>("Plays")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RatingCount")
                         .HasColumnType("integer");
 
                     b.Property<bool>("RevealAnswers")
@@ -260,10 +263,10 @@ namespace QuizApp.Backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int>("QuizId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("QuizId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Value")
@@ -273,8 +276,7 @@ namespace QuizApp.Backend.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.HasIndex("AuthorId", "QuizId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Ratings");
                 });
@@ -432,21 +434,17 @@ namespace QuizApp.Backend.Migrations
 
             modelBuilder.Entity("QuizApp.Backend.Models.Rating", b =>
                 {
-                    b.HasOne("QuizApp.Backend.Models.User", "Author")
-                        .WithMany("Ratings")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("QuizApp.Backend.Models.Quiz", "Quiz")
+                    b.HasOne("QuizApp.Backend.Models.Quiz", null)
                         .WithMany("Ratings")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
-
-                    b.Navigation("Quiz");
+                    b.HasOne("QuizApp.Backend.Models.User", null)
+                        .WithMany("Ratings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("QuizApp.Backend.Models.UserFollow", b =>

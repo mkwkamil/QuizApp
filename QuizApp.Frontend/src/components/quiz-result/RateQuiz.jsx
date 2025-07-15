@@ -1,11 +1,16 @@
-import { useState } from "react";
 import { Typography, Stack, Divider } from "@mui/material";
 import { Star } from "@mui/icons-material";
 import {SidebarCard} from "../quiz/StyledQuizPageComponents";
+import {useQuizRating} from "../../hooks/ratings/useQuizRating";
 
-export default function RateQuiz() {
-    const [hovered, setHovered] = useState(0);
-    const [selected, setSelected] = useState(0);
+export default function RateQuiz({ quizId }) {
+    const {
+        hovered,
+        selected,
+        handleMouseEnter,
+        handleMouseLeave,
+        handleClick
+    } = useQuizRating({ quizId });
 
     return (
         <SidebarCard>
@@ -17,9 +22,9 @@ export default function RateQuiz() {
                 {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                         key={star}
-                        onMouseEnter={() => setHovered(star)}
-                        onMouseLeave={() => setHovered(0)}
-                        onClick={() => setSelected(star)}
+                        onMouseEnter={() => handleMouseEnter(star)}
+                        onMouseLeave={handleMouseLeave}
+                        onClick={() => handleClick(star)}
                         sx={{
                             color: (hovered || selected) >= star ? "#facc15" : "#555",
                             cursor: "pointer",

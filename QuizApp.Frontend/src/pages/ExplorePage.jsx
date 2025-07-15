@@ -3,11 +3,11 @@ import FiltersCard from "../components/explore/FiltersCard";
 import PopularQuizzesCard from "../components/explore/PopularQuizzesCard";
 import CategoryNavbar from "../components/explore/CategoryNavbar";
 import MainQuizzesBox from "../components/explore/MainQuizzesBox";
-import StatisticsCard from "../components/explore/StatisticsCard";
+import ProfileStatsBox from "../components/explore/ProfileStatsBox";
 import CreateQuizPromo from "../components/common/CreatorPromoBox";
 import SupportTooltip from "../components/common/SupportTooltip";
 import {useEffect, useState} from "react";
-import {useExploreQuizzes} from "../hooks/useExploreQuizzes";
+import {useExploreQuizzes} from "../hooks/explore/useExploreQuizzes";
 import {useSearchParams} from "react-router-dom";
 import { toast } from 'react-toastify';
 
@@ -66,7 +66,7 @@ export default function ExplorePage() {
                 <MainQuizzesBox loading={loading} quizzes={quizzes} totalPages={totalPages} page={filters.page} setFilters={setFilters}/>
             </MainContent>
             <Sidebar>
-                <StatisticsCard />
+                <ProfileStatsBox />
                 <CreateQuizPromo />
             </Sidebar>
             <SupportTooltip />

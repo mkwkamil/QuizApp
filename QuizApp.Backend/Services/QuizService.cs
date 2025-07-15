@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
 using QuizApp.Backend.DTO;
+using QuizApp.Backend.Interfaces;
 using QuizApp.Backend.Models;
 
 namespace QuizApp.Backend.Services;
 
-public class QuizService(AppDbContext context, RatingService ratingService, CommentsService commentsService)
+public class QuizService(AppDbContext context, ICommentsService commentsService)
 {
     public async Task<QuizSummaryDto?> GetQuizSummaryAsync(int quizId)
     {
@@ -19,7 +20,6 @@ public class QuizService(AppDbContext context, RatingService ratingService, Comm
 
         if (quiz == null) return null;
 
-        var ratingSummary = await ratingService.GetRatingSummaryAsync(quizId);
         var comments = await commentsService.GetCommentsForQuizAsync(quizId, 3);
 
         return new QuizSummaryDto
@@ -31,8 +31,6 @@ public class QuizService(AppDbContext context, RatingService ratingService, Comm
             Category = quiz.Category.Name,
             Difficulty = quiz.Difficulty.Name,
             QuestionCount = quiz.Questions.Count,
-            Rating = ratingSummary.Average,
-            RatingsBreakdown = ratingSummary.Breakdown,
             Plays = quiz.Plays,
             AverageScore = quiz.AverageScore,
             Author = new AuthorDto

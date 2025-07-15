@@ -22,7 +22,8 @@ public class Quiz
     public bool ShuffleQuestions { get; set; } = false;
     
     public int Plays { get; set; } = 0;
-    public int AverageScore { get; set; } = 0;
+    public double AverageScore { get; set; } = 0.0;
+    public int RatingCount { get; set; } = 0;
 
     public int AuthorId { get; set; }
     public User Author { get; set; }

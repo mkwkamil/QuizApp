@@ -13,8 +13,8 @@ import { useState } from "react";
 import {useQuizStore} from "../../store/quizStore";
 import {StyledCancelButton, StyledDraftButton, StyledQuizNextButton} from "../common/StyledButtons";
 import {useNavigate} from "react-router-dom";
-import {useCategories} from "../../hooks/useCategories";
-import {useDifficulties} from "../../hooks/useDifficulties";
+import { useCategories } from "../../hooks/meta/useCategories";
+import { useDifficulties } from "../../hooks/meta/useDifficulties";
 
 function FirstStage({ onComplete, editMode = false }) {
     const navigate = useNavigate();

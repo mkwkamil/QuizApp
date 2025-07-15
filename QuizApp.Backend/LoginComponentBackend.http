@@ -30,3 +30,6 @@ Content-Type: {{contentType}}
 POST {{host}}/api/quiz
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
+
+###
+GET {{host}}/api/Profile/explore-summary

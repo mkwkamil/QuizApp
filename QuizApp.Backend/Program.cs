@@ -5,12 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using QuizApp.Backend.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<RatingService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<ICommentsService, CommentsService>();
 builder.Services.AddScoped<CommentsService>();
 builder.Services.AddScoped<QuizService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -48,9 +53,6 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

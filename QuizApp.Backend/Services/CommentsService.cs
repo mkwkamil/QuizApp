@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
 using QuizApp.Backend.DTO;
+using QuizApp.Backend.Interfaces;
 using QuizApp.Backend.Models;
 
 namespace QuizApp.Backend.Services;
 
-public class CommentsService(AppDbContext context)
+public class CommentsService(AppDbContext context) : ICommentsService
 {
     public async Task<List<CommentDto>> GetCommentsForQuizAsync(int quizId, int? limit = null)
     {

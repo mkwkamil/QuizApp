@@ -1,13 +1,14 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.Backend.DTO;
-using QuizApp.Backend.Services;
+using QuizApp.Backend.Interfaces;
 
 namespace QuizApp.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CommentsController(CommentsService commentsService) : ControllerBase 
+public class CommentsController(ICommentsService commentsService) : ControllerBase 
 {
     [HttpPost]
     [Authorize]
@@ -16,11 +17,8 @@ public class CommentsController(CommentsService commentsService) : ControllerBas
         if (string.IsNullOrWhiteSpace(dto.Content)) 
             return BadRequest("Comment content cannot be empty.");
         
-        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        if (userIdClaim == null) return Unauthorized();
-
-        var userId = int.Parse(userIdClaim);
-
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        
         try
         {
             var created = await commentsService.AddCommentAsync(userId, dto);

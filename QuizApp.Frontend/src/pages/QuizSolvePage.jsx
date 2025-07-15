@@ -1,4 +1,4 @@
-import { useQuizSolve } from "../hooks/useQuizSolve";
+import { useQuizSolve } from "../hooks/quizzes/useQuizSolve";
 import { useEffect, useState } from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import { Pagination } from "@mui/material";
@@ -17,7 +17,7 @@ import AnswersSection from "../components/quiz-solve/AnswersSection";
 import QuizInfoCard from "../components/quiz-solve/QuizInfoCard";
 import QuizProgressCard from "../components/quiz-solve/QuizProgressCard";
 import { format } from "date-fns";
-import { useSubmitQuizAnswers } from "../hooks/useSubmitQuizAnswers";
+import { useSubmitQuizAnswers } from "../hooks/quizzes/useSubmitQuizAnswers";
 
 export default function QuizPlayPage() {
     const { id } = useParams();
@@ -84,7 +84,7 @@ export default function QuizPlayPage() {
 
     return (
         <LayoutWrapper>
-            <SidebarWrapper />
+            {/*<SidebarWrapper />*/}
             <MainWrapper>
                 <NavigationButtons current={current} total={totalQuestions} setCurrent={setCurrent} />
 

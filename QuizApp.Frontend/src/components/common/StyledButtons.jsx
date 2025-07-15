@@ -60,8 +60,8 @@ export const StyledMainGlowButton = styled(Button)({
     letterSpacing: '1px',
     boxShadow: '0 0 15px rgba(48, 79, 254, 0.5)',
     '&:hover': {
-        background: 'linear-gradient(90deg, #283593, #1a237e)',
-        boxShadow: '0 0 20px rgba(48, 79, 254, 0.8)'
+        // background: 'linear-gradient(90deg, #283593, #1a237e)',
+        boxShadow: '0 0 15px rgba(48, 79, 254, 0.7)'
     }
 });
 

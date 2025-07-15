@@ -1,6 +1,6 @@
 import {PopularQuizzesBox, QuizCard, QuizInfo, QuizThumbnail} from "./StyledExploreComponents";
 import {Stack, Typography} from "@mui/material";
-import {usePopularQuizzes} from "../../hooks/usePopularQuizzes";
+import { usePopularQuizzes } from "../../hooks/explore/usePopularQuizzes";
 import { QuizSkeleton } from "../common/SkeletonBoxes";
 import { Link } from "react-router-dom";
 

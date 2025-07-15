@@ -1,7 +1,7 @@
 import { CategoryNav, CategoryButton } from "./StyledExploreComponents";
 import { Box, IconButton, Stack } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import { useCategories } from "../../hooks/useCategories";
+import { useCategories } from "../../hooks/meta/useCategories";
 import { useEffect, useRef, useState } from "react";
 import { CategorySkeleton} from "../common/SkeletonBoxes";
 

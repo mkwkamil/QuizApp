@@ -9,7 +9,7 @@ import CommentsSection from "../components/quiz/CommentsSection";
 import AuthorCard from "../components/quiz/AuthorCard";
 import RatingSummary from "../components/quiz/RatingSummary";
 import QuizStatsCard from "../components/quiz/QuizStatsCard";
-import {useQuizSummary} from "../hooks/useQuizSummary";
+import { useQuizSummary } from "../hooks/quizzes/useQuizSummary";
 
 export default function QuizPage() {
     const { id } = useParams();
@@ -28,7 +28,7 @@ export default function QuizPage() {
             <SidebarBox>
                 <AuthorCard author={quizData.author} />
                 <QuizStatsCard quizData={quizData} />
-                <RatingSummary breakdown={quizData.ratingsBreakdown} average={quizData.rating} />
+                <RatingSummary quizId={id} />
             </SidebarBox>
         </HeroContainer>
     );

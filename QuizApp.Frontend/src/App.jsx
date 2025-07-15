@@ -1,9 +1,9 @@
 import Navbar from './components/common/Navbar';
-import LoginPage from "./pages/Auth/LoginPage";
-import RegisterPage from "./pages/Auth/RegisterPage";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from "./pages/MainPage";
-import ProfilePage from "./pages/Dashboard/ProfilePage";
+import ProfilePage from "./pages/ProfilePage";
 import ExplorePage from "./pages/ExplorePage";
 import QuizManagePage from "./pages/QuizManagePage";
 import QuizPage from "./pages/QuizPage";

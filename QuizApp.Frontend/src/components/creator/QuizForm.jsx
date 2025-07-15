@@ -6,8 +6,8 @@ import QuizStepper from "./QuizStepper";
 import FirstStage from "./FirstStage";
 import SecondStage from "./SecondStage";
 import ThirdStage from "./ThirdStage";
-import useAutoSafeDraft from "../../hooks/useAutoSafeDraft";
-import { useQuizNavigation } from '../../hooks/useQuizNavigation';
+import useAutoSafeDraft from "../../hooks/quizzes/useAutoSafeDraft";
+import { useQuizNavigation } from "../../hooks/quizzes/useQuizNavigation";
 import RestoreDraftModal from "../modal/RestoreDraftModal";
 
 export default function QuizForm({ editMode = false, quizId = null }) {

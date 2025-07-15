@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom";
-import {useLoadQuiz} from "../hooks/useLoadQuiz";
-import LoginPage from "./Auth/LoginPage";
+import { useLoadQuiz } from "../hooks/quizzes/useLoadQuiz";
+import LoginPage from "./auth/LoginPage";
 import Loading from "../components/common/Loading";
 import QuizForm from "../components/creator/QuizForm";
 import useAuthStore from "../store/authStore";

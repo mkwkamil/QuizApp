@@ -14,7 +14,8 @@ export const ReviewBox = styled(Box)({
     },
 });
 
-export const ResultBox = styled(Box)(({ passed }) => ({
+export const ResultBox = styled(Box, {
+    shouldForwardProp: (prop) => prop !== "passed"})(({ passed }) => ({
     textAlign: "center",
     background: passed
         ? "linear-gradient(135deg, #1e3a8a, #1e293b)"

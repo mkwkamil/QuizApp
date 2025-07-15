@@ -1,15 +1,21 @@
 import { Typography, Stack } from "@mui/material";
 import { SidebarCard } from "./StyledQuizPageComponents";
 import RatingBar from "./RatingBar";
+import {useRatingSummary} from "../../hooks/ratings/useRatingSummary";
 
-export default function RatingSummary({ breakdown, average }) {
+export default function RatingSummary({ quizId}) {
+    const { data: ratingSummary, isLoading } = useRatingSummary(quizId);
+
+    if (isLoading || !ratingSummary) return null;
+    
+    const {average, breakdown} = ratingSummary;
     const total = Object.values(breakdown).reduce((a, b) => a + b, 0);
 
     return (
         <SidebarCard>
-            <Typography variant="h6" mb={2}>User Ratings</Typography>
-            <Typography variant="h4" fontWeight={700}>{average.toFixed(1)}</Typography>
-            <Stack spacing={1} mt={2}>
+            <Typography variant="h6">User Ratings</Typography>
+            <Typography variant="h4" my={1} fontWeight={700}>{average.toFixed(1)}</Typography>
+            <Stack spacing={1}>
                 {[5, 4, 3, 2, 1].map(stars => (
                     <RatingBar
                         key={stars}

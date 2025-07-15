@@ -1,7 +1,7 @@
 import { Typography, Stack } from "@mui/material";
 import { SectionBox, StyledCommentButton, MatchedCommentField } from "./StyledQuizPageComponents";
 import {useState} from "react";
-import {useAddComment} from "../../hooks/useAddComment";
+import { useAddComment } from "../../hooks/comments/useAddComment";
 
 export default function CommentForm({ quizId }) {
     const [text, setText] = useState("");

@@ -1,7 +1,7 @@
-import React from 'react';
 import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { useAuth } from "../../hooks/auth/useAuth";
 import useAuthStore from "../../store/authStore";
-import { useAuth } from "../../hooks/useAuth";
 import {
     AppBar, Toolbar, Typography, Button, IconButton, InputBase, Badge,
     Menu, MenuItem, Box, Stack, Drawer, List, ListItem, ListItemText, useMediaQuery
@@ -45,8 +45,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function Navbar() {
     const user = useAuthStore(state => state.user);
     const { handleLogout } = useAuth();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const open = Boolean(anchorEl);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));

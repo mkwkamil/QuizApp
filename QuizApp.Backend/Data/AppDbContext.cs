@@ -42,10 +42,6 @@ public class AppDbContext : DbContext
             .Property(u => u.PasswordSalt)
             .IsRequired();
 
-        modelBuilder.Entity<Rating>()
-            .HasIndex(r => new { r.AuthorId, r.QuizId })
-            .IsUnique();
-
         modelBuilder.Entity<User>()
             .HasMany(u => u.Quizzes)
             .WithOne(q => q.Author)
@@ -56,11 +52,6 @@ public class AppDbContext : DbContext
             .WithOne(c => c.Author)
             .HasForeignKey(c => c.AuthorId);
         
-        modelBuilder.Entity<User>()
-            .HasMany(u => u.Ratings)
-            .WithOne(r => r.Author)
-            .HasForeignKey(r => r.AuthorId);
-        
         modelBuilder.Entity<Quiz>()
             .HasMany(q => q.Questions)
             .WithOne(qn => qn.Quiz)
@@ -70,11 +61,6 @@ public class AppDbContext : DbContext
             .HasMany(q => q.Comments)
             .WithOne(c => c.Quiz)
             .HasForeignKey(c => c.QuizId);
-        
-        modelBuilder.Entity<Quiz>()
-            .HasMany(q => q.Ratings)
-            .WithOne(r => r.Quiz)
-            .HasForeignKey(r => r.QuizId);
         
         modelBuilder.Entity<Question>()
             .HasMany(q => q.Answers)
