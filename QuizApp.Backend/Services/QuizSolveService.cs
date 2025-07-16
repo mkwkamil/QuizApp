@@ -25,9 +25,9 @@ public class QuizSolveService(AppDbContext context, ICommentsService commentsSer
         return new QuizSummaryDto
         {
             Id = quiz.Id,
-            Title = quiz.Title ?? "Untitled Quiz",
-            Description = quiz.Description ?? "No description available",
-            ThumbnailUrl = quiz.ThumbnailUrl ?? "default-thumbnail.png",
+            Title = quiz.Title,
+            Description = quiz.Description,
+            ThumbnailUrl = quiz.ThumbnailUrl,
             Category = quiz.Category.Name,
             Difficulty = quiz.Difficulty.Name,
             QuestionCount = quiz.Questions.Count,
@@ -56,18 +56,18 @@ public class QuizSolveService(AppDbContext context, ICommentsService commentsSer
         return new QuizSolveDto
         {
             Id = quiz.Id,
-            Title = quiz.Title ?? "Untitled Quiz",
-            Description = quiz.Description ?? "No description available.",
-            ThumbnailUrl = quiz.ThumbnailUrl ?? "default-thumbnail.png",
+            Title = quiz.Title,
+            Description = quiz.Description,
+            ThumbnailUrl = quiz.ThumbnailUrl,
             Questions = quiz.Questions.Select(q => new QuestionDto
             {
                 Id = q.Id,
-                Text = q.Text ?? "No question text.",
-                Type = q.Type ?? "single",
+                Text = q.Text,
+                Type = q.Type,
                 Answers = q.Answers.Select(a => new AnswerDto
                 {
                     Id = a.Id,
-                    Text = a.Text ?? "No answer text."
+                    Text = a.Text,
                 }).ToList()
             }).ToList()
         };

@@ -63,8 +63,8 @@ public class ExploreService(AppDbContext context) : IExploreService
             .Select(q => new PopularQuizDto
             {
                 Id = q.Id,
-                Title = q.Title!,
-                ThumbnailUrl = q.ThumbnailUrl!,
+                Title = q.Title,
+                ThumbnailUrl = q.ThumbnailUrl,
                 QuestionsCount = q.Questions.Count,
                 PlayedBy = q.Plays,
                 AverageRating = q.RatingCount > 0 ? q.AverageScore : 0.0
@@ -140,9 +140,9 @@ public class ExploreService(AppDbContext context) : IExploreService
             .Select(q => new FilteredQuizDto
             {
                 Id = q.Id,
-                Title = q.Title!,
-                Description = q.Description!,
-                ThumbnailUrl = q.ThumbnailUrl!,
+                Title = q.Title,
+                Description = q.Description,
+                ThumbnailUrl = q.ThumbnailUrl,
                 QuestionsCount = q.Questions.Count,
                 PlayedBy = q.Plays,
                 AverageRating = q.RatingCount > 0 ? q.AverageScore : 0
