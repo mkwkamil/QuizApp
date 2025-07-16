@@ -5,7 +5,7 @@ export const useUserQuizzes = () => {
     return useQuery({
         queryKey: ["user-quizzes"],
         queryFn: async () => {
-            const res = await api.get('/profile/my-quizzes');
+            const res = await api.get('/quiz-management/my-quizzes');
             return res.data;
         }
     })

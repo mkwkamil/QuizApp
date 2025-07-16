@@ -19,7 +19,7 @@ public class QuizManagementController(IQuizManagementService quizManagementServi
         
         var quizId = await quizManagementService.CreateQuizAsync(userId.Value, dto);
         
-        return Ok(new { quizId });
+        return Created(string.Empty, new { quizId });
     }
     
     [HttpPut("{id:int}")]
@@ -30,7 +30,7 @@ public class QuizManagementController(IQuizManagementService quizManagementServi
         
         var result = await quizManagementService.UpdateQuizAsync(userId.Value, id, dto);
 
-        return result is null ? NotFound() : Ok(new { quizId = result });
+        return result is not null ? Ok(new { quizId = result }) : NotFound();
     }
     
     [HttpDelete("{id:int}")]
@@ -52,7 +52,7 @@ public class QuizManagementController(IQuizManagementService quizManagementServi
         
         var quiz = await quizManagementService.GetQuizForEditAsync(id, userId.Value);
         
-        return quiz is null ? NotFound() : Ok(quiz);
+        return quiz is not null ? Ok(quiz) : NotFound();
     }
     
     [HttpPost("draft")]
@@ -63,7 +63,8 @@ public class QuizManagementController(IQuizManagementService quizManagementServi
         
         var draftId = await quizManagementService.CreateDraftAsync(userId.Value, dto);
         
-        return Ok(new { draftId });
+        return Created(string.Empty, new { draftId });
+
     }
     
     [HttpPut("draft/{id:int}")]
@@ -74,7 +75,7 @@ public class QuizManagementController(IQuizManagementService quizManagementServi
         
         var result = await quizManagementService.UpdateDraftAsync(userId.Value, id, dto);
         
-        return result is null ? NotFound() : Ok(new { draftId = result });
+        return result is not null ? Ok(new { draftId = result }) : NotFound();
     }
     
     [HttpGet("my-quizzes")]

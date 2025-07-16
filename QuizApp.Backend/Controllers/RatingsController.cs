@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.Backend.DTO.Ratings;
+using QuizApp.Backend.Extensions;
 using QuizApp.Backend.Interfaces;
 
 namespace QuizApp.Backend.Controllers;
@@ -16,10 +16,12 @@ public class RatingsController(IRatingService ratingService) : ControllerBase
     {
         if (request.Value is < 1 or > 5)
             return BadRequest("Rating value must be between 1 and 5.");
-        
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        await ratingService.RateQuizAsync(userId, request);
+        var userId = User.GetUserId();
+        if (userId == null) return Unauthorized();
+
+        await ratingService.RateQuizAsync(userId.Value, request);
+        
         return Ok();
     }
     

@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.Backend.DTO.Comments;
+using QuizApp.Backend.Extensions;
 using QuizApp.Backend.Interfaces;
 
 namespace QuizApp.Backend.Controllers;
@@ -16,18 +16,12 @@ public class CommentsController(ICommentsService commentsService) : ControllerBa
     {
         if (string.IsNullOrWhiteSpace(dto.Content)) 
             return BadRequest("Comment content cannot be empty.");
+
+        var userId = User.GetUserId();
+        if (userId == null) return Unauthorized();
         
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        
-        try
-        {
-            var created = await commentsService.AddCommentAsync(userId, dto);
-            return StatusCode(201, created);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("❌ Error adding comment: " + ex.Message);
-            return StatusCode(500, "An unexpected error occurred.");
-        }
+        var created = await commentsService.AddCommentAsync(userId.Value, dto);
+
+        return Created(string.Empty, created);
     }
 }

@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
+using QuizApp.Backend.DTO.Auth;
 using QuizApp.Backend.Interfaces;
 using QuizApp.Backend.Models;
 
@@ -9,84 +10,77 @@ namespace QuizApp.Backend.Services;
 
 public class AuthService(AppDbContext context, ITokenService tokenService) : IAuthService
 {
-    public async Task<bool> Register(User user, string password)
+    public async Task<bool> RegisterAsync(RegisterRequestDto dto)
     {
-        CreatePasswordHash(password, out byte[] hash, out byte[] salt);
-        user.PasswordHash = hash;
-        user.PasswordSalt = salt;
-        user.CreatedAt = DateTime.UtcNow;
-        user.PublicName = user.Username;
+        if (await context.Users.AnyAsync(u => u.Username == dto.Username)) return false;
         
+        CreatePasswordHash(dto.Password, out byte[] hash, out byte[] salt);
+
+        var user = new User
+        {
+            Username = dto.Username,
+            Email = dto.Email,
+            PasswordHash = hash,
+            PasswordSalt = salt,
+            PublicName = dto.Username,
+            CreatedAt = DateTime.UtcNow,
+            Role = "User"
+        };
+
         context.Users.Add(user);
         await context.SaveChangesAsync();
+        
         return true;
     }
     
-    public async Task<string?> Login(string username, string password)
+    public async Task<AuthResponseDto?> LoginAsync(LoginRequestDto dto)
     {
-        var user = await context.Users.FirstOrDefaultAsync(x => x.Username == username);
-        if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            return null;
+        var user = await context.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
+        if (user == null || !VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt)) return null;
 
-        return tokenService.CreateToken(user);
-    }
+        var token = tokenService.CreateToken(user);
 
-    public async Task<bool> Logout(string token)
-    {
-        try
+        return new AuthResponseDto
         {
-            var principal = tokenService.ValidateToken(token);
-            if (principal == null)
+            Token = token,
+            User = new AuthUserDto
             {
-                return false;
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role
             }
+        };
+    }
 
-            var blacklistedToken = new BlacklistedToken
-            {
-                Token = token,
-                ExpiryDate = DateTime.UtcNow.AddDays(1)
-            };
-        
-            context.BlackListedTokens.Add(blacklistedToken);
-            await context.SaveChangesAsync();
+    public async Task<bool> LogoutAsync(string token)
+    {
+        var principal = tokenService.ValidateToken(token);
+        if (principal == null) return false;
 
-            return true;
-        }
-        catch (Exception ex)
+        context.BlackListedTokens.Add(new BlacklistedToken
         {
-            Console.WriteLine($"Error during logout: {ex.Message}");
-            return false;
-        }
-    }
-    
-    public async Task<bool> UserExists(string username)
-    {
-        return await context.Users.AnyAsync(x => x.Username == username);
-    }
-    
-    public async Task<User?> GetUserByUsername(string username)
-    {
-        return await context.Users
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Username == username);
+            Token = token,
+            ExpiryDate = DateTime.UtcNow.AddHours(1)
+        });
+        
+        await context.SaveChangesAsync();
+
+        return true;
     }
 
-    
     private void CreatePasswordHash(string password, out byte[] hash, out byte[] salt)
     {
-        using (var hmac = new HMACSHA512())
-        {
-            salt = hmac.Key;
-            hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-        }
+        using var hmac = new HMACSHA512();
+        salt = hmac.Key;
+        hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
     }
     
     private bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
     {
-        using (var hmac = new HMACSHA512(storedSalt))
-        {
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return computedHash.SequenceEqual(storedHash);
-        }
+        using var hmac = new HMACSHA512(storedSalt);
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        
+        return computedHash.SequenceEqual(storedHash);
     }
 }

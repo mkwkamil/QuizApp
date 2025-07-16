@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.Backend.DTO.QuizSolve;
+using QuizApp.Backend.Extensions;
 using QuizApp.Backend.Interfaces;
 
 namespace QuizApp.Backend.Controllers;
@@ -15,9 +15,7 @@ public class QuizSolveController(IQuizSolveService quizSolveService) : Controlle
     {
         var summary = await quizSolveService.GetQuizSummaryAsync(id);
         
-        if (summary == null) return NotFound(new { message = "Quiz not found or unavailable." });
-
-        return Ok(summary);
+        return summary is not null ? Ok(summary) : NotFound();
     }
     
     [HttpGet("{id}/solve")]
@@ -25,23 +23,18 @@ public class QuizSolveController(IQuizSolveService quizSolveService) : Controlle
     {
         var quiz = await quizSolveService.GetQuizForSolvingAsync(id);
 
-        if (quiz == null)
-            return NotFound(new { message = "Quiz not found or unavailable." });
-
-        return Ok(quiz);
+        return quiz is not null ? Ok(quiz) : NotFound();
     }
 
     [Authorize]
     [HttpPost("submit")]
     public async Task<IActionResult> SubmitQuiz([FromBody] QuizSubmissionDto submission)
     {
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var userId = User.GetUserId();
+        if (userId == null) return Unauthorized();
 
-        var result = await quizSolveService.SubmitQuizResultAsync(userId, submission);
+        var result = await quizSolveService.SubmitQuizResultAsync(userId.Value, submission);
 
-        if (result == null)
-            return NotFound(new { message = "Quiz not found or unavailable." });
-
-        return Ok(result);
+        return result is not null ? Ok(result) : NotFound();
     }
 }

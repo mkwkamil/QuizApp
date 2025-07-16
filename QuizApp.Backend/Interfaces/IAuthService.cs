@@ -1,12 +1,10 @@
-using QuizApp.Backend.Models;
+using QuizApp.Backend.DTO.Auth;
 
-namespace QuizApp.Backend.Services;
+namespace QuizApp.Backend.Interfaces;
 
 public interface IAuthService
 {
-    Task<bool> Register(User user, string password);
-    Task<string?> Login(string username, string password);
-    Task<bool> Logout(string token);
-    Task<bool> UserExists(string username);
-    Task<User?> GetUserByUsername(string username);
+    Task<bool> RegisterAsync(RegisterRequestDto dto);
+    Task<AuthResponseDto?> LoginAsync(LoginRequestDto dto);
+    Task<bool> LogoutAsync(string token);
 }

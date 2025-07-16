@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.Backend.DTO.Explore;
+using QuizApp.Backend.Extensions;
 using QuizApp.Backend.Interfaces;
 
 namespace QuizApp.Backend.Controllers;
@@ -14,13 +14,12 @@ public class ExploreController(IExploreService exploreService) : ControllerBase
     [HttpGet("user-summary")]
     public async Task<IActionResult> GetExploreUserSummary()
     {
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var userId = User.GetUserId();
+        if (userId == null) return Unauthorized();
         
-        var summary = await exploreService.GetExploreUserSummaryAsync(userId);
+        var summary = await exploreService.GetExploreUserSummaryAsync(userId.Value);
         
-        if (summary == null) return NotFound("User not found or summary not available");
-        
-        return Ok(summary);
+        return summary is not null ? Ok(summary) : NotFound("User summary not found");
     }
 
     [HttpGet("popular")]
@@ -41,14 +40,8 @@ public class ExploreController(IExploreService exploreService) : ControllerBase
         [FromQuery] bool includeAnswered = true
     )
     {
-        int? userId = null;
-        if (User.Identity?.IsAuthenticated == true)
-        {
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (int.TryParse(userIdClaim, out var parsedId))
-                userId = parsedId;
-        }
-
+        int? userId = User.GetUserId();
+        
         var dto = new QuizFilterRequestDto
         {
             PageId = Math.Max(pageId, 1),
@@ -62,6 +55,7 @@ public class ExploreController(IExploreService exploreService) : ControllerBase
         };
 
         var result = await exploreService.GetFilteredQuizzesAsync(dto);
+
         return Ok(result);
     }
 }

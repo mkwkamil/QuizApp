@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizApp.Backend.DTO.Profile;
+using QuizApp.Backend.Extensions;
 using QuizApp.Backend.Interfaces;
 
 namespace QuizApp.Backend.Controllers;
@@ -14,38 +14,35 @@ public class ProfileController(IProfileService profileService) : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateProfileData([FromBody] ProfileUpdateDto request)
     {
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var userId = User.GetUserId();
+        if (userId == null) return Unauthorized();
         
-        var result = await profileService.UpdatePublicDataAsync(userId, request);
+        var result = await profileService.UpdatePublicDataAsync(userId.Value, request);
         
-        if (result == null) return BadRequest("Failed to update profile data");
-
-        return Ok(result);
+        return result is not null ? Ok(result) : BadRequest("Failed to update profile data");
     }
 
     [Authorize]
     [HttpPost("avatar")]
     public async Task<IActionResult> UpdateAvatar([FromForm] UploadAvatarDto dto)
     {
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var userId = User.GetUserId();
+        if (userId == null) return Unauthorized();
         
-        var result = await profileService.UpdateAvatarAsync(userId, dto.AvatarFile);
+        var result = await profileService.UpdateAvatarAsync(userId.Value, dto.AvatarFile);
         
-        if (result == null) return BadRequest("Failed to update avatar");
-
-        return Ok(result);
+        return result is not null ? Ok(result) : BadRequest("Failed to update avatar");
     }
 
     [Authorize]
     [HttpGet("summary")]
     public async Task<IActionResult> GetProfileSummary()
     {
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
-        var summary = await profileService.GetProfileSummaryAsync(userId);
+        var userId = User.GetUserId();
+        if (userId == null) return Unauthorized();
         
-        if (summary == null) return NotFound("Profile summary not found");
+        var summary = await profileService.GetProfileSummaryAsync(userId.Value);
         
-        return Ok(summary);
+        return summary is not null ? Ok(summary) : NotFound("Profile summary not found");
     }
 }
