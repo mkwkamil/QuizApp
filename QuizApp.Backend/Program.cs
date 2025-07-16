@@ -16,6 +16,7 @@ builder.Services.AddScoped<ICommentsService, CommentsService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IExploreService, ExploreService>();
 builder.Services.AddScoped<IQuizSolveService, QuizSolveService>();
+builder.Services.AddScoped<IQuizManagementService, QuizManagementService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

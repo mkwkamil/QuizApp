@@ -57,26 +57,26 @@ export default function ProfileStatsBox() {
                 </Box>
             </ProfileHeader>
             <StatsChips>
-                <Chip label={`${profileData.stats.followers} followers`} color="primary" />
-                <Chip label={`${profileData.stats.following} following`} color="secondary" />
-                <Chip label={`${profileData.stats.quizzesCreated} Quizzes`} color="default" />
+                <Chip label={`${profileData.followers} followers`} color="primary" />
+                <Chip label={`${profileData.following} following`} color="secondary" />
+                <Chip label={`${profileData.quizzesCreated} Quizzes`} color="default" />
             </StatsChips>
             <StatsBox>
                 <Box textAlign="center">
                     <Typography variant="subtitle2" fontWeight="bold">Rank</Typography>
-                    <Typography variant="h6">{profileData.stats.userRank}</Typography>
+                    <Typography variant="h6">{profileData.userRank}</Typography>
                 </Box>
                 <Box textAlign="center">
                     <Typography variant="subtitle2" fontWeight="bold">Favorite</Typography>
-                    <Typography variant="h6">{profileData.stats.favoriteCategory}</Typography>
+                    <Typography variant="h6">{profileData.favoriteCategory}</Typography>
                 </Box>
                 <Box textAlign="center">
                     <Typography variant="subtitle2" fontWeight="bold">Solved</Typography>
-                    <Typography variant="h6">{profileData.stats.quizzesSolved}</Typography>
+                    <Typography variant="h6">{profileData.quizzesSolved}</Typography>
                 </Box>
                 <Box textAlign="center">
                     <Typography variant="subtitle2" fontWeight="bold">Accuracy</Typography>
-                    <Typography variant="h6">{profileData.stats.accuracy}</Typography>
+                    <Typography variant="h6">{profileData.accuracy}</Typography>
                 </Box>
             </StatsBox>
         </ProfileSidebar>

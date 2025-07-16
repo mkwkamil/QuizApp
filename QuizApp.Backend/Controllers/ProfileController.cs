@@ -35,4 +35,17 @@ public class ProfileController(IProfileService profileService) : ControllerBase
 
         return Ok(result);
     }
+
+    [Authorize]
+    [HttpGet("summary")]
+    public async Task<IActionResult> GetProfileSummary()
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        var summary = await profileService.GetProfileSummaryAsync(userId);
+        
+        if (summary == null) return NotFound("Profile summary not found");
+        
+        return Ok(summary);
+    }
 }

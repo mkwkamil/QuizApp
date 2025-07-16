@@ -6,4 +6,5 @@ public interface IProfileService
 {
     Task<PublicProfileDto?> UpdatePublicDataAsync(int userId, ProfileUpdateDto dataDto);
     Task<AvatarUpdateResponseDto?> UpdateAvatarAsync(int userId, IFormFile avatarFile);
+    Task<ProfileSummaryDto?> GetProfileSummaryAsync(int userId);
 }
