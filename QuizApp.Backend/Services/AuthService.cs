@@ -2,21 +2,13 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
+using QuizApp.Backend.Interfaces;
 using QuizApp.Backend.Models;
 
 namespace QuizApp.Backend.Services;
 
-public class AuthService : IAuthService
+public class AuthService(AppDbContext context, ITokenService tokenService) : IAuthService
 {
-    private readonly AppDbContext _context;
-    private readonly TokenService _tokenService;
-    
-    public AuthService(AppDbContext context, TokenService tokenService)
-    {
-        _context = context;
-        _tokenService = tokenService;
-    }
-    
     public async Task<bool> Register(User user, string password)
     {
         CreatePasswordHash(password, out byte[] hash, out byte[] salt);
@@ -25,25 +17,25 @@ public class AuthService : IAuthService
         user.CreatedAt = DateTime.UtcNow;
         user.PublicName = user.Username;
         
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        context.Users.Add(user);
+        await context.SaveChangesAsync();
         return true;
     }
     
     public async Task<string?> Login(string username, string password)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
+        var user = await context.Users.FirstOrDefaultAsync(x => x.Username == username);
         if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             return null;
 
-        return _tokenService.CreateToken(user);
+        return tokenService.CreateToken(user);
     }
 
     public async Task<bool> Logout(string token)
     {
         try
         {
-            var principal = _tokenService.ValidateToken(token);
+            var principal = tokenService.ValidateToken(token);
             if (principal == null)
             {
                 return false;
@@ -55,8 +47,8 @@ public class AuthService : IAuthService
                 ExpiryDate = DateTime.UtcNow.AddDays(1)
             };
         
-            _context.BlackListedTokens.Add(blacklistedToken);
-            await _context.SaveChangesAsync();
+            context.BlackListedTokens.Add(blacklistedToken);
+            await context.SaveChangesAsync();
 
             return true;
         }
@@ -69,12 +61,12 @@ public class AuthService : IAuthService
     
     public async Task<bool> UserExists(string username)
     {
-        return await _context.Users.AnyAsync(x => x.Username == username);
+        return await context.Users.AnyAsync(x => x.Username == username);
     }
     
     public async Task<User?> GetUserByUsername(string username)
     {
-        return await _context.Users
+        return await context.Users
             .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Username == username);
     }

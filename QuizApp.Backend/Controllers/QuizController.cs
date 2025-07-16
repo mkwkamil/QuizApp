@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
 using QuizApp.Backend.DTO;
 using QuizApp.Backend.Models;
-using QuizApp.Backend.Services;
 
 namespace QuizApp.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class QuizController(AppDbContext context, QuizService quizService) : ControllerBase
+public class QuizController(AppDbContext context) : ControllerBase
 {
     [Authorize]
     [HttpPost]
@@ -219,26 +218,7 @@ public class QuizController(AppDbContext context, QuizService quizService) : Con
         return Ok(new { draftId = draft.Id });
     }
 
-    [HttpGet("categories")]
-    public async Task<IActionResult> GetCategories()
-    {
-        var categories = await context.QuizCategories
-            .Select(c => new { c.Id, c.Name })
-            .ToListAsync();
-
-        return Ok(categories);
-    }
-
-    [HttpGet("difficulties")]
-    public async Task<IActionResult> GetDifficulties()
-    {
-        var difficulties = await context.QuizDifficulties
-            .Select(c => new { c.Id, c.Name })
-            .ToListAsync();
-
-        return Ok(difficulties);
-    }
-
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetQuiz(int id)
     {
@@ -278,38 +258,5 @@ public class QuizController(AppDbContext context, QuizService quizService) : Con
         });
     }
 
-    [HttpGet("{id}/summary")]
-    public async Task<IActionResult> GetQuizSummary(int id)
-    {
-        var summary = await quizService.GetQuizSummaryAsync(id);
-        
-        if (summary == null)
-            return NotFound(new { message = "Quiz not found or unavailable." });
 
-        return Ok(summary);
-    }
-
-    [HttpGet("{id}/play")]
-    public async Task<ActionResult<QuizSolveDto>> GetQuizForPlay(int id)
-    {
-        var quiz = await quizService.GetQuizForSolvingAsync(id);
-        
-        if (quiz == null) return NotFound( new { message = "Quiz not found or unavailable." });
-
-        return Ok(quiz);
-    }
-
-    [Authorize]
-    [HttpPost("submit")]
-    public async Task<IActionResult> SubmitQuiz([FromBody] QuizSubmissionDto submission)
-    {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-        
-        var result = await quizService.SubmitQuizResultAsync(userId, submission);
-        
-        if (result == null)
-            return NotFound(new { message = "Quiz not found or unavailable." });
-
-        return Ok(result);
-    }
 }

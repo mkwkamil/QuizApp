@@ -3,13 +3,13 @@ import {useQuery} from "@tanstack/react-query";
 import api from "../../config/axiosConfig";
 import useAuthStore from "../../store/authStore";
 
-export const useProfileData = () => {
+export const useUserSummary = () => {
     const token = useAuthStore(state => state.token);
     
     return useQuery({
         queryKey: ['user', 'profile'],
         queryFn: async () => {
-            const res = await api.get('/profile/explore-summary');
+            const res = await api.get('/explore/user-summary');
             const data = res.data;
 
             return {

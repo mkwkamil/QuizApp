@@ -9,7 +9,7 @@ export const useDifficulties = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await api.get('/quiz/difficulties');
+                const response = await api.get('/quiz/meta/difficulties');
                 setDifficulties(response.data);
             } catch (err) {
                 setError(err.message || 'Failed to fetch categories');

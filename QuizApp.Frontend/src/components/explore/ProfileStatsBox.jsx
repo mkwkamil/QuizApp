@@ -6,18 +6,18 @@ import {
     StatsBox,
     StatsChips
 } from "./StyledExploreComponents";
-import {Box, Button, Chip, Typography} from "@mui/material";
-import { useProfileData } from "../../hooks/user/useProfileData";
+import {Box, Chip, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import useAuthStore from "../../store/authStore";
-import {StyledMainGlowButton, StyledMainOutlinedButton} from "../common/StyledButtons";
+import {StyledMainOutlinedButton} from "../common/StyledButtons";
+import {useUserSummary} from "../../hooks/explore/useUserSummary";
 
 export default function ProfileStatsBox() {
     const navigate = useNavigate();
     const token = useAuthStore(state => state.token);
     const isAuthenticated = Boolean(token);
     
-    const { data: profileData, isLoading } = useProfileData();
+    const { data: profileData, isLoading } = useUserSummary();
 
     if (!isAuthenticated) {
         return (

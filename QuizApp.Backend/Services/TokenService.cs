@@ -2,11 +2,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using QuizApp.Backend.Interfaces;
 using QuizApp.Backend.Models;
 
 namespace QuizApp.Backend.Services;
 
-public class TokenService
+public class TokenService : ITokenService
 {
     private readonly IConfiguration _config;
     private readonly SymmetricSecurityKey _key;
@@ -50,14 +51,14 @@ public class TokenService
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
 
-        var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);
+        var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);
 
         var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
             audience: _config["Jwt:Audience"],
             claims: claims,
             expires: DateTime.UtcNow.AddHours(1),
-            signingCredentials: creds
+            signingCredentials: credentials
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -90,15 +91,5 @@ public class TokenService
         {
             return null;
         }
-    }
-    public int? GetUserIdFromToken(string token)
-    {
-        var principal = ValidateToken(token);
-        var userIdClaim = principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        
-        if (int.TryParse(userIdClaim, out var userId))
-            return userId;
-            
-        return null;
     }
 }

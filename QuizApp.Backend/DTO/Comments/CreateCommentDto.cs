@@ -1,4 +1,4 @@
-namespace QuizApp.Backend.DTO;
+namespace QuizApp.Backend.DTO.Comments;
 
 public class CreateCommentDto
 {

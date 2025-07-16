@@ -1,5 +1,4 @@
 import '@fontsource/poppins';
-import { useProfileData } from "../hooks/user/useProfileData";
 import Loading from "../components/common/Loading";
 import {useState, useEffect} from 'react';
 import {toast} from "react-toastify";
@@ -18,9 +17,10 @@ import {
     ProfileSidebarContainer
 } from "../components/profile/ProfileContainers";
 import CreateQuizPromo from "../components/common/CreatorPromoBox";
+import {useUserSummary} from "../hooks/explore/useUserSummary";
 
 function ProfilePage() {
-    const profileData = useProfileData();
+    const profileData = useUserSummary();
     const [openEditModal, setOpenEditModal] = useState(false);
     const [name, setName] = useState('');
     const [bio, setBio] = useState('');

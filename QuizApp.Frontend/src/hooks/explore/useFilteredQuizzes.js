@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../config/axiosConfig";
 
-export const useExploreQuizzes = (filters) => {
+export const useFilteredQuizzes = (filters) => {
     const {
         page = 1,
         selectedCategories = [],

@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QuizApp.Backend.DTO;
+using QuizApp.Backend.DTO.Comments;
 using QuizApp.Backend.Interfaces;
 
 namespace QuizApp.Backend.Controllers;

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
-using QuizApp.Backend.DTO;
+using QuizApp.Backend.DTO.Comments;
 using QuizApp.Backend.Interfaces;
 using QuizApp.Backend.Models;
 

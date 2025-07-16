@@ -7,7 +7,7 @@ import ProfileStatsBox from "../components/explore/ProfileStatsBox";
 import CreateQuizPromo from "../components/common/CreatorPromoBox";
 import SupportTooltip from "../components/common/SupportTooltip";
 import {useEffect, useState} from "react";
-import {useExploreQuizzes} from "../hooks/explore/useExploreQuizzes";
+import {useFilteredQuizzes} from "../hooks/explore/useFilteredQuizzes";
 import {useSearchParams} from "react-router-dom";
 import { toast } from 'react-toastify';
 
@@ -47,7 +47,7 @@ export default function ExplorePage() {
         setSearchParams(params);
     }, [filters, setSearchParams]);
 
-    const { quizzes, totalPages, loading, error } = useExploreQuizzes(filters);
+    const { quizzes, totalPages, loading, error } = useFilteredQuizzes(filters);
 
     useEffect(() => {
         if (error) {

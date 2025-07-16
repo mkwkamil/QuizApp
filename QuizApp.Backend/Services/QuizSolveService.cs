@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using QuizApp.Backend.Data;
-using QuizApp.Backend.DTO;
+using QuizApp.Backend.DTO.QuizSolve;
 using QuizApp.Backend.Interfaces;
 using QuizApp.Backend.Models;
 
 namespace QuizApp.Backend.Services;
 
-public class QuizService(AppDbContext context, ICommentsService commentsService)
+public class QuizSolveService(AppDbContext context, ICommentsService commentsService) : IQuizSolveService
 {
     public async Task<QuizSummaryDto?> GetQuizSummaryAsync(int quizId)
     {

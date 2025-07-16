@@ -5,7 +5,7 @@ export function useQuizSolve(quizId) {
     return useQuery({
         queryKey: ['quiz-solve', quizId],
         queryFn: async () => {
-            const res = await api(`/quiz/${quizId}/play`);
+            const res = await api(`/quiz/${quizId}/solve`);
             return res.data;
         },
         enabled: Boolean(quizId)

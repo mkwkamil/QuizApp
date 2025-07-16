@@ -1,4 +1,4 @@
-namespace QuizApp.Backend.DTO.Profile;
+namespace QuizApp.Backend.DTO.Explore;
 
 public class ExploreUserSummaryDto
 {

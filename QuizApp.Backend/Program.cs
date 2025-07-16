@@ -13,9 +13,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<ICommentsService, CommentsService>();
-builder.Services.AddScoped<CommentsService>();
-builder.Services.AddScoped<QuizService>();
-builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IExploreService, ExploreService>();
+builder.Services.AddScoped<IQuizSolveService, QuizSolveService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

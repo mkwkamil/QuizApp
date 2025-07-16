@@ -7,53 +7,6 @@ namespace QuizApp.Backend.Services;
 
 public class ProfileService(AppDbContext context) : IProfileService
 {
-    public async Task<ExploreUserSummaryDto?> GetExploreUserSummaryAsync(int userId)
-    {
-        var user = await context.Users
-            .Include(u => u.Quizzes)
-            .Include(u => u.SolvedQuizzes).ThenInclude(sq => sq.Quiz)
-            .Include(u => u.Following)
-            .Include(u => u.Followers)
-            .FirstOrDefaultAsync(u => u.Id == userId);
-        
-        if (user == null) return null;
-        
-        int totalCorrect = user.SolvedQuizzes.Sum(sq => sq.CorrectAnswers);
-        int totalQuestions = user.SolvedQuizzes.Sum(sq => sq.TotalQuestions);
-        
-        var accuracy = totalQuestions > 0 
-            ? $"{(totalCorrect * 100.0 / totalQuestions):F2}%"
-            : "0%";
-
-        var mostUsedCategoryId = user.SolvedQuizzes
-            .Where(sq => sq.Quiz.CategoryId != null)
-            .GroupBy(sq => sq.Quiz.CategoryId)
-            .OrderByDescending(g => g.Count())
-            .Select(g => g.Key)
-            .FirstOrDefault();
-        
-        var favoriteCategory = mostUsedCategoryId.HasValue
-            ? await context.QuizCategories
-                .Where(c => c.Id == mostUsedCategoryId.Value)
-                .Select(c => c.Name)
-                .FirstOrDefaultAsync() ?? "Technology"
-            : " - ";
-
-        return new ExploreUserSummaryDto
-        {
-            PublicName = user.PublicName ?? user.Username,
-            Bio = user.Bio ?? "No bio available",
-            AvatarUrl = user.Avatar ?? "/avatars/default.png",
-            Followers = user.Followers.Count,
-            Following = user.Following.Count,
-            QuizzesCreated = user.Quizzes.Count,
-            QuizzesSolved = user.SolvedQuizzes.Count,
-            Accuracy = accuracy,
-            FavoriteCategory = favoriteCategory,
-            UserRank = user.UserRank ?? "Beginner"
-        };
-    }
-
     public async Task<PublicProfileDto?> UpdatePublicDataAsync(int userId, ProfileUpdateDto dataDto)
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);

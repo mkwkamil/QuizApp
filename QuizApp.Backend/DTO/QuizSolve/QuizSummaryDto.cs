@@ -1,4 +1,6 @@
-namespace QuizApp.Backend.DTO;
+using QuizApp.Backend.DTO.Comments;
+
+namespace QuizApp.Backend.DTO.QuizSolve;
 
 public class QuizSummaryDto
 {
@@ -26,12 +28,4 @@ public class AuthorDto
     public string Name { get; set; } = default!;
     public string AvatarUrl { get; set; } = default!;
     public DateTime JoinedAt { get; set; } = default!;
-}
-
-public class CommentDto
-{
-    public int Id { get; set; }
-    public string AuthorName { get; set; } = default!;
-    public string Content { get; set; } = default!;
-    public DateTime CreatedAt { get; set; }
 }

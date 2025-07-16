@@ -1,4 +1,4 @@
-using QuizApp.Backend.DTO;
+using QuizApp.Backend.DTO.Comments;
 
 namespace QuizApp.Backend.Interfaces;
 

@@ -11,19 +11,6 @@ namespace QuizApp.Backend.Controllers;
 public class ProfileController(IProfileService profileService) : ControllerBase
 {
     [Authorize]
-    [HttpGet("explore-summary")]
-    public async Task<IActionResult> GetExploreUserSummary()
-    {
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        
-        var summary = await profileService.GetExploreUserSummaryAsync(userId);
-        
-        if (summary == null) return NotFound("User not found or summary not available");
-        
-        return Ok(summary);
-    }
-    
-    [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateProfileData([FromBody] ProfileUpdateDto request)
     {
