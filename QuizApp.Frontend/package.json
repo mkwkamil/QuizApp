@@ -54,6 +54,9 @@
   },
   "proxy": "http://localhost:5203",
   "devDependencies": {
-    "ajv": "^7.2.4"
+    "@types/node": "^24.0.14",
+    "@types/react": "^19.1.8",
+    "ajv": "^7.2.4",
+    "typescript": "^5.8.3"
   }
 }
