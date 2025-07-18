@@ -11,9 +11,6 @@ public class QuizSummaryDto
     public string Category { get; set; } = default!;
     public string Difficulty { get; set; } = default!;
     
-    public double Rating { get; set; }
-    public Dictionary<int, int> RatingsBreakdown { get; set; } = new();
-    
     public int QuestionCount { get; set; }
     public int Plays { get; set; }
     public double AverageScore { get; set; }

@@ -12,11 +12,11 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
     {
-        var success = await authService.RegisterAsync(dto);
+        var result = await authService.RegisterAsync(dto);
+        if (result == null)
+            return BadRequest(new { message = "Registration failed. Username might already exist or password is invalid." });
 
-        return success
-            ? BadRequest(new { message = "Registration failed. Username might already exist or password is invalid." })
-            : StatusCode(201, new { message = "User registered successfully" });
+        return Ok(result);
     }
     
     [HttpPost("login")]

@@ -2,6 +2,7 @@ namespace QuizApp.Backend.DTO.Explore;
 
 public class ExploreUserSummaryDto
 {
+    public int UserId { get; set; }
     public string PublicName { get; set; } = string.Empty;
     public string Bio { get; set; } = string.Empty;
     public string AvatarUrl { get; set; } = string.Empty;

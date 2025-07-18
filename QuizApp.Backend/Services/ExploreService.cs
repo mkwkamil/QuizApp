@@ -41,6 +41,7 @@ public class ExploreService(AppDbContext context) : IExploreService
 
         return new ExploreUserSummaryDto
         {
+            UserId = userId,
             PublicName = user.PublicName ?? user.Username,
             Bio = user.Bio ?? "No bio available",
             AvatarUrl = user.Avatar ?? "/avatars/default.png",

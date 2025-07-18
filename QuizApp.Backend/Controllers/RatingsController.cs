@@ -30,6 +30,7 @@ public class RatingsController(IRatingService ratingService) : ControllerBase
     public async Task<IActionResult> GetRatingSummary(int quizId)
     {
         var summary = await ratingService.GetRatingSummaryAsync(quizId);
+        
         return Ok(summary);
     }
 }

@@ -10,9 +10,9 @@ namespace QuizApp.Backend.Services;
 
 public class AuthService(AppDbContext context, ITokenService tokenService) : IAuthService
 {
-    public async Task<bool> RegisterAsync(RegisterRequestDto dto)
+    public async Task<AuthResponseDto?> RegisterAsync(RegisterRequestDto dto)
     {
-        if (await context.Users.AnyAsync(u => u.Username == dto.Username)) return false;
+        if (await context.Users.AnyAsync(u => u.Username == dto.Username)) return null;
         
         CreatePasswordHash(dto.Password, out byte[] hash, out byte[] salt);
 
@@ -29,8 +29,21 @@ public class AuthService(AppDbContext context, ITokenService tokenService) : IAu
 
         context.Users.Add(user);
         await context.SaveChangesAsync();
+
+        var token = tokenService.CreateToken(user);
         
-        return true;
+        return new AuthResponseDto
+        {
+            Token = token,
+            User = new AuthUserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                PublicName = user.PublicName ?? user.Username,
+                Email = user.Email,
+                Role = user.Role
+            }
+        };
     }
     
     public async Task<AuthResponseDto?> LoginAsync(LoginRequestDto dto)
@@ -47,6 +60,7 @@ public class AuthService(AppDbContext context, ITokenService tokenService) : IAu
             {
                 Id = user.Id,
                 Username = user.Username,
+                PublicName = user.PublicName ?? user.Username,
                 Email = user.Email,
                 Role = user.Role
             }

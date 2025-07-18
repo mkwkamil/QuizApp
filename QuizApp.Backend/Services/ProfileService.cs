@@ -10,11 +10,15 @@ public class ProfileService(AppDbContext context) : IProfileService
     public async Task<PublicProfileDto?> UpdatePublicDataAsync(int userId, ProfileUpdateDto dataDto)
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
         if (user == null) return null;
         
-        user.PublicName = dataDto.PublicName;
-        user.Bio = dataDto.Bio;
+        user.PublicName = string.IsNullOrWhiteSpace(dataDto.PublicName) || dataDto.PublicName.Contains(' ')
+            ? user.Username
+            : dataDto.PublicName.Trim();
+
+        user.Bio = string.IsNullOrWhiteSpace(dataDto.Bio)
+            ? string.Empty
+            : dataDto.Bio;
 
         await context.SaveChangesAsync();
 
