@@ -1,15 +1,6 @@
-import React from 'react';
-import {
-    Box,
-    CircularProgress,
-    Typography,
-    Fade,
-    useTheme
-} from '@mui/material';
-
-const Loading = ({ message = "Loading..." }) => {
-    const theme = useTheme();
-
+import { Box, CircularProgress, Typography, Fade } from '@mui/material';
+ 
+const Loading = () => {
     return (
         <Fade in={true} timeout={500}>
             <Box
@@ -23,9 +14,7 @@ const Loading = ({ message = "Loading..." }) => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: theme.palette.mode === 'dark'
-                        ? 'rgba(0, 0, 0, 0.8)'
-                        : 'rgba(255, 255, 255, 0.9)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
                     zIndex: 9999
                 }}
             >
@@ -41,7 +30,7 @@ const Loading = ({ message = "Loading..." }) => {
 
                 <Typography
                     variant="h6"
-                    color="text.primary"
+                    color="white"
                     sx={{
                         animation: 'pulse 1.5s infinite',
                         '@keyframes pulse': {
@@ -51,7 +40,7 @@ const Loading = ({ message = "Loading..." }) => {
                         }
                     }}
                 >
-                    {message}
+                    Loading... 
                 </Typography>
             </Box>
         </Fade>

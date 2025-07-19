@@ -33,7 +33,8 @@
       "@interfaces/*": ["interfaces/*"],
       "@pages/*": ["pages/*"],
       "@schemas/*": ["schemas/*"],
-      "@store/*": ["store/*"]
+      "@store/*": ["store/*"],
+      "@styles/*": ["styles/*"]
     },
 
     /* Interop */
