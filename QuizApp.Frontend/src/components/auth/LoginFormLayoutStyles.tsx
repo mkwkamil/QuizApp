@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import {Link} from "react-router-dom";
 
-export const LoginFormWrapper = styled(Container)<ContainerProps>(() => ({
+export const AuthFormWrapper = styled(Container)<ContainerProps>(() => ({
     display: "flex",
     alignItems: "center",
     minHeight: "100vh",
@@ -25,7 +25,7 @@ export const LoginFormWrapper = styled(Container)<ContainerProps>(() => ({
     marginTop: "-5vh"
 }));
 
-export const LoginPaper = styled(Paper)({
+export const AuthPaper = styled(Paper)({
     padding: "32px",
     borderRadius: 12,
     width: "100%",
@@ -37,13 +37,13 @@ export const LoginPaper = styled(Paper)({
     boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
 });
 
-export const LoginFormBox = styled(Box)<BoxProps>(() => ({
+export const AuthFormBox = styled(Box)<BoxProps>(() => ({
     display: "flex",
     flexDirection: "column",
     gap: "16px",
 }));
 
-export const LoginTitle = styled(Typography)<TypographyProps>(() => ({
+export const AuthTitle = styled(Typography)<TypographyProps>(() => ({
     marginBottom: "24px",
     fontWeight: 700,
     textAlign: "center",
@@ -88,13 +88,13 @@ export const AuthInputAdornment = styled(InputAdornment)(() => ({
     color: "#aaa",
 }));
 
-export const LoginFooterText = styled(Typography)({
+export const AuthFooterText = styled(Typography)({
     marginTop: "16px",
     textAlign: "center",
     color: "#ccc"
 });
 
-export const LoginLink = styled(Link)({
+export const AuthFooterLink = styled(Link)({
     color: "#90caf9",
     textDecoration: "none",
     fontWeight: 500,
@@ -103,7 +103,7 @@ export const LoginLink = styled(Link)({
     },
 });
 
-export const ErrorBox = styled(Box)({
+export const AuthErrorBox = styled(Box)({
     display: "flex",
     alignItems: "center",
     gap: "8px",
@@ -114,14 +114,14 @@ export const ErrorBox = styled(Box)({
     color: "#721c24"
 });
 
-export const FieldErrorText = styled(Typography)({
+export const AuthFieldErrorText = styled(Typography)({
     marginTop: "8px",
     fontSize: "0.75rem",
     color: "#f44336"
 });
 
-export const SubmitButton = ({ isSubmitting, label }: { isSubmitting: boolean; label: string }) => (
-    <StyledLoginButton type="submit" fullWidth variant="contained" disabled={isSubmitting}>
+export const AuthSubmitButton = ({ isSubmitting, label }: { isSubmitting: boolean; label: string }) => (
+    <AuthStyledLoginButton type="submit" fullWidth variant="contained" disabled={isSubmitting}>
         {isSubmitting ? (
             <>
                 <CircularProgress
@@ -138,10 +138,10 @@ export const SubmitButton = ({ isSubmitting, label }: { isSubmitting: boolean; l
         ) : (
             <span style={{ position: "relative", zIndex: 1 }}>{label}</span>
         )}
-    </StyledLoginButton>
+    </AuthStyledLoginButton>
 );
 
-const StyledLoginButton = styled(Button)({
+const AuthStyledLoginButton = styled(Button)({
     marginTop: "24px",
     padding: "14px",
     borderRadius: "8px",

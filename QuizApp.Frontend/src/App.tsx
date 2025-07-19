@@ -2,6 +2,8 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Navbar from "@components/common/Navbar";
 import MainPage from "@pages/MainPage";
 import LoginPage from "@pages/auth/LoginPage.tsx";
+import RegisterPage from "@pages/auth/RegisterPage.tsx";
+import ExplorePage from "@pages/ExplorePage.tsx";
 
 const App = () => {
     return (
@@ -10,9 +12,9 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<MainPage />} />
                 <Route path="/login" element={<LoginPage />} />
-                {/*<Route path="/register" element={<RegisterPage />} />*/}
+                <Route path="/register" element={<RegisterPage />} />
                 {/*<Route path="/profile" element={<ProfilePage />} />*/}
-                {/*<Route path="/explore" element={<ExplorePage />} />*/}
+                <Route path="/explore" element={<ExplorePage />} />
                 {/*<Route path="/quiz/create" element={<QuizManagePage />} />*/}
                 {/*<Route path="/quiz/edit/:id" element={<QuizManagePage />} />*/}
                 {/*<Route path="/quiz/:id" element={<QuizPage />} />*/}

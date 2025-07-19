@@ -8,6 +8,12 @@ export interface RegisterRequestDto {
     email: string;
     password: string;
 }
+export interface RegisterFormDto {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
 
 export interface AuthCredentials {
     token: string;

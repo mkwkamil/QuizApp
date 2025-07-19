@@ -1,12 +1,12 @@
-import type {LoginFormLayoutProps} from "@interfaces/forms.ts";
+import type { LoginFormLayoutProps } from "@interfaces/forms";
 import {
     AuthFormControl, AuthInputAdornment, AuthInputLabel, AuthOutlinedInput,
-    ErrorBox, FieldErrorText, LoginFooterText,
-    LoginFormBox,
-    LoginFormWrapper, LoginLink,
-    LoginPaper,
-    LoginTitle, SubmitButton
-} from "@components/auth/LoginFormLayoutStyles.tsx";
+    AuthErrorBox, AuthFieldErrorText, AuthFooterText,
+    AuthFormBox,
+    AuthFormWrapper, AuthFooterLink,
+    AuthPaper,
+    AuthTitle, AuthSubmitButton
+} from "@components/auth/LoginFormLayoutStyles";
 import { PersonOutline, LockOutlined } from '@mui/icons-material';
 
 export const LoginFormLayout = ({
@@ -17,14 +17,14 @@ export const LoginFormLayout = ({
     serverError
 }: LoginFormLayoutProps) => {
     return (
-        <LoginFormWrapper component="main" maxWidth="xs">
-            <LoginPaper elevation={3}>
-                <LoginFormBox component="form" onSubmit={onSubmit}>
-                    <LoginTitle variant="h4" component="h1">
+        <AuthFormWrapper component="main" maxWidth="xs">
+            <AuthPaper elevation={3}>
+                <AuthFormBox component="form" onSubmit={onSubmit}>
+                    <AuthTitle variant="h4" component="h1">
                         Login
-                    </LoginTitle>
+                    </AuthTitle>
 
-                    {serverError && <ErrorBox>{serverError}</ErrorBox>}
+                    {serverError && <AuthErrorBox>{serverError}</AuthErrorBox>}
 
                     <AuthFormControl variant="outlined" error={!!errors.username}>
                         <AuthInputLabel htmlFor="username">Username</AuthInputLabel>
@@ -39,7 +39,7 @@ export const LoginFormLayout = ({
                                 </AuthInputAdornment>
                             }
                         />
-                        {errors.username && <FieldErrorText>{errors.username.message}</FieldErrorText>}
+                        {errors.username && <AuthFieldErrorText>{errors.username.message}</AuthFieldErrorText>}
                     </AuthFormControl>
                     
                     <AuthFormControl variant="outlined" error={!!errors.password}>
@@ -47,7 +47,7 @@ export const LoginFormLayout = ({
                         <AuthOutlinedInput
                             id="password"
                             label="Password"
-                            type="text"
+                            type="password"
                             {...register("password")}
                             startAdornment={
                                 <AuthInputAdornment position="start">
@@ -55,17 +55,17 @@ export const LoginFormLayout = ({
                                 </AuthInputAdornment>
                             }
                         />
-                        {errors.password && <FieldErrorText>{errors.password.message}</FieldErrorText>}
+                        {errors.password && <AuthFieldErrorText>{errors.password.message}</AuthFieldErrorText>}
                     </AuthFormControl>
                     
-                    <SubmitButton isSubmitting={isSubmitting} label={"Login"} />
+                    <AuthSubmitButton isSubmitting={isSubmitting} label={"Login"} />
                     
-                    <LoginFooterText variant="body2">
+                    <AuthFooterText variant="body2">
                         Don't have an account? 
-                        <LoginLink to="/register"> Register here</LoginLink>
-                    </LoginFooterText>
-                </LoginFormBox>
-            </LoginPaper>
-        </LoginFormWrapper>
+                        <AuthFooterLink to="/register"> Register here</AuthFooterLink>
+                    </AuthFooterText>
+                </AuthFormBox>
+            </AuthPaper>
+        </AuthFormWrapper>
     )
 };

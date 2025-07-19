@@ -1,19 +1,19 @@
-import {useLocation, useNavigate} from "react-router-dom";
-import {useState} from "react";
-import {useForm} from "react-hook-form";
-import {loginSchema} from "@schemas/authSchema.ts";
-import type {LoginRequestDto} from "@store/auth/authTypes.ts";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {useLogin} from "@hooks/auth/useLogin.ts";
-import {LoginFormLayout} from "@components/auth/LoginFormLayout.tsx";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { loginSchema } from "@schemas/authSchema";
+import type { LoginRequestDto } from "@store/auth/authTypes";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useLogin } from "@hooks/auth/useLogin";
+import { LoginFormLayout } from "@components/auth/LoginFormLayout";
 
 const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const loginMutation = useLogin();
     const [serverError, setServerError] = useState('');
-    
-    const redirectPath = (location.state as { from?: string })?.from || '/';
+
+    const redirectPath = (location.state as { from?: string })?.from ?? '/';
     
     const {
         register,
