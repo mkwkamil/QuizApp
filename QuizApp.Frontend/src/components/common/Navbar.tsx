@@ -15,7 +15,7 @@ import {
     UserInitial,
     NotificationButton
 } from "@components/layouts/NavbarLayout";
-import { useLogout } from "@hooks/auth/useLogout.ts";
+import { useLogout } from "@hooks/auth/useLogout";
 
 const Navbar = () => {
     const user = useAuthStore((state) => state.user);

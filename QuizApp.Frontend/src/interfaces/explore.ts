@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface ExploreUserStats {
     userId: number;
     publicName: string;
@@ -44,4 +46,17 @@ export interface ExploreFilters {
     selectedDifficulties?: number[];
     selectedLengths?: number[];
     selectedRatings?: number | null;
+}
+
+export interface FiltersCardProps {
+    filters: any;
+    setFilters: React.Dispatch<React.SetStateAction<any>>;
+}
+
+export interface FilteredQuizListProps {
+    quizzes: FilteredQuiz[];
+    loading: boolean;
+    totalPages: number;
+    page: number;
+    setFilters: React.Dispatch<React.SetStateAction<any>>;
 }

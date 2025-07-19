@@ -1,5 +1,5 @@
-import { Skeleton, Stack, Paper, Chip } from "@mui/material";
-import { styled } from "@mui/system";
+import { Chip, Paper, Skeleton, Stack } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 const SkeletonCard = styled(Paper)({
     display: 'flex',
@@ -13,18 +13,7 @@ const SkeletonCard = styled(Paper)({
     transition: 'all 0.2s',
 });
 
-const SkeletonChip = styled(Chip)({
-    borderRadius: 24,
-    fontWeight: 600,
-    fontSize: 14,
-    padding: '8px 16px',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    color: '#aaa',
-    width: 100,
-    height: 32
-})
-
-export const QuizSkeleton = ({items}) => (
+export const ExploreQuizSkeleton = ({ items = 4 }: { items?: number }) => (
     <Stack spacing={2}>
         {Array.from({ length: items }).map((_, idx) => (
             <SkeletonCard key={idx}>
@@ -38,10 +27,21 @@ export const QuizSkeleton = ({items}) => (
     </Stack>
 );
 
-export const CategorySkeleton = ({items}) => (
+const QuizCategorySkeletonChip = styled(Chip)({
+    borderRadius: 24,
+    fontWeight: 600,
+    fontSize: 14,
+    padding: "8px 16px",
+    backgroundColor: "rgba(255,255,255,0.05)",
+    color: "#aaa",
+    width: 100,
+    height: 32,
+});
+
+export const QuizCategorySkeletonChips = ({ items = 8 }: { items?: number }) => (
     <Stack direction="row" spacing={1}>
         {Array.from({ length: items }).map((_, idx) => (
-            <SkeletonChip key={idx} />
+            <QuizCategorySkeletonChip key={idx} />
         ))}
     </Stack>
 );

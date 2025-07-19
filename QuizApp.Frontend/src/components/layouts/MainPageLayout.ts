@@ -2,7 +2,7 @@ import { styled } from "@mui/material/styles";
 import { Box, Button, Typography } from "@mui/material";
 
 export const MainPageWrapper = styled(Box)({
-    minHeight: "100vh",
+    minHeight: "calc(100vh - 65px)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

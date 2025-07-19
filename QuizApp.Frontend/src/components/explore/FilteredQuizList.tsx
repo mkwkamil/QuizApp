@@ -1,30 +1,30 @@
-import { Box, Pagination, Stack, Typography } from "@mui/material";
-import { PaginationBox, QuizCard, QuizInfo, QuizThumbnail } from "./StyledExploreComponents";
-import { QuizSkeleton } from "../common/SkeletonBoxes";
+import React from "react";
+import type { ExploreFilters, FilteredQuizListProps } from "@interfaces/explore";
 import { Link } from "react-router-dom";
+import { Stack, Typography, Pagination } from "@mui/material";
+import { 
+    FilteredQuizListWrapper, FilteredQuizCard, 
+    FilteredQuizThumbnail, FilteredQuizContent, 
+    FilteredQuizPaginationBox 
+} from "@components/explore/FilteredQuizListLayout";
+import { ExploreQuizSkeleton } from "@components/explore/ExplorePageSkeletons";
 
-function MainQuizzesBox({ quizzes, loading, totalPages, page, setFilters }) {
-    const handlePageChange = (_, value) => {
-        setFilters(prev => ({
-            page: value,
-            selectedCategories: prev.selectedCategories,
-            includeAnswered: prev.includeAnswered,
-            sortBy: prev.sortBy,
-            selectedDifficulties: prev.selectedDifficulties,
-            selectedLengths: prev.selectedLengths,
-            selectedRatings: prev.selectedRatings
-        }))
+
+
+const FilteredQuizList = ({ quizzes, loading, totalPages, page, setFilters }: FilteredQuizListProps) => {
+    const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+        setFilters((prev: ExploreFilters) => ({ ...prev, page: value }));
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
-    
+
     return (
-        <Box>
-            <Typography variant="h5" marginBottom={3} gutterBottom>
+        <FilteredQuizListWrapper>
+            <Typography variant="h5" fontWeight={550} marginTop={1}>
                 Quizzes Below
             </Typography>
 
             {loading ? (
-                <QuizSkeleton items={7}/>
+                <ExploreQuizSkeleton items={7} />
             ) : quizzes.length === 0 ? (
                 <Typography variant="body1" color="textSecondary">
                     No quizzes to display.
@@ -34,9 +34,9 @@ function MainQuizzesBox({ quizzes, loading, totalPages, page, setFilters }) {
                     <Stack spacing={2}>
                         {quizzes.map((quiz) => (
                             <Link to={`/quiz/${quiz.id}`} key={quiz.id} style={{ textDecoration: 'none' }}>
-                                <QuizCard key={quiz.id}>
-                                    <QuizThumbnail sx={{ backgroundImage: `url(${quiz.thumbnailUrl})` }} />
-                                    <QuizInfo>
+                                <FilteredQuizCard>
+                                    <FilteredQuizThumbnail sx={{ backgroundImage: `url(${quiz.thumbnailUrl})` }} />
+                                    <FilteredQuizContent>
                                         <Typography variant="subtitle1" fontWeight="bold" noWrap>
                                             {quiz.title}
                                         </Typography>
@@ -58,18 +58,18 @@ function MainQuizzesBox({ quizzes, loading, totalPages, page, setFilters }) {
                                             <Typography variant="caption">• {quiz.playedBy} plays</Typography>
                                             <Typography variant="caption">• ⭐ {quiz.averageRating.toFixed(1)}</Typography>
                                         </Stack>
-                                    </QuizInfo>
-                                </QuizCard>
+                                    </FilteredQuizContent>
+                                </FilteredQuizCard>
                             </Link>
                         ))}
                     </Stack>
-                    <PaginationBox>
+                    <FilteredQuizPaginationBox>
                         <Pagination count={totalPages} page={page} onChange={handlePageChange} />
-                    </PaginationBox>
+                    </FilteredQuizPaginationBox>
                 </>
             )}
-        </Box>
+        </FilteredQuizListWrapper>
     );
 }
 
-export default MainQuizzesBox;
+export default FilteredQuizList;

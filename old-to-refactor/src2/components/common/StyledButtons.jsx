@@ -60,7 +60,6 @@ export const StyledMainGlowButton = styled(Button)({
     letterSpacing: '1px',
     boxShadow: '0 0 15px rgba(48, 79, 254, 0.5)',
     '&:hover': {
-        // background: 'linear-gradient(90deg, #283593, #1a237e)',
         boxShadow: '0 0 15px rgba(48, 79, 254, 0.7)'
     }
 });
@@ -71,7 +70,6 @@ export const StyledMainOutlinedButton = styled(Button)({
     padding: '12px 32px',
     borderRadius: '8px',
     fontWeight: '600',
-    // minWidth: '220px',
     letterSpacing: '1px',
     '&:hover': {
         border: '2px solid #5c6bc0',
