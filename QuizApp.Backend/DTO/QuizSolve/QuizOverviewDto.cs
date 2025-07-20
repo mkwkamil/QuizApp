@@ -2,7 +2,7 @@ using QuizApp.Backend.DTO.Comments;
 
 namespace QuizApp.Backend.DTO.QuizSolve;
 
-public class QuizSummaryDto
+public class QuizOverviewDto
 {
     public int Id { get; set; }
     public string Title { get; set; } = default!;

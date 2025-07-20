@@ -6,7 +6,7 @@ import {
     PopularQuizCard, PopularQuizInfo,
     PopularQuizListWrapper,
     PopularQuizThumbnail
-} from "@components/explore/PopularQuizListLayout";
+} from "@components/explore/styles/PopularQuizListLayout";
 
 const PopularQuizList = () => {
     const { data: popularQuizzes = [], isLoading } = usePopularQuizzes();

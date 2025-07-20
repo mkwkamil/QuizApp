@@ -1,9 +1,11 @@
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from "@components/common/Navbar";
 import MainPage from "@pages/MainPage";
-import LoginPage from "@pages/auth/LoginPage.tsx";
-import RegisterPage from "@pages/auth/RegisterPage.tsx";
-import ExplorePage from "@pages/ExplorePage.tsx";
+import LoginPage from "@pages/auth/LoginPage";
+import RegisterPage from "@pages/auth/RegisterPage";
+import ExplorePage from "@pages/ExplorePage";
+import QuizOverviewPage from "@pages/QuizOverviewPage";
+import QuizSolvePage from "@pages/QuizSolvePage";
 
 const App = () => {
     return (
@@ -13,13 +15,13 @@ const App = () => {
                 <Route path="/" element={<MainPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
-                {/*<Route path="/profile" element={<ProfilePage />} />*/}
                 <Route path="/explore" element={<ExplorePage />} />
+                <Route path="/quiz/:id" element={<QuizOverviewPage />} />
+                <Route path="/quiz/:id/solve" element={<QuizSolvePage />} />
+                {/*<Route path="/quiz/:id/result" element={<QuizResultPage />} />*/}
                 {/*<Route path="/quiz/create" element={<QuizManagePage />} />*/}
                 {/*<Route path="/quiz/edit/:id" element={<QuizManagePage />} />*/}
-                {/*<Route path="/quiz/:id" element={<QuizPage />} />*/}
-                {/*<Route path="/quiz/:id/play" element={<QuizSolvePage />} />*/}
-                {/*<Route path="/quiz/:id/result" element={<QuizResultPage />} />*/}
+                {/*<Route path="/profile" element={<ProfilePage />} />*/}
             </Routes>
         </Router>
     );

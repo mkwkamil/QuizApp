@@ -32,7 +32,7 @@ export interface LoadQuestion {
     correctAnswers: number[];
 }
 
-export interface QuizSummary {
+export interface QuizOverview {
     id: number;
     title: string;
     description: string;

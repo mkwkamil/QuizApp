@@ -1,6 +1,6 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import type { ExploreFilters, FiltersCardProps } from "@interfaces/explore";
-import { QuizFiltersChip, QuizFiltersToggle, QuizFiltersWrapper } from "@components/explore/QuizFiltersPanelLayout";
+import { QuizFiltersChip, QuizFiltersToggle, QuizFiltersWrapper } from "@components/explore/styles/QuizFiltersPanelLayout";
 
 const QuizFiltersPanel = ({ filters, setFilters }: FiltersCardProps) => {
     const sortOptions = ["Popular", "Recent", "Trending"];

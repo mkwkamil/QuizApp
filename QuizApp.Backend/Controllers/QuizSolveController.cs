@@ -10,12 +10,12 @@ namespace QuizApp.Backend.Controllers;
 [Route("api/quiz")]
 public class QuizSolveController(IQuizSolveService quizSolveService) : ControllerBase
 {
-    [HttpGet("{id}/summary")]
-    public async Task<IActionResult> GetQuizSummary(int id)
+    [HttpGet("{id}/overview")]
+    public async Task<IActionResult> GetQuizOverview(int id)
     {
-        var summary = await quizSolveService.GetQuizSummaryAsync(id);
+        var overview = await quizSolveService.GetQuizOverviewAsync(id);
         
-        return summary is not null ? Ok(summary) : NotFound();
+        return overview is not null ? Ok(overview) : NotFound();
     }
     
     [HttpGet("{id}/solve")]

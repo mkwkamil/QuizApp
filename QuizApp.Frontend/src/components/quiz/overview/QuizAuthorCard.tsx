@@ -1,13 +1,23 @@
 import { Typography, Stack, Avatar, Box } from "@mui/material";
-import {SidebarCard, StyledFollowButton, StyledMessageButton, UserInfoBox} from "./StyledQuizPageComponents";
+import { QuizSidebarCard } from "@components/quiz/overview/styles/QuizOverviewLayout";
+import { QuizAuthorInfo, UserFollowButton, UserMessageButton } from "@components/quiz/overview/styles/QuizAuthorCardLayout";
 
-export default function AuthorCard({ author }) {
+type QuizAuthorCardProps = {
+    author: {
+        name: string;
+        avatarUrl: string;
+        joinedAt: string;
+    };
+};
+
+const QuizAuthorCard = ({ author }: QuizAuthorCardProps) => {
     return (
-        <SidebarCard>
+        <QuizSidebarCard>
             <Typography variant="h6" fontWeight={700} gutterBottom>
                 Author
             </Typography>
-            <UserInfoBox>
+
+            <QuizAuthorInfo>
                 <Stack direction="row" spacing={2} alignItems="center">
                     <Avatar src={author.avatarUrl} sx={{ width: 56, height: 56 }} />
                     <Box>
@@ -16,22 +26,25 @@ export default function AuthorCard({ author }) {
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
                             Joined on {new Date(author.joinedAt).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric"
-                            })}
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric"
+                        })}
                         </Typography>
                     </Box>
                 </Stack>
+
                 <Stack direction="row" spacing={1}>
-                    <StyledFollowButton variant="outlined" size="medium">
+                    <UserFollowButton variant="outlined" size="medium">
                         Follow
-                    </StyledFollowButton>
-                    <StyledMessageButton variant="contained" size="medium">
+                    </UserFollowButton>
+                    <UserMessageButton variant="contained" size="medium">
                         Message
-                    </StyledMessageButton>
+                    </UserMessageButton>
                 </Stack>
-            </UserInfoBox>
-        </SidebarCard>
+            </QuizAuthorInfo>
+        </QuizSidebarCard>
     );
-}
+};
+
+export default QuizAuthorCard;

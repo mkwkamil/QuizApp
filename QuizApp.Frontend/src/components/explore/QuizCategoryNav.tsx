@@ -6,7 +6,7 @@ import {
     QuizCategoryChip,
     QuizCategoryNavContainer,
     QuizCategoryNavWrapper
-} from "@components/explore/QuizCategoryNavLayout";
+} from "@components/explore/styles/QuizCategoryNavLayout";
 import { QuizCategorySkeletonChips } from "@components/explore/ExplorePageSkeletons";
 
 type Props = {

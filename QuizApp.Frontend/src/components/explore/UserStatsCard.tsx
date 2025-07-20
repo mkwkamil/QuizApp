@@ -5,7 +5,7 @@ import {
     UserStatsCardWrapper, UserStatsChipRow, UserStatsGrid, UserStatsHeader,
     UserStatsLoginButton,
     UserStatsLoginPrompt
-} from "@components/explore/UserStatsCardLayout";
+} from "@components/explore/styles/UserStatsCardLayout";
 import { Box, Chip, Typography } from "@mui/material";
 import { Link}  from "react-router-dom";
 

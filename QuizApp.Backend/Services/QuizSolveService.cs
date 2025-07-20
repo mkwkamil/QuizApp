@@ -8,7 +8,7 @@ namespace QuizApp.Backend.Services;
 
 public class QuizSolveService(AppDbContext context, ICommentsService commentsService) : IQuizSolveService
 {
-    public async Task<QuizSummaryDto?> GetQuizSummaryAsync(int quizId)
+    public async Task<QuizOverviewDto?> GetQuizOverviewAsync(int quizId)
     {
         var quiz = await context.Quizzes
             .Include(q => q.Author)
@@ -22,7 +22,7 @@ public class QuizSolveService(AppDbContext context, ICommentsService commentsSer
 
         var comments = await commentsService.GetCommentsForQuizAsync(quizId, 3);
 
-        return new QuizSummaryDto
+        return new QuizOverviewDto
         {
             Id = quiz.Id,
             Title = quiz.Title,

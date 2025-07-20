@@ -1,11 +1,17 @@
 import { Typography, Box, Stack, IconButton } from "@mui/material";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
-import { CommentBox } from "./StyledQuizPageComponents";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
+import { QuizCommentBox } from "@components/quiz/overview/styles/QuizCommentSectionLayout.ts";
 
-export default function QuizComment({ author, text, postedAt }) {
+interface QuizCommentProps {
+    author: string;
+    text: string;
+    postedAt: string;
+}
+
+const QuizComment = ({ author, text, postedAt }: QuizCommentProps) => {
     return (
-        <CommentBox>
+        <QuizCommentBox>
             <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
                 <Box>
                     <Stack direction="row" spacing={1} alignItems="center" mb={0.5}>
@@ -26,6 +32,8 @@ export default function QuizComment({ author, text, postedAt }) {
                     </IconButton>
                 </Stack>
             </Stack>
-        </CommentBox>
+        </QuizCommentBox>
     );
-}
+};
+
+export default QuizComment;

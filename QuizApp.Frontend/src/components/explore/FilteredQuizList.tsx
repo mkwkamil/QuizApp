@@ -6,7 +6,7 @@ import {
     FilteredQuizListWrapper, FilteredQuizCard, 
     FilteredQuizThumbnail, FilteredQuizContent, 
     FilteredQuizPaginationBox 
-} from "@components/explore/FilteredQuizListLayout";
+} from "@components/explore/styles/FilteredQuizListLayout";
 import { ExploreQuizSkeleton } from "@components/explore/ExplorePageSkeletons";
 
 
