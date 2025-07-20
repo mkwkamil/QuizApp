@@ -11,7 +11,6 @@ import {
 } from "../components/quiz-solve/StyledQuizSolveComponents";
 import { PaginationBox } from "../components/explore/StyledExploreComponents";
 import Loading from "../components/common/Loading";
-import NavigationButtons from "../components/quiz-solve/NavigationButtons";
 import QuestionHeader from "../components/quiz-solve/QuestionHeader";
 import AnswersSection from "../components/quiz-solve/AnswersSection";
 import QuizInfoCard from "../components/quiz-solve/QuizInfoCard";
@@ -19,7 +18,7 @@ import QuizProgressCard from "../components/quiz-solve/QuizProgressCard";
 import { format } from "date-fns";
 import { useSubmitQuizAnswers } from "../hooks/quizzes/useSubmitQuizAnswers";
 
-export default function QuizPlayPage() {
+export default function QuizSolvePage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { data: quizData, isLoading } = useQuizSolve(id);
@@ -67,7 +66,6 @@ export default function QuizPlayPage() {
         };
 
         try {
-            // noinspection JSCheckFunctionSignatures
             const result = await submitAnswers(payload);
             navigate(`/quiz/${id}/result`, {
                 state: {
@@ -84,7 +82,6 @@ export default function QuizPlayPage() {
 
     return (
         <LayoutWrapper>
-            {/*<SidebarWrapper />*/}
             <MainWrapper>
                 <NavigationButtons current={current} total={totalQuestions} setCurrent={setCurrent} />
 

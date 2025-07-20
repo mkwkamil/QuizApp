@@ -1,4 +1,4 @@
-export type QuestionType = "single" | "multiple" | "boolean";
+export type QuestionType = "single" | "multiple" | "truefalse";
 
 export interface UserQuizSummary {
     id: number;

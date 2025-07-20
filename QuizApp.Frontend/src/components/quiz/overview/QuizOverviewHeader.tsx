@@ -28,7 +28,7 @@ export default function QuizOverviewHeader({ quizData }: QuizOverviewHeaderProps
                         {quizData.description}
                     </Typography>
                 </div>
-                <Link to={`/quiz/${quizData.id}/play`}>
+                <Link to={`/quiz/${quizData.id}/solve`}>
                     <QuizOverviewStartButton fullWidth>
                         Start Quiz
                     </QuizOverviewStartButton>

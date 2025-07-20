@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFilteredQuizzes } from "@hooks/explore/useFilteredQuizzes";
 import { toast } from "react-toastify";
-import { ExploreLayoutWrapper, ExploreMainContent, ExploreSidebar } from "@components/explore/ExplorePageLayout";
+import { ExploreLayoutWrapper, ExploreMainContent, ExploreSidebar } from "@components/explore/styles/ExplorePageLayout";
 import QuizFiltersPanel from "@components/explore/QuizFiltersPanel";
 import PopularQuizList from "@components/explore/PopularQuizList";
 import CreateQuizBanner from "@components/common/CreateQuizBanner";
