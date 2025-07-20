@@ -1,21 +1,13 @@
-import {styled} from "@mui/system";
-import {Box, Button} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Box, Button } from "@mui/material";
 
-export const ReviewBox = styled(Box)({
-    textAlign: "center",
-    padding: 30,
-    border: "1px solid #333",
-    borderRadius: 16,
-    backgroundColor: "#111",
-    cursor: "pointer",
-    transition: "all 0.2s ease-in-out",
-    "&:hover": {
-        backgroundColor: "#1b1b1b",
-    },
-});
+interface ResultBoxProps {
+    passed: boolean;
+}
 
-export const ResultBox = styled(Box, {
-    shouldForwardProp: (prop) => prop !== "passed"})(({ passed }) => ({
+export const QuizResultSummaryBox = styled(Box, {
+    shouldForwardProp: (prop) => prop !== "passed"
+})<ResultBoxProps>(({ passed }) => ({
     textAlign: "center",
     background: passed
         ? "linear-gradient(135deg, #1e3a8a, #1e293b)"
@@ -27,7 +19,7 @@ export const ResultBox = styled(Box, {
     boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
 }));
 
-export const TryAgainButton = styled(Button)({
+export const QuizRetryButton = styled(Button)({
     minWidth: "160px",
     padding: "10px 24px",
     fontWeight: 500,
@@ -51,13 +43,13 @@ export const TryAgainButton = styled(Button)({
         transform: "scale(0.98) translateY(0)",
         backgroundColor: "rgba(239, 68, 68, 0.2)"
     },
-    "&:focus-visible": {
+    "&:focusVisible": {
         outline: "2px solid rgba(239, 68, 68, 0.5)",
         outlineOffset: "2px"
     }
 });
 
-export const ExploreButton = styled(Button)({
+export const QuizExploreButton = styled(Button)({
     minWidth: "160px",
     padding: "10px 24px",
     fontWeight: 500,
@@ -81,8 +73,21 @@ export const ExploreButton = styled(Button)({
         transform: "scale(0.98) translateY(0)",
         backgroundColor: "rgba(96, 165, 250, 0.2)"
     },
-    "&:focus-visible": {
+    "&:focusVisible": {
         outline: "2px solid rgba(96, 165, 250, 0.5)",
         outlineOffset: "2px"
     }
+});
+
+export const QuizAnswerReviewBox = styled(Box)({
+    textAlign: "center",
+    padding: 30,
+    border: "1px solid #333",
+    borderRadius: 16,
+    backgroundColor: "#111",
+    cursor: "pointer",
+    transition: "all 0.2s ease-in-out",
+    "&:hover": {
+        backgroundColor: "#1b1b1b",
+    },
 });

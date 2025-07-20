@@ -1,15 +1,17 @@
-import {ReviewBox} from './StyledQuizResultComponents';
-import {Typography} from "@mui/material";
+import { Typography } from "@mui/material";
+import { QuizAnswerReviewBox } from "@components/quiz/result/QuizResultPageLayout";
 
-export default function ReviewAnswersCard() {
+const QuizAnswerReviewCard = () => {
     return (
-        <ReviewBox>
+        <QuizAnswerReviewBox>
             <Typography variant="h6" fontWeight="bold">
                 Review Your Answers
             </Typography>
             <Typography variant="body2" color="text.secondary" mt={1}>
                 See what you got right or wrong
             </Typography>
-        </ReviewBox>
-    )
-}
+        </QuizAnswerReviewBox>
+    );
+};
+
+export default QuizAnswerReviewCard;

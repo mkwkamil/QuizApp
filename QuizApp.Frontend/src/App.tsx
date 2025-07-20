@@ -6,6 +6,7 @@ import RegisterPage from "@pages/auth/RegisterPage";
 import ExplorePage from "@pages/ExplorePage";
 import QuizOverviewPage from "@pages/QuizOverviewPage";
 import QuizSolvePage from "@pages/QuizSolvePage";
+import QuizResultPage from "@pages/QuizResultPage.tsx";
 
 const App = () => {
     return (
@@ -18,7 +19,7 @@ const App = () => {
                 <Route path="/explore" element={<ExplorePage />} />
                 <Route path="/quiz/:id" element={<QuizOverviewPage />} />
                 <Route path="/quiz/:id/solve" element={<QuizSolvePage />} />
-                {/*<Route path="/quiz/:id/result" element={<QuizResultPage />} />*/}
+                <Route path="/quiz/:id/result" element={<QuizResultPage />} />
                 {/*<Route path="/quiz/create" element={<QuizManagePage />} />*/}
                 {/*<Route path="/quiz/edit/:id" element={<QuizManagePage />} />*/}
                 {/*<Route path="/profile" element={<ProfilePage />} />*/}

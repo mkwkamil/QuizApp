@@ -1,9 +1,9 @@
 import { Typography, Stack, Divider } from "@mui/material";
 import { Star } from "@mui/icons-material";
-import {SidebarCard} from "../quiz/StyledQuizPageComponents";
-import {useQuizRating} from "../../hooks/ratings/useQuizRating";
+import { useQuizRating } from "@hooks/ratings/useQuizRating";
+import { QuizSolveSidebarCard } from "@components/quiz/solve/styles/QuizSolvePageLayout.ts";
 
-export default function RateQuiz({ quizId }) {
+const QuizRatingCard = ({ quizId }: {quizId: number}) => {
     const {
         hovered,
         selected,
@@ -13,8 +13,8 @@ export default function RateQuiz({ quizId }) {
     } = useQuizRating({ quizId });
 
     return (
-        <SidebarCard>
-            <Typography variant="h6" fontWeight="600" gutterBottom>
+        <QuizSolveSidebarCard>
+            <Typography variant="h6" fontWeight={600} gutterBottom>
                 Rate this quiz
             </Typography>
 
@@ -37,10 +37,11 @@ export default function RateQuiz({ quizId }) {
 
             <Divider sx={{ my: 2 }} />
 
-            <Typography variant="caption" color="text.secondary" justifyContent="center" display="flex">
+            <Typography variant="caption" color="text.secondary" textAlign="center">
                 Your feedback helps us improve!
             </Typography>
-        </SidebarCard>
+        </QuizSolveSidebarCard>
     );
-}
+};
 
+export default QuizRatingCard;
