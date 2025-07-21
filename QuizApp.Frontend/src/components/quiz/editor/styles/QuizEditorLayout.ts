@@ -42,6 +42,20 @@ export const StyledDraftButton = styled(Button)({
     }
 });
 
+export const StyledQuizBackButton = styled(Button)({
+    background: "linear-gradient(135deg, #0d47a1, #1565c0)",
+    color: "#fff",
+    boxShadow: "0 0 3px rgba(21, 101, 192, 0.4)",
+    fontWeight: 500,
+    textTransform: "none",
+    borderRadius: "5px",
+    transition: "all 0.25s ease",
+    "&:hover": {
+        background: "linear-gradient(135deg, #1565c0, #1e88e5)",
+        boxShadow: "0 0 6px rgba(30, 136, 229, 0.6)"
+    }
+});
+
 export const StyledQuizNextButton = styled(Button)({
     background: "linear-gradient(135deg, #0d47a1, #1565c0)",
     color: "#fff",

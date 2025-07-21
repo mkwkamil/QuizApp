@@ -5,11 +5,11 @@ import { useQuizNavigation } from "@hooks/quizzes/useQuizNavigation";
 import { QuizEditorWrapper } from "@components/quiz/editor/styles/QuizEditorLayout";
 import QuizEditorStepper from "@components/quiz/editor/QuizEditorStepper";
 import StepBasicInfo from "@components/quiz/editor/StepBasicInfo";
-// import StepQuestions from "@components/quiz/editor/StepQuestions";
-// import StepReviewPublish from "@components/quiz/editor/StepReviewPublish";
+import StepQuestions from "@components/quiz/editor/StepQuestions.tsx";
+import StepReviewPublish from "@components/quiz/editor/StepReviewPublish";
 
 const QuizEditor = ({ quizData }: { quizData?: QuizLoad }) => {
-    const { activeStep, next } = useQuizNavigation();
+    const { activeStep, next, prev } = useQuizNavigation();
     const { setBasicInfo, setQuestions, setQuizId, reset } = useQuizStore();
     const isEditMode = Boolean(quizData);
 
@@ -37,8 +37,8 @@ const QuizEditor = ({ quizData }: { quizData?: QuizLoad }) => {
         <QuizEditorWrapper>
             <QuizEditorStepper activeStep={activeStep} />
             {activeStep === 0 && <StepBasicInfo onComplete={next} editMode={isEditMode} />}
-            {/*{activeStep === 1 && <StepQuestions onBack={prev} onComplete={next} />}*/}
-            {/*{activeStep === 2 && <StepReviewPublish onBack={prev} />}*/}
+            {activeStep === 1 && <StepQuestions onBack={prev} onComplete={next} />}
+            {activeStep === 2 && <StepReviewPublish onBack={prev} />}
         </QuizEditorWrapper>
     );
 };

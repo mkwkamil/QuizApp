@@ -14,6 +14,7 @@ export type CreateQuizPayload = {
 };
 
 export type QuestionPayload = {
+    id?: string;
     text: string;
     type: QuestionType;
     options: string[];
@@ -40,3 +41,10 @@ export type DraftQuestionPayload = {
     correctAnswers?: number[];
 };
 
+export interface EditableQuestion {
+    id: string;
+    text: string;
+    type: QuestionType;
+    options: string[];
+    correctAnswers: number[];
+}
