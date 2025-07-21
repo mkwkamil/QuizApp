@@ -24,6 +24,7 @@ export default function AvatarWithUpload({ avatarUrl }) {
             setPreview(URL.createObjectURL(selected));
         }
     };
+    
 
     const handleUpload = async () => {
         if (!file) return;

@@ -34,11 +34,9 @@ export default function ProfilePage() {
             </ProfileSidebarContainer>
 
             <ProfileMainContainer>
-                <RecentActivityBox activityData={activityData} />
                 <MyQuizzesBox userQuizzes={userQuizzes} onDeleteClick={setQuizToDelete} />
             </ProfileMainContainer>
 
-            <DeleteQuizModal quiz={quizToDelete} onClose={() => setQuizToDelete(null)} />
         </ProfilePageWrapper>
     );
 }

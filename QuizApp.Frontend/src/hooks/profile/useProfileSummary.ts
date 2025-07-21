@@ -17,7 +17,3 @@ export const useProfileSummary = () => {
         },
     });
 };
-
-// { id: 'email', label: 'Email', value: data.email, icon: <Email /> },
-// { id: 'username', label: 'Username', value: data.username, icon: <Person /> },
-// { id: 'memberSince', label: 'Member Since', value: new Date(data.joinDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }), icon: <Cake /> }

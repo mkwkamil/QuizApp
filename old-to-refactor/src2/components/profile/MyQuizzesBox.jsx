@@ -1,5 +1,5 @@
-import {Paper, Typography, Stack, Box, Button} from "@mui/material";
-import {Link} from "react-router-dom";
+import { Paper, Typography, Stack, Box, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function MyQuizzesBox({userQuizzes, onDeleteClick}) {
     return (

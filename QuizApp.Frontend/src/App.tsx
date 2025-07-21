@@ -7,6 +7,7 @@ import ExplorePage from "@pages/ExplorePage";
 import QuizOverviewPage from "@pages/QuizOverviewPage";
 import QuizSolvePage from "@pages/QuizSolvePage";
 import QuizResultPage from "@pages/QuizResultPage.tsx";
+import ProfilePage from "@pages/ProfilePage.tsx";
 
 const App = () => {
     return (
@@ -22,7 +23,7 @@ const App = () => {
                 <Route path="/quiz/:id/result" element={<QuizResultPage />} />
                 {/*<Route path="/quiz/create" element={<QuizManagePage />} />*/}
                 {/*<Route path="/quiz/edit/:id" element={<QuizManagePage />} />*/}
-                {/*<Route path="/profile" element={<ProfilePage />} />*/}
+                <Route path="/profile" element={<ProfilePage />} />
             </Routes>
         </Router>
     );
