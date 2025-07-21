@@ -8,7 +8,7 @@ namespace QuizApp.Backend.Services;
 
 public class QuizManagementService(AppDbContext context) : IQuizManagementService
 {
-    public async Task<int> CreateQuizAsync(int userId, QuizLoadDto dto)
+    public async Task<int> CreateQuizAsync(int userId, QuizCreateDto dto)
     {
         var quiz = new Quiz
         {
@@ -40,7 +40,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
         return quiz.Id;
     }
 
-    public async Task<int?> UpdateQuizAsync(int userId, int quizId, QuizLoadDto dto)
+    public async Task<int?> UpdateQuizAsync(int userId, int quizId, QuizCreateDto dto)
     {
         var quiz = await context.Quizzes
             .Include(q => q.Questions)
@@ -107,6 +107,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
 
         return new QuizLoadDto
         {
+            AuthorId = userId,
             QuizId = quizId,
             Title = quiz.Title,
             Description = quiz.Description,
@@ -117,7 +118,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
             IsDraft = quiz.IsDraft,
             RevealAnswers = quiz.RevealAnswers,
             ShuffleQuestions = quiz.ShuffleQuestions,
-            Questions = quiz.Questions.Select(q => new QuestionCreateDto
+            Questions = quiz.Questions.Select(q => new QuestionLoadDto
             {
                 Text = q.Text,
                 Type = q.Type,

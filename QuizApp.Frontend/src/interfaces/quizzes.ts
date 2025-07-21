@@ -12,6 +12,7 @@ export interface UserQuizSummary {
 }
 
 export interface QuizLoad {
+    authorId: number;
     quizId: number;
     title: string;
     description: string;

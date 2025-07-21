@@ -12,7 +12,7 @@ namespace QuizApp.Backend.Controllers;
 public class QuizManagementController(IQuizManagementService quizManagementService) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateQuiz([FromBody] QuizLoadDto dto)
+    public async Task<IActionResult> CreateQuiz([FromBody] QuizCreateDto dto)
     {
         var userId = User.GetUserId();
         if (userId == null) return Unauthorized();
@@ -23,7 +23,7 @@ public class QuizManagementController(IQuizManagementService quizManagementServi
     }
     
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateQuiz(int id, [FromBody] QuizLoadDto dto)
+    public async Task<IActionResult> UpdateQuiz(int id, [FromBody] QuizCreateDto dto)
     {
         var userId = User.GetUserId();
         if (userId == null) return Unauthorized();

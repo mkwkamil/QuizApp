@@ -1,10 +1,10 @@
-import { Stepper, Step, StepLabel, Box } from "@mui/material";
+import {Stepper, Step, StepLabel, Box} from "@mui/material";
 
 const steps = ["Quiz Info", "Add Questions", "Review & Publish"];
 
-function QuizStepper({ activeStep }) {
+const QuizEditorStepper = ({ activeStep }: { activeStep: number; }) => {
     return (
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: '100%' }}>
             <Stepper activeStep={activeStep}>
                 {steps.map((label) => (
                     <Step key={label}>
@@ -14,6 +14,6 @@ function QuizStepper({ activeStep }) {
             </Stepper>
         </Box>
     );
-}
+};
 
-export default QuizStepper;
+export default QuizEditorStepper;

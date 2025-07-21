@@ -4,8 +4,8 @@ namespace QuizApp.Backend.Interfaces;
 
 public interface IQuizManagementService
 {
-    Task<int> CreateQuizAsync(int userId, QuizLoadDto dto);
-    Task<int?> UpdateQuizAsync(int userId, int quizId, QuizLoadDto dto);
+    Task<int> CreateQuizAsync(int userId, QuizCreateDto dto);
+    Task<int?> UpdateQuizAsync(int userId, int quizId, QuizCreateDto dto);
     Task<bool> DeleteQuizAsync(int userId, int quizId);
     Task<QuizLoadDto?> GetQuizForEditAsync(int userId, int quizId);
     

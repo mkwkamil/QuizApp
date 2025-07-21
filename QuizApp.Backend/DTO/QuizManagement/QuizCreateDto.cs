@@ -1,9 +1,7 @@
 namespace QuizApp.Backend.DTO.QuizManagement;
 
-public class QuizLoadDto
+public class QuizCreateDto
 {
-    public int AuthorId { get; set; }
-    public int QuizId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string ThumbnailUrl { get; set; } = string.Empty;
@@ -16,10 +14,10 @@ public class QuizLoadDto
     public bool RevealAnswers { get; set; }
     public bool ShuffleQuestions { get; set; }
 
-    public List<QuestionLoadDto> Questions { get; set; } = new();
+    public List<QuestionCreateDto> Questions { get; set; } = new();
 }
 
-public class QuestionLoadDto
+public class QuestionCreateDto
 {
     public string Text { get; set; } = string.Empty;
     public string Type { get; set; } = "single";

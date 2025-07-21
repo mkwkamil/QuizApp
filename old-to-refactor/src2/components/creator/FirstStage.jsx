@@ -40,35 +40,7 @@ function FirstStage({ onComplete, editMode = false }) {
             }
         });
     };
-
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const img = new Image();
-        const reader = new FileReader();
-
-        reader.onload = () => {
-            img.onload = () => {
-                if (file.size > 1024 * 300) {
-                    setError("Image too big");
-                    return;
-                }
-                
-                if (img.width > img.height) {
-                    handleInputChange("thumbnailUrl", reader.result);
-                    setError("");
-                }
-                else {
-                    handleInputChange("thumbnailUrl", "");
-                    setError("Only landscape images are allowed (width > height).");
-                }
-            };
-            img.src = reader.result;
-        };
-
-        reader.readAsDataURL(file);
-    };
+    
 
     const handleNext = () => {
         const isValid =
@@ -84,9 +56,6 @@ function FirstStage({ onComplete, editMode = false }) {
         onComplete();
     };
     
-    const handleCancel = () => {
-        editMode ? navigate('/profile') : navigate('/')
-    }
     
     const handleDraft = async () => {
         const result = await useQuizStore.getState().saveDraft();
