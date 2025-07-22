@@ -1,14 +1,47 @@
 import {styled} from "@mui/system";
-import {Box, Button} from "@mui/material";
+import {Box, Button, Stepper} from "@mui/material";
 
 export const QuizEditorWrapper = styled(Box)({
     width: "100%",
     maxWidth: 1200,
     margin: "auto",
+    marginTop: 32,
     padding: 2,
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
+})
+
+export const StyledStepper = styled(Stepper)({
+    backgroundColor: "transparent",
+    "& .MuiStepIcon-root": {
+        color: "#999",
+        borderRadius: "6px",
+        background: "#999",
+        padding: "2px"
+    },
+    "& .MuiStepIcon-root.Mui-active": {
+        color: "#2196f3",
+        borderRadius: "6px",
+        background: "#2196f3",
+        boxShadow: "0 0 8px rgba(33, 150, 243, 0.6)",
+        padding: "2px"
+    },
+    "& .MuiStepIcon-root.Mui-completed": {
+        color: "#4caf50",
+        background: "none",
+    },
+    "& .MuiStepLabel-label": {
+        color: "#aaa"
+    },
+    "& .MuiStepLabel-label.Mui-active": {
+        color: "#2196f3",
+        fontWeight: 600
+    },
+    "& .MuiStepLabel-label.Mui-completed": {
+        color: "#4caf50",
+        fontWeight: 600,
+    },
 })
 
 export const StyledCancelButton = styled(Button)({

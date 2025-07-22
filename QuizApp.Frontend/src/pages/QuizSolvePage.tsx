@@ -2,8 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Pagination } from "@mui/material";
-import { useQuizSolve } from "@hooks/quizzes/useQuizSolve";
-import { useSubmitQuizAnswers } from "@hooks/quizzes/useSubmitQuizAnswers";
+import { useQuizSolve } from "@hooks/quizzes/query/useQuizSolve";
+import { useSubmitQuizAnswers } from "@hooks/quizzes/mutation/useSubmitQuizAnswers";
 import Loading from "@components/common/Loading";
 import {toast} from "react-toastify";
 import {

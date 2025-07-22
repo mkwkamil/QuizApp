@@ -23,18 +23,6 @@ public class ProfileController(IProfileService profileService) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("avatar")]
-    public async Task<IActionResult> UpdateAvatar([FromForm] UploadAvatarDto dto)
-    {
-        var userId = User.GetUserId();
-        if (userId == null) return Unauthorized();
-        
-        var result = await profileService.UpdateAvatarAsync(userId.Value, dto.AvatarFile);
-        
-        return result is not null ? Ok(result) : BadRequest("Failed to update avatar");
-    }
-
-    [Authorize]
     [HttpGet("summary")]
     public async Task<IActionResult> GetProfileSummary()
     {

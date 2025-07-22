@@ -17,6 +17,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IExploreService, ExploreService>();
 builder.Services.AddScoped<IQuizSolveService, QuizSolveService>();
 builder.Services.AddScoped<IQuizManagementService, QuizManagementService>();
+builder.Services.AddScoped<IUploadService, UploadService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

@@ -1,6 +1,6 @@
 import { useAuthStore } from "@store/auth/authStore.ts";
 import { useParams } from "react-router-dom";
-import { useLoadQuiz } from "@hooks/quizzes/useLoadQuiz";
+import { useLoadQuiz } from "@hooks/quizzes/query/useLoadQuiz";
 import LoginPage from "@pages/auth/LoginPage";
 import Loading from "@components/common/Loading";
 import QuizEditor from "@components/quiz/editor/QuizEditor.tsx";

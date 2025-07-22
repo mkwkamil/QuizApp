@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { QuizLoad } from "@interfaces/quizzes";
 import { useQuizStore } from "@store/quiz/quizStore";
-import { useQuizNavigation } from "@hooks/quizzes/useQuizNavigation";
+import { useQuizNavigation } from "@hooks/quizzes/query/useQuizNavigation";
 import { QuizEditorWrapper } from "@components/quiz/editor/styles/QuizEditorLayout";
 import QuizEditorStepper from "@components/quiz/editor/QuizEditorStepper";
 import StepBasicInfo from "@components/quiz/editor/StepBasicInfo";

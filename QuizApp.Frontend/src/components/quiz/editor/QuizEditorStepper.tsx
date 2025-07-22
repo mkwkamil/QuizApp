@@ -1,17 +1,18 @@
-import {Stepper, Step, StepLabel, Box} from "@mui/material";
+import { Step, StepLabel, Box } from "@mui/material";
+import { StyledStepper } from "@components/quiz/editor/styles/QuizEditorLayout.ts";
 
 const steps = ["Quiz Info", "Add Questions", "Review & Publish"];
 
 const QuizEditorStepper = ({ activeStep }: { activeStep: number; }) => {
     return (
         <Box sx={{ width: '100%' }}>
-            <Stepper activeStep={activeStep}>
+            <StyledStepper activeStep={activeStep}>
                 {steps.map((label) => (
                     <Step key={label}>
                         <StepLabel>{label}</StepLabel>
                     </Step>
                 ))}
-            </Stepper>
+            </StyledStepper>
         </Box>
     );
 };

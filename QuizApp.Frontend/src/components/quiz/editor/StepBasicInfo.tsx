@@ -1,36 +1,17 @@
 import React from "react";
-import {useNavigate} from "react-router-dom";
-import {useCategories} from "@hooks/meta/useCategories.ts";
-import {useDifficulties} from "@hooks/meta/useDifficulties.ts";
-import Loading from "@components/common/Loading.tsx";
-import {useQuizStore} from "@store/quiz/quizStore.ts";
-import {Controller, useForm} from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useCategories } from "@hooks/meta/useCategories";
+import { useDifficulties } from "@hooks/meta/useDifficulties";
+import Loading from "@components/common/Loading";
+import { useQuizStore } from "@store/quiz/quizStore";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import type {QuizBasicInfo} from "@store/quiz/quizTypes.ts";
-import {basicInfoSchema} from "@schemas/quizEditorSchema.ts";
-import {useUploadThumbnail} from "@hooks/quizzes/mutation/useUploadThumbnail.ts";
-import {
-    Box, Button,
-    FormControl,
-    FormControlLabel,
-    InputLabel,
-    MenuItem,
-    Select,
-    Stack,
-    Switch,
-    TextField
-} from "@mui/material";
-import {
-    SectionSubtitle,
-    SectionTitle,
-    StepBasicInfoWrapper,
-    ThumbnailPreview
-} from "@components/quiz/editor/styles/StepBasicInfoLayout.ts";
-import {
-    StyledCancelButton,
-    StyledDraftButton,
-    StyledQuizNextButton
-} from "@components/quiz/editor/styles/QuizEditorLayout.ts";
+import type { QuizBasicInfo } from "@store/quiz/quizTypes";
+import { basicInfoSchema } from "@schemas/quizEditorSchema";
+import { useUploadThumbnail } from "@hooks/quizzes/mutation/useUploadThumbnail";
+import { Box, Button, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Switch, TextField } from "@mui/material";
+import { SectionSubtitle, SectionTitle, StepBasicInfoWrapper, ThumbnailPreview } from "@components/quiz/editor/styles/StepBasicInfoLayout";
+import { StyledCancelButton, StyledDraftButton, StyledQuizNextButton } from "@components/quiz/editor/styles/QuizEditorLayout";
 
 type StepBasicInfoProps = {
     onComplete: () => void;
@@ -70,8 +51,8 @@ const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
 
         reader.onload = async () => {
             img.onload = async () => {
-                if (file.size > 1024 * 300) {
-                    return console.error("Image too large. Max 300KB.");
+                if (file.size > 1024 * 1024) {
+                    return console.error("Image too large. Max 1MB.");
                 }
 
                 if (img.width <= img.height) {
@@ -215,7 +196,7 @@ const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
                             </Button>
 
                             {basicInfo.thumbnailUrl && (
-                                <ThumbnailPreview src={basicInfo.thumbnailUrl} />
+                                <ThumbnailPreview src={`http://localhost:5203${basicInfo.thumbnailUrl}`} />
                             )}
                         </Stack>
                     </Box>

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useQuizOverview } from "@hooks/quizzes/useQuizOverview";
+import { useQuizOverview } from "@hooks/quizzes/query/useQuizOverview";
 import Loading from "@components/common/Loading";
 import { QuizOverviewMain, QuizOverviewSidebar, QuizOverviewWrapper } from "@components/quiz/overview/styles/QuizOverviewLayout";
 import QuizOverviewHeader from "@components/quiz/overview/QuizOverviewHeader.tsx";

@@ -8,7 +8,7 @@ export const useAvatarUpload = () => {
             const formData = new FormData();
             formData.append("file", file);
 
-            const response = await api.post<{ avatar: string }>("/profile/avatar", formData);
+            const response = await api.post<{ avatar: string }>("/upload/avatar", formData);
             return response.data.avatar;
         },
         onSuccess: () => {
