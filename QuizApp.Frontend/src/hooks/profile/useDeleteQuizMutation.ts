@@ -9,9 +9,8 @@ export const useDeleteQuizMutation = () => {
         mutationFn: async (quizId: number): Promise<void> => {
             await api.delete(`/quiz-management/${quizId}`);
         },
-        onSuccess: async (_, quizId) => {
+        onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['user-quizzes'] });
-            toast.success(`Quiz ${quizId} deleted successfully.`);
         },
         onError: (error: any) => {
             const errorMessage = error.response?.data?.message || "Failed to delete quiz. Please try again.";

@@ -4,7 +4,7 @@ import api from "@config/axiosConfig";
 
 export const usePopularQuizzes = () => {
     return useQuery<PopularQuiz[]>({
-        queryKey: ["quizzes", "popular"],
+        queryKey: ["quizzes", "popular", "explore"],
         queryFn: async () => {
             const { data } = await api.get<PopularQuiz[]>("/explore/popular");
             return data;

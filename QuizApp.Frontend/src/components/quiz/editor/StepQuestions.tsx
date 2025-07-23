@@ -110,7 +110,7 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
             </SectionTitle>
 
             <QuestionAddBox>
-                <Typography variant="h6">Total questions: {questions.length}</Typography>
+                <Typography variant="h6" sx={{ display: "flex", alignItems: "center", fontWeight: 600}}>Total questions: {questions.length}</Typography>
                 <AddQuestionButton variant="contained" startIcon={<AddIcon />} onClick={addNewQuestion}>
                     Add Question
                 </AddQuestionButton>

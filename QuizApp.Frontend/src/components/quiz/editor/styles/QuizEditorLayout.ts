@@ -101,6 +101,7 @@ export const StyledQuizBackButton = styled(Button)({
     padding: "12px 24px",
     fontSize: 14,
     borderRadius: 10,
+    minWidth: 300,
     transition: "all 0.25s ease",
     "&:hover": {
         background: "linear-gradient(135deg, #3A3A3A, #1F1F1F)",
@@ -116,6 +117,7 @@ export const StyledQuizNextButton = styled(Button)({
     padding: "12px 24px",
     fontSize: 14,
     borderRadius: 10,
+    minWidth: 300,
     transition: "all 0.25s ease",
     "&:hover": {
         background: "linear-gradient(135deg, #163F84, #04274E)",

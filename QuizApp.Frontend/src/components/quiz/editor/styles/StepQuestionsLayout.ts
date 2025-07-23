@@ -4,7 +4,7 @@ import {Accordion, Box, Button, type ButtonProps, type AccordionProps} from "@mu
 export const QuestionAddBox = styled(Box)({
     display: "flex", 
     justifyContent: "space-between",
-    verticalAlign: "center",
+    alignItems: "center",
     marginBottom: "24px",
 });
 

@@ -29,6 +29,10 @@ export default defineConfig({
         target: 'http://localhost:5203',
         changeOrigin: true,
         secure: false,
+      },
+      '/thumbnails': {
+        target: 'http://localhost:5203',
+        changeOrigin: true,
       }
     }
   }
