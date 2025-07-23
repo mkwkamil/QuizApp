@@ -1,9 +1,7 @@
 import {
-    Accordion,
     AccordionDetails,
     AccordionSummary,
     Box,
-    Button,
     Checkbox,
     FormControl,
     InputLabel,
@@ -15,13 +13,25 @@ import {
     Select,
     Stack,
     TextField,
-    Typography,
+    Typography, OutlinedInput,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useEditableQuestions} from "@hooks/quizzes/mutation/useEditableQuestions.ts";
-import { StyledDraftButton, StyledQuizBackButton, StyledQuizNextButton} from "@components/quiz/editor/styles/QuizEditorLayout.ts";
+import {
+    SectionTitle, StepContainer,
+    StyledDraftButton,
+    StyledQuizBackButton,
+    StyledQuizNextButton
+} from "@components/quiz/editor/styles/QuizEditorLayout.ts";
+import {
+    AddOptionButton,
+    AddQuestionButton, EmptyQuestionBox,
+    QuestionAccordion,
+    QuestionAddBox
+} from "@components/quiz/editor/styles/StepQuestionsLayout.ts";
 
 const QUESTION_TYPES = [
     { value: "single", label: "Single Choice" },
@@ -59,21 +69,20 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
     };
 
     const renderOptionField = (q: any, opt: string, i: number) => (
-        <TextField
+        <OutlinedInput
             value={opt}
             onChange={(e) => handleOptionChange(q.id, i, e.target.value)}
             fullWidth
             required
-            InputProps={{
-                endAdornment:
-                    q.type !== "truefalse" && q.options.length > 2 ? (
-                        <InputAdornment position="end">
-                            <IconButton onClick={() => removeOption(q.id, i)}>
-                                <DeleteIcon fontSize="small" />
-                            </IconButton>
-                        </InputAdornment>
-                    ) : null,
-            }}
+            endAdornment={
+                q.type !== "truefalse" && q.options.length > 2 ? (
+                    <InputAdornment position="end">
+                        <IconButton onClick={() => removeOption(q.id, i)}>
+                            <DeleteIcon fontSize="small" />
+                        </IconButton>
+                    </InputAdornment>
+                ) : null
+            }
         />
     );
 
@@ -95,108 +104,84 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
     };
 
     return (
-        <Box sx={{ p: 4, width: "80%", mx: "auto" }}>
-            <Typography variant="h3" fontWeight={700} mb={3}>
+        <StepContainer>
+            <SectionTitle variant="h3">
                 Add Questions
-            </Typography>
+            </SectionTitle>
 
-            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
+            <QuestionAddBox>
                 <Typography variant="h6">Total questions: {questions.length}</Typography>
-                <Button variant="contained" startIcon={<AddIcon />} onClick={addNewQuestion}>
+                <AddQuestionButton variant="contained" startIcon={<AddIcon />} onClick={addNewQuestion}>
                     Add Question
-                </Button>
-            </Box>
+                </AddQuestionButton>
+            </QuestionAddBox>
 
             {questions.length === 0 && (
-                <Box
-                    sx={{
-                        textAlign: "center",
-                        p: 4,
-                        border: "2px dashed #ccc",
-                        borderRadius: 2,
-                        mb: 4,
-                    }}
-                >
+                <EmptyQuestionBox>
                     <Typography variant="body1" color="text.secondary">
                         No questions yet. Add one to begin.
                     </Typography>
-                </Box>
+                </EmptyQuestionBox>
             )}
 
             {questions.map((q) => (
-                <Accordion
-                    key={q.id}
-                    expanded={expandedId === q.id}
-                    onChange={() => handleAccordionToggle(q.id!)}
-                    sx={{ mb: 2, position: 'relative' }} 
-                >
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls={`${q.id}-content`}
-                        id={`${q.id}-header`}
-                    >
-                        <Typography flex={1}>{q.text || "New Question"}</Typography>
-                    </AccordionSummary>
+                <Box display="flex" alignItems="center" key={q.id} paddingY={1}>
+                    <DragIndicatorIcon sx={{ color: "#777", cursor: "grab", mr: 2, mb: "4px" }} />
+                    <QuestionAccordion expanded={expandedId === q.id} onChange={() => handleAccordionToggle(q.id!)}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${q.id}-content`} id={`${q.id}-header`}>
+                            <Typography fontWeight={600} flex={1}>{q.text || "New Question"}</Typography>
+                        </AccordionSummary>
+                        
+                        <AccordionDetails>
+                            <Stack spacing={3}>
+                                <TextField
+                                    label="Question Text"
+                                    value={q.text}
+                                    onChange={(e) => handleQuestionFieldChange(q.id!, "text", e.target.value)}
+                                    fullWidth
+                                    required
+                                />
 
-                    <IconButton
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            deleteQuestion(q.id!);
-                        }}
-                        sx={{
-                            position: 'absolute',
-                            top: 4,
-                            right: 8,
-                            zIndex: 1,
-                        }}
-                    >
-                        <DeleteIcon color="error" />
-                    </IconButton>
+                                <FormControl fullWidth>
+                                    <InputLabel>Question Type</InputLabel>
+                                    <Select
+                                        variant="outlined"
+                                        value={q.type}
+                                        label="Question Type"
+                                        onChange={(e) => handleQuestionFieldChange(q.id!, "type", e.target.value)}
+                                    >
+                                        {QUESTION_TYPES.map((type) => (
+                                            <MenuItem key={type.value} value={type.value}>
+                                                {type.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
 
-                    <AccordionDetails>
-                        <Stack spacing={3}>
-                            <TextField
-                                label="Question Text"
-                                value={q.text}
-                                onChange={(e) => handleQuestionFieldChange(q.id!, "text", e.target.value)}
-                                fullWidth
-                                required
-                            />
-
-                            <FormControl fullWidth>
-                                <InputLabel>Question Type</InputLabel>
-                                <Select
-                                    value={q.type}
-                                    label="Question Type"
-                                    onChange={(e) => handleQuestionFieldChange(q.id!, "type", e.target.value)}
-                                >
-                                    {QUESTION_TYPES.map((type) => (
-                                        <MenuItem key={type.value} value={type.value}>
-                                            {type.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-
-                            <Box>
-                                <FormLabel>Options</FormLabel>
-                                <Stack spacing={2} mt={1}>
-                                    {q.options.map((opt, i) => (
-                                        <Box key={i} display="flex" alignItems="center" gap={1}>
-                                            {renderAnswerInput(q, i)}
-                                            {renderOptionField(q, opt, i)}
-                                        </Box>
-                                    ))}
-                                    {q.type !== "truefalse" && q.options.length < 6 && (
-                                        <Button startIcon={<AddIcon />} onClick={() => addOption(q.id!)}>
-                                            Add Option
-                                        </Button>
-                                    )}
-                                </Stack>
-                            </Box>
-                        </Stack>
-                    </AccordionDetails>
-                </Accordion>
+                                <Box>
+                                    <FormLabel>Options</FormLabel>
+                                    <Stack spacing={2} mt={1}>
+                                        {q.options.map((opt, i) => (
+                                            <Box key={i} display="flex" alignItems="center" gap={1}>
+                                                {renderAnswerInput(q, i)}
+                                                {renderOptionField(q, opt, i)}
+                                            </Box>
+                                        ))}
+                                        {q.type !== "truefalse" && q.options.length < 6 && (
+                                            <AddOptionButton startIcon={<AddIcon />} onClick={() => addOption(q.id!)}>
+                                                Add Option
+                                            </AddOptionButton>
+                                        )}
+                                    </Stack>
+                                </Box>
+                            </Stack>
+                        </AccordionDetails>
+                    </QuestionAccordion>
+                    <DeleteIcon color="error" sx={{ ml: 2, cursor: "pointer" }} onClick={(e) => {
+                        e.stopPropagation();
+                        deleteQuestion(q.id!);
+                    }} />
+                </Box>
             ))}
 
             <Box mt={4} display="flex" flexDirection="column" gap={2} alignItems="center">
@@ -208,7 +193,7 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
                     <StyledDraftButton fullWidth>Save Draft</StyledDraftButton>
                 </Box>
             </Box>
-        </Box>
+        </StepContainer>
     );
 };
 

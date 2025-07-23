@@ -15,12 +15,11 @@ export interface QuizBasicInfo {
 export interface QuizStoreState {
     quizId: number | null;
     basicInfo: QuizBasicInfo;
+    thumbnailFile: File | null;
     questions: QuestionPayload[];
     setBasicInfo: (info: Partial<QuizBasicInfo>) => void;
+    setThumbnailFile: (file: File | null) => void;
     setQuestions: (questions: QuestionPayload[]) => void;
-    addQuestion: (question: QuestionPayload) => void;
-    updateQuestion: (index: number, question: Partial<QuestionPayload>) => void;
-    removeQuestion: (index: number) => void;
     setQuizId: (id: number) => void;
     reset: () => void;
 }

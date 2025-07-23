@@ -16,35 +16,44 @@ const defaultBasicInfo: QuizBasicInfo = {
 export const useQuizStore = create<QuizStoreState>((set) => ({
     quizId: null,
     basicInfo: defaultBasicInfo,
+    thumbnailFile: null,
     questions: [],
     
     setBasicInfo: (info) => set((state) => ({
         basicInfo: {...state.basicInfo, ...info}
     })),
     
-    setQuestions: (questions) => set({questions}),
+    setThumbnailFile: (file) => {
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = () => {
+            const img = new Image();
+            img.onload = () => {
+                if (img.width <= img.height)
+                    return console.log("Only landscape images are allowed.");
+                
+                const previewUrl = URL.createObjectURL(file);
+                set((state) => ({
+                    thumbnailFile: file,
+                    basicInfo: {...state.basicInfo, thumbnailUrl: previewUrl}
+                }))
+            };
+            if (typeof reader.result === 'string') {
+                img.src = reader.result;
+            }
+        };
+        reader.readAsDataURL(file);
+    },
     
-    addQuestion: (question) => set((state) => ({
-        questions: [...state.questions, question]
-    })),
-
-    updateQuestion: (index, partial) => set((state) => {
-        const updated = [...state.questions];
-        updated[index] = { ...updated[index], ...partial };
-        return { questions: updated };
-    }),
-
-    removeQuestion: (index) => set((state) => {
-        const updated = [...state.questions];
-        updated.splice(index, 1);
-        return { questions: updated };
-    }),
+    setQuestions: (questions) => set({questions}),
     
     setQuizId: (id) => set({quizId: id}),
     
     reset: () => set({
         quizId: null,
         basicInfo: defaultBasicInfo,
+        thumbnailFile: null,
         questions: []
     })
 }));
