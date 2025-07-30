@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { QuizLoad } from "@interfaces/quizzes";
 import api from "@config/axiosConfig";
 
-export const useLoadQuiz = (quizId: number | string | undefined) => {
+export const useLoadQuiz = (quizId: number) => {
     return useQuery<QuizLoad, Error>({
         queryKey: ['quiz', quizId],
         queryFn: async () => {

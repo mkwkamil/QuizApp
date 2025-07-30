@@ -44,13 +44,13 @@ public class QuizManagementController(IQuizManagementService quizManagementServi
         return success ? NoContent() : NotFound();
     }
     
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetQuizForEdit(int id)
+    [HttpGet("{quizId:int}")]
+    public async Task<IActionResult> GetQuizForEdit(int quizId)
     {
         var userId = User.GetUserId();
         if (userId == null) return Unauthorized();
         
-        var quiz = await quizManagementService.GetQuizForEditAsync(id, userId.Value);
+        var quiz = await quizManagementService.GetQuizForEditAsync(userId.Value, quizId);
         
         return quiz is not null ? Ok(quiz) : NotFound();
     }
@@ -67,13 +67,13 @@ public class QuizManagementController(IQuizManagementService quizManagementServi
 
     }
     
-    [HttpPut("draft/{id:int}")]
-    public async Task<IActionResult> UpdateDraft(int id, [FromBody] QuizDraftDto dto)
+    [HttpPut("draft/{draftId:int}")]
+    public async Task<IActionResult> UpdateDraft(int draftId, [FromBody] QuizDraftDto dto)
     {
         var userId = User.GetUserId();
         if (userId == null) return Unauthorized();
         
-        var result = await quizManagementService.UpdateDraftAsync(userId.Value, id, dto);
+        var result = await quizManagementService.UpdateDraftAsync(userId.Value, draftId, dto);
         
         return result is not null ? Ok(new { draftId = result }) : NotFound();
     }

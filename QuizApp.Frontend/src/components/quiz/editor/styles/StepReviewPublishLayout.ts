@@ -1,10 +1,9 @@
-import {Box, Chip, Paper, styled, Typography} from "@mui/material";
+import {Accordion, type AccordionProps, Box, Chip, Paper, styled, Typography} from "@mui/material";
 import {type ChipProps} from "@mui/material";
 
 export const ReviewHeader = styled(Paper)({
     padding: 32,
     borderRadius: 16,
-    background: "linear-gradient(145deg, #1e1e1e, #2a2a2a)",
     border: "1px solid rgba(255,255,255,0.05)",
     boxShadow: "0 4px 30px rgba(0,0,0,0.4)",
     display: "flex",
@@ -30,6 +29,7 @@ export const ReviewHeaderText = styled(Typography)({
     wordBreak: 'break-word',
     overflowWrap: 'break-word',
     marginBottom: 16,
+    fontWeight: 700
 })
 
 export const ReviewHeaderChip = styled(Chip)<ChipProps>(() => ({
@@ -41,4 +41,15 @@ export const ReviewHeaderChip = styled(Chip)<ChipProps>(() => ({
     transition: "all 0.2s ease",
     marginTop: 5,
     padding: 20,
+}));
+
+export const ReviewPaperBox = styled(Paper)({
+    borderRadius: 16,
+})
+
+export const ReviewAccordion = styled(Accordion)<AccordionProps>(() => ({
+    padding: "8px",
+    "&.MuiPaper-root": {
+        borderRadius: "12px",
+    },
 }));

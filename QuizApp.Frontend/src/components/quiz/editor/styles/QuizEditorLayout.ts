@@ -14,6 +14,7 @@ export const QuizEditorWrapper = styled(Box)({
 
 export const StepContainer = styled(Box)({
     minWidth: "75%",
+    maxWidth: "95%",
     padding: "32px",
     margin: "0 auto",
 });

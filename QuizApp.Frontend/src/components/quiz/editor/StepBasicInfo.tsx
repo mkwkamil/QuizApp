@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { useCategories } from "@hooks/meta/useCategories";
 import { useDifficulties } from "@hooks/meta/useDifficulties";
 import Loading from "@components/common/Loading";
@@ -33,6 +33,11 @@ import {
 } from "@components/quiz/editor/styles/QuizEditorLayout";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import {useCreateDraftQuiz} from "@hooks/quizzes/mutation/useCreateDraftQuiz.ts";
+import {useUpdateDraftQuiz} from "@hooks/quizzes/mutation/useUpdateDraftQuiz.ts";
+import {useUploadThumbnail} from "@hooks/quizzes/mutation/useUploadThumbnail.ts";
+import type {CreateDraftPayload} from "@interfaces/quiz-manage.ts";
+import {toast} from "react-toastify";
 
 type StepBasicInfoProps = {
     onComplete: () => void;
@@ -41,21 +46,25 @@ type StepBasicInfoProps = {
 
 const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
     const navigate = useNavigate();
-    
+
     const { data: categories, isLoading: loadingCategories } = useCategories();
     const { data: difficulties, isLoading: loadingDifficulties } = useDifficulties();
-    const { basicInfo, setBasicInfo, setThumbnailFile } = useQuizStore();
+    const { quizId, basicInfo, setBasicInfo, questions, thumbnailFile, setThumbnailFile, reset } = useQuizStore();
+    const { mutateAsync: createDraft } = useCreateDraftQuiz();
+    const { mutateAsync: updateDraft } = useUpdateDraftQuiz();
+    const { mutateAsync: uploadThumbnail } = useUploadThumbnail();
     
-    const { control, handleSubmit, formState: { errors }, setValue, watch} = useForm<QuizBasicInfo>({
+
+    const { control, handleSubmit, formState: { errors }, setValue, getValues, watch} = useForm<QuizBasicInfo>({
         defaultValues: basicInfo,
         resolver: yupResolver(basicInfoSchema) as any,
         mode: "onChange",
     });
-    
+
     useEffect(() => {
         setValue("thumbnailUrl", basicInfo.thumbnailUrl);
     }, [basicInfo.thumbnailUrl, setValue]);
-    
+
     if (loadingCategories || loadingDifficulties) return <Loading />;
 
     const handleThumbnailSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +77,43 @@ const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
     const onSubmit = (data: QuizBasicInfo) => {
         setBasicInfo(data);
         onComplete();
+    };
+
+    const handleSaveDraft = async () => {
+        const { title } = getValues();
+
+        if (!title || title.trim() === "") {
+            toast.error("Title is required to save draft.");
+            return;
+        }
+
+        const formData = getValues();
+        setBasicInfo(formData);
+
+        const thumbnailUrl = await uploadThumbnail(thumbnailFile ?? undefined);
+
+        const payload: CreateDraftPayload = {
+            title: formData.title,
+            description: formData.description,
+            thumbnailUrl,
+            categoryId: formData.categoryId ?? null,
+            difficultyId: formData.difficultyId ?? null,
+            isPublic: formData.isPublic,
+            isDraft: true,
+            revealAnswers: formData.revealAnswers,
+            shuffleQuestions: formData.shuffleQuestions,
+            questions,
+        };
+
+        console.log(payload);
+        
+        if (quizId) {
+            await updateDraft({ draftId: quizId, payload });
+        } else {
+            await createDraft(payload);
+        }
+        
+        reset();
     };
 
     const handleCancel = () => navigate(editMode ? "/profile" : "/");
@@ -208,7 +254,7 @@ const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
                         </StyledQuizNextButton>
                         <Box display="flex" gap={2} width="100%">
                             <StyledCancelButton fullWidth onClick={handleCancel}>Cancel</StyledCancelButton>
-                            <StyledDraftButton fullWidth>Save Draft</StyledDraftButton>
+                            <StyledDraftButton fullWidth onClick={handleSaveDraft}>Save Draft</StyledDraftButton>
                         </Box>
                     </Stack>
                 </Stack>

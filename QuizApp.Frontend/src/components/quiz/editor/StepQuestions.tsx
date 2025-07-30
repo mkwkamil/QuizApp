@@ -30,8 +30,14 @@ import {
     AddOptionButton,
     AddQuestionButton, EmptyQuestionBox,
     QuestionAccordion,
-    QuestionAddBox
+    QuestionAddBox, QuestionTitle
 } from "@components/quiz/editor/styles/StepQuestionsLayout.ts";
+import {useQuizStore} from "@store/quiz/quizStore.ts";
+import {useCreateDraftQuiz} from "@hooks/quizzes/mutation/useCreateDraftQuiz.ts";
+import {useUpdateDraftQuiz} from "@hooks/quizzes/mutation/useUpdateDraftQuiz.ts";
+import {useUploadThumbnail} from "@hooks/quizzes/mutation/useUploadThumbnail.ts";
+import {toast} from "react-toastify";
+import type {CreateDraftPayload} from "@interfaces/quiz-manage.ts";
 
 const QUESTION_TYPES = [
     { value: "single", label: "Single Choice" },
@@ -57,6 +63,12 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
         handleCorrectAnswerChange,
         deleteQuestion,
     } = useEditableQuestions();
+
+    const { quizId, basicInfo, thumbnailFile, reset } = useQuizStore();
+    const { mutateAsync: createDraft } = useCreateDraftQuiz();
+    const { mutateAsync: updateDraft } = useUpdateDraftQuiz();
+    const { mutateAsync: uploadThumbnail } = useUploadThumbnail();
+
 
     const renderAnswerInput = (q: any, i: number) => {
         const Comp = q.type === "multiple" ? Checkbox : Radio;
@@ -85,6 +97,36 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
             }
         />
     );
+    
+    const handleSaveDraft = async () => {
+        if (!basicInfo.title?.trim()) {
+            toast.error("Title is required to save draft.");
+            return;
+        }
+
+        const thumbnailUrl = await uploadThumbnail(thumbnailFile ?? undefined);
+
+        const payload: CreateDraftPayload = {
+            title: basicInfo.title,
+            description: basicInfo.description,
+            thumbnailUrl,
+            categoryId: basicInfo.categoryId ?? null,
+            difficultyId: basicInfo.difficultyId ?? null,
+            isPublic: basicInfo.isPublic,
+            isDraft: true,
+            revealAnswers: basicInfo.revealAnswers,
+            shuffleQuestions: basicInfo.shuffleQuestions,
+            questions,
+        };
+
+        if (quizId) {
+            await updateDraft({ draftId: quizId, payload });
+        } else {
+            await createDraft(payload);
+        }
+        
+        reset();
+    };
 
     const handleSubmit = () => {
         const isValid = questions.every(
@@ -129,7 +171,7 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
                     <DragIndicatorIcon sx={{ color: "#777", cursor: "grab", mr: 2, mb: "4px" }} />
                     <QuestionAccordion expanded={expandedId === q.id} onChange={() => handleAccordionToggle(q.id!)}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${q.id}-content`} id={`${q.id}-header`}>
-                            <Typography fontWeight={600} flex={1}>{q.text || "New Question"}</Typography>
+                            <QuestionTitle>{q.text || "New Question"}</QuestionTitle>
                         </AccordionSummary>
                         
                         <AccordionDetails>
@@ -190,7 +232,7 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
                 </StyledQuizNextButton>
                 <Box display="flex" gap={2} width="100%">
                     <StyledQuizBackButton fullWidth onClick={onBack}>Back</StyledQuizBackButton>
-                    <StyledDraftButton fullWidth>Save Draft</StyledDraftButton>
+                    <StyledDraftButton fullWidth onClick={handleSaveDraft}>Save Draft</StyledDraftButton>
                 </Box>
             </Box>
         </StepContainer>

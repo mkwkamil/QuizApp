@@ -9,10 +9,10 @@ const QuizManagePage = () => {
     const { id: quizId } = useParams<{ id: string }>();
     const user = useAuthStore((state) => state.user);
     
-    const { data: quizData, isLoading } = useLoadQuiz(quizId);
-
+    const { data: quizData, isLoading } = useLoadQuiz(Number(quizId));
+    
     if (!user) return <LoginPage />;
-
+    
     if (quizId) {
         if (isLoading) return <Loading />;
 

@@ -100,7 +100,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
     {
         var quiz = await context.Quizzes
             .Include(q => q.Questions)
-            .ThenInclude(qn => qn.Answers)
+            .ThenInclude(q => q.Answers)
             .FirstOrDefaultAsync(q => q.Id == quizId && q.AuthorId == userId);
         
         if (quiz == null) return null;
@@ -139,8 +139,8 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
             Title = dto.Title,
             Description = dto.Description ?? string.Empty,
             ThumbnailUrl = dto.ThumbnailUrl ?? string.Empty,
-            CategoryId = dto.CategoryId,
-            DifficultyId = dto.DifficultyId,
+            CategoryId = dto.CategoryId ?? null,
+            DifficultyId = dto.DifficultyId ?? null,
             IsPublic = dto.IsPublic,
             IsDraft = true,
             RevealAnswers = dto.RevealAnswers,

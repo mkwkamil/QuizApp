@@ -1,5 +1,5 @@
 import {styled} from "@mui/system";
-import {Accordion, Box, Button, type ButtonProps, type AccordionProps} from "@mui/material";
+import {Accordion, Box, Button, type ButtonProps, type AccordionProps, Typography} from "@mui/material";
 
 export const QuestionAddBox = styled(Box)({
     display: "flex", 
@@ -40,6 +40,13 @@ export const QuestionAccordion = styled(Accordion)<AccordionProps>(() => ({
         borderRadius: "12px",
     },
 }));
+
+export const QuestionTitle = styled(Typography)({
+    fontWeight: 600,
+    whiteSpace: "normal",
+    wordBreak: "break-word",
+    overflowWrap: "break-word",
+});
 
 export const AddOptionButton = styled(Button)<ButtonProps>(() => ({
     color: "#aaa",
