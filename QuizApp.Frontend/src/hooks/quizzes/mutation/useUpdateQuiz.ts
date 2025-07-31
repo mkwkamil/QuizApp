@@ -19,7 +19,7 @@ export const useUpdateQuiz = () => {
             const { data } = await api.put<{ quizId: number }>(`/quiz-management/${quizId}`, payload);
             return data.quizId;
         },
-        onSuccess: async (quizId) => {
+        onSuccess: async (quizId, payload) => {
             toast.success("Quiz updated successfully!");
             await Promise.all([
                 queryClient.invalidateQueries({ queryKey: ['quiz-load', quizId] }),
@@ -28,7 +28,11 @@ export const useUpdateQuiz = () => {
                 queryClient.invalidateQueries({ queryKey: ['quizzes', 'popular', 'explore'] }),
                 queryClient.invalidateQueries({ queryKey: ['explore-user-stats'] }),
             ]);
-            navigate(`/quiz/${quizId}`, { replace: true });
+            if (payload.payload.isPublic) {
+                navigate(`/quiz/${quizId}`, { replace: true });
+            } else {
+                navigate(`/profile`, { replace: true });
+            }
         },
         onError: () => {
             toast.error("Failed to update quiz. Please try again.");

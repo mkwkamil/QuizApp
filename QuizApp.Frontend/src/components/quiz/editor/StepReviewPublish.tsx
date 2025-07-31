@@ -10,7 +10,7 @@ import {
     ReviewHeaderChip,
     ReviewHeaderText,
     ReviewImageBox,
-    ReviewPaperBox
+    ReviewPaperBox, ReviewSettingsChip
 } from "@components/quiz/editor/styles/StepReviewPublishLayout.ts";
 import { useCategories } from "@hooks/meta/useCategories.ts";
 import { useDifficulties } from "@hooks/meta/useDifficulties.ts";
@@ -92,6 +92,21 @@ const StepReviewPublish = ({ onBack }: StepReviewPublishProps) => {
                 </Stack>
             </ReviewHeader>
 
+            <Box display="flex" mb={2} mt={1.5} justifyContent="center" gap={3}>
+                <ReviewSettingsChip
+                    label={`Public: ${basicInfo.isPublic ? "Yes" : "No"}`}
+                    value={basicInfo.isPublic}
+                />
+                <ReviewSettingsChip
+                    label={`Shuffle Questions: ${basicInfo.shuffleQuestions ? "Yes" : "No"}`}
+                    value={basicInfo.shuffleQuestions}
+                />
+                <ReviewSettingsChip
+                    label={`Reveal Answers: ${basicInfo.revealAnswers ? "Yes" : "No"}`}
+                    value={basicInfo.revealAnswers}
+                />
+            </Box>
+
             <ReviewPaperBox>
                 <ReviewAccordion defaultExpanded>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 3, py: 1 }}>
@@ -122,7 +137,7 @@ const StepReviewPublish = ({ onBack }: StepReviewPublishProps) => {
                 </StyledQuizBackButton>
 
                 <StyledQuizNextButton onClick={handlePublish} disabled={updatePending || createPending}>
-                    {quizId
+                    {(quizId && !basicInfo.isDraft)
                         ? updatePending ? "Updating..." : "Update Quiz"
                         : createPending ? "Publishing..." : "Publish Quiz"}
                 </StyledQuizNextButton>

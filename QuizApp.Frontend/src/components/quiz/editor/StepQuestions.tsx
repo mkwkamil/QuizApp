@@ -38,6 +38,7 @@ import {useUpdateDraftQuiz} from "@hooks/quizzes/mutation/useUpdateDraftQuiz.ts"
 import {useUploadThumbnail} from "@hooks/quizzes/mutation/useUploadThumbnail.ts";
 import {toast} from "react-toastify";
 import type {CreateDraftPayload} from "@interfaces/quiz-manage.ts";
+import {useState} from "react";
 
 const QUESTION_TYPES = [
     { value: "single", label: "Single Choice" },
@@ -52,9 +53,11 @@ type StepQuestionsProps = {
 };
 
 const StepQuestions = ({ onBack, onComplete, editMode }: StepQuestionsProps) => {
+    const [invalidQuestionIds, setInvalidQuestionIds] = useState<string[]>([]);
     const {
         questions,
         expandedId,
+        setExpandedId,
         handleAccordionToggle,
         addNewQuestion,
         handleQuestionFieldChange,
@@ -132,19 +135,29 @@ const StepQuestions = ({ onBack, onComplete, editMode }: StepQuestionsProps) => 
     };
 
     const handleSubmit = () => {
-        const isValid = questions.every(
-            (q) =>
-                q.text.trim() &&
-                q.options.length >= 2 &&
-                q.options.every((o) => o.trim()) &&
-                q.correctAnswers.length > 0
-        );
-
-        if (!isValid) {
-            alert("Please complete all questions correctly before proceeding.");
+        if (questions.length === 0) {
+            toast.error("At least one question is required.");
             return;
         }
 
+        const invalids = questions
+            .filter(
+                (q) =>
+                    !q.text.trim() ||
+                    q.options.length < 2 ||
+                    q.options.some((o) => !o.trim()) ||
+                    q.correctAnswers.length === 0
+            )
+            .map((q) => q.id!);
+
+        if (invalids.length > 0) {
+            setExpandedId(null);
+            setInvalidQuestionIds(invalids);
+            toast.error("Some questions are incomplete. Please fix them.");
+            return;
+        }
+
+        setInvalidQuestionIds([]);
         onComplete();
     };
     
@@ -170,9 +183,9 @@ const StepQuestions = ({ onBack, onComplete, editMode }: StepQuestionsProps) => 
             )}
 
             {questions.map((q) => (
-                <Box key={`question-${q.id}`} display="flex" alignItems="center" paddingY={1}>
+                <Box key={`question-${q.id}`} display="flex" alignItems="center" paddingY={1} >
                     <DragIndicatorIcon sx={{ color: "#777", cursor: "grab", mr: 2, mb: "4px" }} />
-                    <QuestionAccordion expanded={expandedId === q.id} onChange={() => handleAccordionToggle(q.id!)}>
+                    <QuestionAccordion expanded={expandedId === q.id} onChange={() => handleAccordionToggle(q.id!)} invalid={invalidQuestionIds.includes(q.id!)}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${q.id}-content`} id={`${q.id}-header`}>
                             <QuestionTitle>{q.text || "New Question"}</QuestionTitle>
                         </AccordionSummary>

@@ -33,12 +33,25 @@ export const EmptyQuestionBox = styled(Box)({
     marginBottom: "32px",
 })
 
-export const QuestionAccordion = styled(Accordion)<AccordionProps>(() => ({
+interface QuestionAccordionProps extends AccordionProps {
+    invalid?: boolean;
+}
+
+export const QuestionAccordion = styled(Accordion, {
+    shouldForwardProp: (prop) => prop !== "invalid",
+})<QuestionAccordionProps>(({ invalid }) => ({
     padding: "8px",
     width: "100%",
     "&.MuiPaper-root": {
         borderRadius: "12px",
+        boxShadow: invalid
+            ? "inset 0 0 0 3px rgba(183, 28, 28, 0.25)"
+            : "none",
+        transition: "box-shadow 0.3s ease"
     },
+    backgroundColor: invalid ? 'rgba(183, 28, 28, 0.1)' : "transparent",
+    color: invalid ? '#b71c1c' : "#fff",
+    transition: "background-color 0.3s ease",
 }));
 
 export const QuestionTitle = styled(Typography)({

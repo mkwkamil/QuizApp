@@ -46,16 +46,18 @@ export const OptionItem = styled(ListItem)({
     transition: "all 0.2s ease",
 });
 
-export const OptionText = styled(ListItemText)<{ correct?: boolean }>(({ correct }) => ({
+export const OptionText = styled(ListItemText, {
+    shouldForwardProp: (prop) => prop !== "correct",
+})<{ correct?: boolean }>(({ correct }) => ({
     "& .MuiListItemText-primary": {
         fontSize: 15,
         color: correct ? "#4caf50" : "inherit",
         fontWeight: correct ? 600 : 400,
     },
-    whiteSpace: 'normal',
-    wordBreak: 'break-word',
-    overflowWrap: 'break-word',
-}))
+    whiteSpace: "normal",
+    wordBreak: "break-word",
+    overflowWrap: "break-word",
+}));
 
 export const TypeChip = styled(Chip)({
     color: "#ccc",

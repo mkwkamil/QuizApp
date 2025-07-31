@@ -14,7 +14,7 @@ export const useCreateQuiz = () => {
             const { data } = await api.post<{ quizId: number }>('/quiz-management', payload);
             return data.quizId;
         },
-        onSuccess: async (quizId) => {
+        onSuccess: async (quizId, payload) => {
             toast.success("Quiz created successfully!");
             await Promise.all([
                 queryClient.invalidateQueries({ queryKey: ['quiz-load'] }),
@@ -23,7 +23,11 @@ export const useCreateQuiz = () => {
                 queryClient.invalidateQueries({ queryKey: ['quizzes', 'popular', 'explore'] }),
                 queryClient.invalidateQueries({ queryKey: ['explore-user-stats'] }),
             ]);
-            navigate(`/quiz/${quizId}`, { replace: true });
+            if (payload.isPublic) {
+                navigate(`/quiz/${quizId}`, { replace: true });
+            } else {
+                navigate(`/profile`, { replace: true });
+            }
         },
         onError: () => {
             toast.error("Failed to create quiz. Please try again.");

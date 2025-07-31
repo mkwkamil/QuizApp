@@ -116,6 +116,7 @@ export const useEditableQuestions = () => {
     return {
         questions,
         expandedId,
+        setExpandedId,
         handleAccordionToggle,
         addNewQuestion,
         updateQuestion,

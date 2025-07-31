@@ -8,8 +8,6 @@ export const ReviewHeader = styled(Paper)({
     boxShadow: "0 4px 30px rgba(0,0,0,0.4)",
     display: "flex",
     minHeight: 180,
-    marginBottom: 32,
-    
 });
 
 export const ReviewImageBox = styled(Box)({
@@ -41,6 +39,21 @@ export const ReviewHeaderChip = styled(Chip)<ChipProps>(() => ({
     transition: "all 0.2s ease",
     marginTop: 5,
     padding: 20,
+}));
+
+export const ReviewSettingsChip = styled(Chip, {
+    shouldForwardProp: (prop) => prop !== "value"
+})<{ value: boolean }>(({ value }) => ({
+    flex: 1,
+    textAlign: "center",
+    fontWeight: 600,
+    fontSize: 14,
+    transition: "all 0.2s ease",
+    marginTop: 5,
+    padding: 20,
+    color: "#ddd",
+    backgroundColor: value ? "rgba(40, 167, 69, 0.1)" : "rgba(220, 53, 69, 0.1)",
+    border: `1px solid ${value ? "rgba(40, 167, 69, 0.2)" : "rgba(220, 53, 69, 0.2)"}`,
 }));
 
 export const ReviewPaperBox = styled(Paper)({
