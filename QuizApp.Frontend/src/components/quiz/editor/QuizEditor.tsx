@@ -10,34 +10,37 @@ import StepReviewPublish from "@components/quiz/editor/StepReviewPublish";
 
 const QuizEditor = ({ quizData }: { quizData?: QuizLoad }) => {
     const { activeStep, next, prev } = useQuizNavigation();
-    const { setBasicInfo, setQuestions, setQuizId, reset } = useQuizStore();
+    const { setBasicInfo, setQuestions, setQuizId } = useQuizStore();
     const isEditMode = Boolean(quizData);
-
+    
     useEffect(() => {
-        if (quizData) {
-            setQuizId(quizData.quizId);
-            setBasicInfo({
-                title: quizData.title,
-                description: quizData.description,
-                thumbnailUrl: quizData.thumbnailUrl,
-                categoryId: quizData.categoryId,
-                difficultyId: quizData.difficultyId,
-                isPublic: quizData.isPublic,
-                isDraft: quizData.isDraft,
-                revealAnswers: quizData.revealAnswers,
-                shuffleQuestions: quizData.shuffleQuestions,
-            });
-            setQuestions(quizData.questions);
-        } else {
-            reset();
-        }
-    }, [quizData]);
+        if (!quizData) return;
 
+        setQuizId(quizData.quizId);
+        setBasicInfo({
+            title: quizData.title,
+            description: quizData.description,
+            thumbnailUrl: quizData.thumbnailUrl ?? null,
+            categoryId: quizData.categoryId,
+            difficultyId: quizData.difficultyId,
+            isPublic: quizData.isPublic,
+            isDraft: quizData.isDraft,
+            revealAnswers: quizData.revealAnswers,
+            shuffleQuestions: quizData.shuffleQuestions,
+        });
+        setQuestions(
+            quizData.questions.map((q) => ({
+                ...q,
+                id: crypto.randomUUID(),
+            }))
+        );
+    }, [quizData]);
+    
     return (
         <QuizEditorWrapper>
             <QuizEditorStepper activeStep={activeStep} />
             {activeStep === 0 && <StepBasicInfo onComplete={next} editMode={isEditMode} />}
-            {activeStep === 1 && <StepQuestions onBack={prev} onComplete={next} />}
+            {activeStep === 1 && <StepQuestions onBack={prev} onComplete={next} editMode={isEditMode} />}
             {activeStep === 2 && <StepReviewPublish onBack={prev} />}
         </QuizEditorWrapper>
     );

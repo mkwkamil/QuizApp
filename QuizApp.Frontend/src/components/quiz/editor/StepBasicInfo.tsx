@@ -46,31 +46,61 @@ type StepBasicInfoProps = {
 
 const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
     const navigate = useNavigate();
+    const {
+        quizId,
+        basicInfo,
+        setBasicInfo,
+        questions,
+        thumbnailFile,
+        setThumbnailFile,
+        reset: resetStore
+    } = useQuizStore();
 
-    const { data: categories, isLoading: loadingCategories } = useCategories();
-    const { data: difficulties, isLoading: loadingDifficulties } = useDifficulties();
-    const { quizId, basicInfo, setBasicInfo, questions, thumbnailFile, setThumbnailFile, reset } = useQuizStore();
     const { mutateAsync: createDraft } = useCreateDraftQuiz();
     const { mutateAsync: updateDraft } = useUpdateDraftQuiz();
     const { mutateAsync: uploadThumbnail } = useUploadThumbnail();
-    
 
-    const { control, handleSubmit, formState: { errors }, setValue, getValues, watch} = useForm<QuizBasicInfo>({
+    const { data: categories, isLoading: loadingCategories } = useCategories();
+    const { data: difficulties, isLoading: loadingDifficulties } = useDifficulties();
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        getValues,
+        watch,
+        setValue,
+        reset: resetForm
+    } = useForm<QuizBasicInfo>({
         defaultValues: basicInfo,
         resolver: yupResolver(basicInfoSchema) as any,
         mode: "onChange",
     });
 
     useEffect(() => {
-        setValue("thumbnailUrl", basicInfo.thumbnailUrl);
-    }, [basicInfo.thumbnailUrl, setValue]);
+        resetForm(basicInfo);
+    }, [basicInfo]);
 
     if (loadingCategories || loadingDifficulties) return <Loading />;
 
-    const handleThumbnailSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleThumbnailSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
-        if (file) {
-            setThumbnailFile(file);
+        if (!file) return;
+
+        setThumbnailFile(file);
+
+        try {
+            const uploadedUrl = await uploadThumbnail(file);
+            setValue("thumbnailUrl", uploadedUrl);
+
+            const currentFormValues = getValues();
+            
+            setBasicInfo({
+                ...currentFormValues,
+                thumbnailUrl: uploadedUrl,
+            });
+        } catch {
+            toast.error("Thumbnail upload failed.");
         }
     };
 
@@ -90,8 +120,10 @@ const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
         const formData = getValues();
         setBasicInfo(formData);
 
-        const thumbnailUrl = await uploadThumbnail(thumbnailFile ?? undefined);
-
+        const thumbnailUrl = thumbnailFile
+            ? await uploadThumbnail(thumbnailFile)
+            : formData.thumbnailUrl?.trim() || undefined;
+        
         const payload: CreateDraftPayload = {
             title: formData.title,
             description: formData.description,
@@ -104,8 +136,6 @@ const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
             shuffleQuestions: formData.shuffleQuestions,
             questions,
         };
-
-        console.log(payload);
         
         if (quizId) {
             await updateDraft({ draftId: quizId, payload });
@@ -113,7 +143,7 @@ const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
             await createDraft(payload);
         }
         
-        reset();
+        resetStore();
     };
 
     const handleCancel = () => navigate(editMode ? "/profile" : "/");
@@ -231,15 +261,15 @@ const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
                                 </ThumbnailUploadButton>
                             ) : (
                                 <Box display="flex" alignItems="center" gap={2}>
-                                    <ThumbnailPreview src={watch("thumbnailUrl")} />
-
+                                    <ThumbnailPreview src={watch("thumbnailUrl") ?? undefined} />
+                                    
                                     <Stack spacing={1}>
                                         <ThumbnailIconButton component="label">
                                             <EditIcon />
                                             <input hidden type="file" accept="image/*" onChange={handleThumbnailSelect} />
                                         </ThumbnailIconButton>
 
-                                        <ThumbnailIconButton onClick={() => setBasicInfo({ thumbnailUrl: "" })}>
+                                        <ThumbnailIconButton onClick={() => setBasicInfo({ thumbnailUrl: null })}>
                                             <DeleteIcon color="error" />
                                         </ThumbnailIconButton>
                                     </Stack>
@@ -248,15 +278,26 @@ const StepBasicInfo = ({ onComplete, editMode }: StepBasicInfoProps) => {
                         </Stack>
                     </Box>
 
-                    <Stack spacing={2} mt={4} alignItems="center">
-                        <StyledQuizNextButton fullWidth type="submit">
-                            Next Step
-                        </StyledQuizNextButton>
-                        <Box display="flex" gap={2} width="100%">
-                            <StyledCancelButton fullWidth onClick={handleCancel}>Cancel</StyledCancelButton>
-                            <StyledDraftButton fullWidth onClick={handleSaveDraft}>Save Draft</StyledDraftButton>
-                        </Box>
-                    </Stack>
+                    {(basicInfo.isDraft || !editMode) ?
+                        <Stack spacing={2} mt={4} alignItems="center">
+                            <StyledQuizNextButton fullWidth type="submit">
+                                Next Step
+                            </StyledQuizNextButton>
+                            <Box display="flex" gap={2} width="100%">
+                                <StyledCancelButton fullWidth onClick={handleCancel}>Cancel</StyledCancelButton>
+                                <StyledDraftButton fullWidth onClick={handleSaveDraft}>
+                                    {editMode ? "Update draft" : "Save draft"}
+                                </StyledDraftButton>
+                            </Box>
+                        </Stack>
+                        :
+                        <Stack spacing={2} mt={4} alignItems="center">
+                            <Box display="flex" gap={2} width="100%">
+                                <StyledCancelButton fullWidth onClick={handleCancel}>Cancel</StyledCancelButton>
+                                <StyledQuizNextButton fullWidth type="submit">Next Step</StyledQuizNextButton>
+                            </Box>
+                        </Stack>
+                    }
                 </Stack>
             </form>
         </StepContainer>

@@ -27,7 +27,7 @@ public class QuizSolveService(AppDbContext context, ICommentsService commentsSer
             Id = quiz.Id,
             Title = quiz.Title,
             Description = quiz.Description,
-            ThumbnailUrl = quiz.ThumbnailUrl,
+            ThumbnailUrl = quiz.ThumbnailUrl ?? "/thumbnails/default.png",
             Category = quiz.Category?.Name ?? "General",
             Difficulty = quiz.Difficulty?.Name ?? "Unknown",
             QuestionCount = quiz.Questions.Count,
@@ -58,7 +58,7 @@ public class QuizSolveService(AppDbContext context, ICommentsService commentsSer
             Id = quiz.Id,
             Title = quiz.Title,
             Description = quiz.Description,
-            ThumbnailUrl = quiz.ThumbnailUrl,
+            ThumbnailUrl = quiz.ThumbnailUrl ?? "/thumbnails/default.png",
             Questions = quiz.Questions.Select(q => new QuestionDto
             {
                 Id = q.Id,

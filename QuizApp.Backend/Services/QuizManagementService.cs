@@ -14,7 +14,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
         {
             Title = dto.Title,
             Description = dto.Description,
-            ThumbnailUrl = dto.ThumbnailUrl,
+            ThumbnailUrl = string.IsNullOrWhiteSpace(dto.ThumbnailUrl) ? null : dto.ThumbnailUrl,
             CategoryId = dto.CategoryId,
             DifficultyId = dto.DifficultyId,
             IsPublic = dto.IsPublic,
@@ -51,7 +51,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
         
         quiz.Title = dto.Title;
         quiz.Description = dto.Description;
-        quiz.ThumbnailUrl = dto.ThumbnailUrl;
+        quiz.ThumbnailUrl = string.IsNullOrWhiteSpace(dto.ThumbnailUrl) ? null : dto.ThumbnailUrl;
         quiz.CategoryId = dto.CategoryId;
         quiz.DifficultyId = dto.DifficultyId;
         quiz.IsPublic = dto.IsPublic;
@@ -138,7 +138,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
         {
             Title = dto.Title,
             Description = dto.Description ?? string.Empty,
-            ThumbnailUrl = dto.ThumbnailUrl ?? string.Empty,
+            ThumbnailUrl = string.IsNullOrWhiteSpace(dto.ThumbnailUrl) ? null : dto.ThumbnailUrl,
             CategoryId = dto.CategoryId ?? null,
             DifficultyId = dto.DifficultyId ?? null,
             IsPublic = dto.IsPublic,
@@ -175,7 +175,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
         
         draft.Title = dto.Title;
         draft.Description = dto.Description ?? string.Empty;
-        draft.ThumbnailUrl = dto.ThumbnailUrl ?? string.Empty;
+        draft.ThumbnailUrl = string.IsNullOrWhiteSpace(dto.ThumbnailUrl) ? null : dto.ThumbnailUrl;
         draft.CategoryId = dto.CategoryId ?? draft.CategoryId;
         draft.DifficultyId = dto.DifficultyId ?? draft.DifficultyId;
         draft.IsPublic = dto.IsPublic;
@@ -210,7 +210,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
                 Id = q.Id,
                 Title = q.Title,
                 Description = q.Description,
-                ThumbnailUrl = q.ThumbnailUrl,
+                ThumbnailUrl = q.ThumbnailUrl ?? "/thumbnails/default.png",
                 IsDraft = q.IsDraft,
                 QuestionsCount = q.Questions.Count,
                 PlayedBy = q.Plays,

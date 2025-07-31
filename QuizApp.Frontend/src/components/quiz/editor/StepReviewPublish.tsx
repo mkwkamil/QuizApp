@@ -3,16 +3,17 @@ import { useQuizStore } from "@store/quiz/quizStore";
 import { useCreateQuiz } from "@hooks/quizzes/mutation/useCreateQuiz";
 import { useUpdateQuiz } from "@hooks/quizzes/mutation/useUpdateQuiz";
 import { SectionTitle, StepContainer, StyledQuizBackButton, StyledQuizNextButton } from "@components/quiz/editor/styles/QuizEditorLayout.ts";
-import {useUploadThumbnail} from "@hooks/quizzes/mutation/useUploadThumbnail.ts";
+import { useUploadThumbnail } from "@hooks/quizzes/mutation/useUploadThumbnail.ts";
 import {
     ReviewAccordion,
     ReviewHeader,
     ReviewHeaderChip,
     ReviewHeaderText,
-    ReviewImageBox, ReviewPaperBox
+    ReviewImageBox,
+    ReviewPaperBox
 } from "@components/quiz/editor/styles/StepReviewPublishLayout.ts";
-import {useCategories} from "@hooks/meta/useCategories.ts";
-import {useDifficulties} from "@hooks/meta/useDifficulties.ts";
+import { useCategories } from "@hooks/meta/useCategories.ts";
+import { useDifficulties } from "@hooks/meta/useDifficulties.ts";
 import Loading from "@components/common/Loading.tsx";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Reorder from "@mui/icons-material/Reorder";
@@ -30,13 +31,14 @@ const StepReviewPublish = ({ onBack }: StepReviewPublishProps) => {
     const { data: categories } = useCategories();
     const { data: difficulties } = useDifficulties();
 
-    if (!basicInfo.thumbnailUrl && !thumbnailFile) {
-        basicInfo.thumbnailUrl = `${window.location.origin}/thumbnails/default-thumb.png`;
-    }
-    
+    const finalThumbnailUrl = basicInfo.thumbnailUrl?.trim()
+        || (thumbnailFile ? URL.createObjectURL(thumbnailFile) : `${window.location.origin}/thumbnails/default.png`);
+
     const handlePublish = async () => {
-        const thumbnailUrl = await uploadThumbnail(thumbnailFile ?? undefined);
-        
+        const thumbnailUrl = thumbnailFile
+            ? await uploadThumbnail(thumbnailFile)
+            : (basicInfo.thumbnailUrl?.trim() || null);
+
         const payload = {
             ...basicInfo,
             thumbnailUrl,
@@ -44,7 +46,7 @@ const StepReviewPublish = ({ onBack }: StepReviewPublishProps) => {
             difficultyId: basicInfo.difficultyId!,
             questions,
         };
-        
+
         if (quizId) {
             await updateQuiz({ quizId, payload });
         } else {
@@ -53,20 +55,18 @@ const StepReviewPublish = ({ onBack }: StepReviewPublishProps) => {
 
         reset();
     };
-    
+
     if (!categories || !difficulties) return <Loading />;
-    
+
     const category = categories.find(c => c.id === basicInfo.categoryId);
     const difficulty = difficulties.find(c => c.id === basicInfo.difficultyId);
-    
+
     return (
         <StepContainer>
-            <SectionTitle variant="h3">
-                Final review
-            </SectionTitle>
-            
+            <SectionTitle variant="h3">Final review</SectionTitle>
+
             <ReviewHeader>
-                <ReviewImageBox sx={{ backgroundImage: `url(${basicInfo.thumbnailUrl})` }} />
+                <ReviewImageBox sx={{ backgroundImage: `url(${finalThumbnailUrl})` }} />
                 <Stack flex={1} spacing={2} justifyContent="space-between">
                     <Box flex={1} display="flex" flexDirection="column" justifyContent="space-between">
                         <Box>
@@ -100,7 +100,7 @@ const StepReviewPublish = ({ onBack }: StepReviewPublishProps) => {
                             Questions ({questions.length})
                         </Typography>
                     </AccordionSummary>
-    
+
                     <AccordionDetails sx={{ px: 3, pb: 1 }}>
                         <Divider sx={{ mb: 3 }} />
                         {questions.length > 0 ? (
@@ -122,7 +122,7 @@ const StepReviewPublish = ({ onBack }: StepReviewPublishProps) => {
                 </StyledQuizBackButton>
 
                 <StyledQuizNextButton onClick={handlePublish} disabled={updatePending || createPending}>
-                    {quizId 
+                    {quizId
                         ? updatePending ? "Updating..." : "Update Quiz"
                         : createPending ? "Publishing..." : "Publish Quiz"}
                 </StyledQuizNextButton>

@@ -12,21 +12,9 @@ export const useFilteredQuizzes = (filters: ExploreFilters) => {
         selectedLengths = [],
         selectedRatings = null
     } = filters;
-
-    const queryKey = [
-        "explore",
-        "filtered",
-        page,
-        selectedCategories,
-        sortBy,
-        includeAnswered,
-        selectedDifficulties,
-        selectedLengths,
-        selectedRatings,
-    ];
     
     return useQuery<FilteredQuizzesResponse>({
-        queryKey,
+        queryKey: ['quizzes', 'filtered', filters],
         queryFn: async () => {
             const params = new URLSearchParams();
             

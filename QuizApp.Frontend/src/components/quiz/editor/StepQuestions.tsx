@@ -48,9 +48,10 @@ const QUESTION_TYPES = [
 type StepQuestionsProps = {
     onBack: () => void;
     onComplete: () => void;
+    editMode?: boolean;
 };
 
-const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
+const StepQuestions = ({ onBack, onComplete, editMode }: StepQuestionsProps) => {
     const {
         questions,
         expandedId,
@@ -103,9 +104,11 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
             toast.error("Title is required to save draft.");
             return;
         }
-
-        const thumbnailUrl = await uploadThumbnail(thumbnailFile ?? undefined);
-
+        
+        const thumbnailUrl = thumbnailFile
+            ? await uploadThumbnail(thumbnailFile)
+            : basicInfo.thumbnailUrl?.trim() || undefined;
+        
         const payload: CreateDraftPayload = {
             title: basicInfo.title,
             description: basicInfo.description,
@@ -144,7 +147,7 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
 
         onComplete();
     };
-
+    
     return (
         <StepContainer>
             <SectionTitle variant="h3">
@@ -167,7 +170,7 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
             )}
 
             {questions.map((q) => (
-                <Box display="flex" alignItems="center" key={q.id} paddingY={1}>
+                <Box key={`question-${q.id}`} display="flex" alignItems="center" paddingY={1}>
                     <DragIndicatorIcon sx={{ color: "#777", cursor: "grab", mr: 2, mb: "4px" }} />
                     <QuestionAccordion expanded={expandedId === q.id} onChange={() => handleAccordionToggle(q.id!)}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${q.id}-content`} id={`${q.id}-header`}>
@@ -204,7 +207,7 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
                                     <FormLabel>Options</FormLabel>
                                     <Stack spacing={2} mt={1}>
                                         {q.options.map((opt, i) => (
-                                            <Box key={i} display="flex" alignItems="center" gap={1}>
+                                            <Box key={`option-${q.id}-${i}`} display="flex" alignItems="center" gap={1}>
                                                 {renderAnswerInput(q, i)}
                                                 {renderOptionField(q, opt, i)}
                                             </Box>
@@ -226,15 +229,26 @@ const StepQuestions = ({ onBack, onComplete }: StepQuestionsProps) => {
                 </Box>
             ))}
 
-            <Box mt={4} display="flex" flexDirection="column" gap={2} alignItems="center">
-                <StyledQuizNextButton fullWidth onClick={handleSubmit}>
-                    Next Step
-                </StyledQuizNextButton>
-                <Box display="flex" gap={2} width="100%">
-                    <StyledQuizBackButton fullWidth onClick={onBack}>Back</StyledQuizBackButton>
-                    <StyledDraftButton fullWidth onClick={handleSaveDraft}>Save Draft</StyledDraftButton>
-                </Box>
-            </Box>
+            {(basicInfo.isDraft || !editMode) ?
+                <Stack spacing={2} mt={4} alignItems="center">
+                    <StyledQuizNextButton fullWidth onClick={handleSubmit}>
+                        Next Step
+                    </StyledQuizNextButton>
+                    <Box display="flex" gap={2} width="100%">
+                        <StyledQuizBackButton fullWidth onClick={onBack}>Back</StyledQuizBackButton>
+                        <StyledDraftButton fullWidth onClick={handleSaveDraft}>
+                            {editMode ? "Update draft" : "Save draft"}
+                        </StyledDraftButton>
+                    </Box>
+                </Stack>
+                :
+                <Stack spacing={2} mt={4} alignItems="center">
+                    <Box display="flex" gap={2} width="100%">
+                        <StyledQuizBackButton fullWidth onClick={onBack}>Back</StyledQuizBackButton>
+                        <StyledQuizNextButton fullWidth onClick={handleSubmit}>Next Step</StyledQuizNextButton>
+                    </Box>
+                </Stack>
+            }
         </StepContainer>
     );
 };

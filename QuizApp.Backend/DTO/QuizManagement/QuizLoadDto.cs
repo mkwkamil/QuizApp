@@ -6,7 +6,7 @@ public class QuizLoadDto
     public int QuizId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string ThumbnailUrl { get; set; } = string.Empty;
+    public string? ThumbnailUrl { get; set; }
     
     public int? CategoryId { get; set; }
     public int? DifficultyId { get; set; }

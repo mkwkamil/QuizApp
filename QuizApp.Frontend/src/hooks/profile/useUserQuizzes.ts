@@ -9,6 +9,7 @@ export const useUserQuizzes = () => {
             const { data } = await api.get<UserQuizSummary[]>('/quiz-management/my-quizzes');
             return data;
         },
-        staleTime: 1000 * 60 * 5, 
+        refetchOnMount: true,
+        staleTime: 1000 * 60 * 5,
     });
 };

@@ -3,7 +3,7 @@ import type { QuestionPayload } from "@interfaces/quiz-manage.ts";
 export interface QuizBasicInfo {
     title: string;
     description: string;
-    thumbnailUrl: string;
+    thumbnailUrl: string | null;
     categoryId: number | null;
     difficultyId: number | null;
     isPublic: boolean;
@@ -17,9 +17,9 @@ export interface QuizStoreState {
     basicInfo: QuizBasicInfo;
     thumbnailFile: File | null;
     questions: QuestionPayload[];
-    setBasicInfo: (info: Partial<QuizBasicInfo>) => void;
-    setThumbnailFile: (file: File | null) => void;
-    setQuestions: (questions: QuestionPayload[]) => void;
     setQuizId: (id: number) => void;
+    setBasicInfo: (info: Partial<QuizBasicInfo>) => void;
+    setQuestions: (questions: QuestionPayload[]) => void;
+    setThumbnailFile: (file: File | null) => void;
     reset: () => void;
 }

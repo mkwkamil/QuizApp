@@ -1,4 +1,4 @@
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateQuizPayload } from "@interfaces/quiz-manage.ts";
 import api from "@config/axiosConfig.ts";
 import { toast } from "react-toastify";
@@ -14,18 +14,24 @@ export const useUpdateQuiz = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationKey: ["quizzes", "explore"],
+        mutationKey: ['quiz', 'update'],
         mutationFn: async ({ quizId, payload }: UpdateQuizPayload) => {
             const { data } = await api.put<{ quizId: number }>(`/quiz-management/${quizId}`, payload);
             return data.quizId;
         },
         onSuccess: async (quizId) => {
             toast.success("Quiz updated successfully!");
-            await queryClient.invalidateQueries({ queryKey: ["quizzes", "explore"] });
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey: ['quiz-load', quizId] }),
+                queryClient.invalidateQueries({ queryKey: ['user-quizzes'] }),
+                queryClient.invalidateQueries({ queryKey: ['quizzes', 'filtered'] }),
+                queryClient.invalidateQueries({ queryKey: ['quizzes', 'popular', 'explore'] }),
+                queryClient.invalidateQueries({ queryKey: ['explore-user-stats'] }),
+            ]);
             navigate(`/quiz/${quizId}`, { replace: true });
         },
         onError: () => {
             toast.error("Failed to update quiz. Please try again.");
         },
-    })
-}
+    });
+};

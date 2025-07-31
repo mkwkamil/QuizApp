@@ -3,7 +3,7 @@ export type QuestionType = "single" | "multiple" | "truefalse";
 export type CreateQuizPayload = {
     title: string;
     description: string;
-    thumbnailUrl: string;
+    thumbnailUrl?: string | null;
     categoryId: number;
     difficultyId: number;
     isPublic: boolean;
@@ -24,7 +24,7 @@ export type QuestionPayload = {
 export type CreateDraftPayload = {
     title: string;
     description?: string;
-    thumbnailUrl?: string;
+    thumbnailUrl?: string | null;
     categoryId?: number | null;
     difficultyId?: number | null;
     isPublic: boolean;

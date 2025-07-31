@@ -2,9 +2,9 @@ import type {QuizBasicInfo, QuizStoreState} from "@store/quiz/quizTypes.ts";
 import {create} from "zustand";
 
 const defaultBasicInfo: QuizBasicInfo = {
-    title: '',
-    description: '',
-    thumbnailUrl: '',
+    title: "",
+    description: "",
+    thumbnailUrl: null,
     categoryId: null,
     difficultyId: null,
     isPublic: true,
@@ -13,47 +13,32 @@ const defaultBasicInfo: QuizBasicInfo = {
     shuffleQuestions: false,
 };
 
+
 export const useQuizStore = create<QuizStoreState>((set) => ({
     quizId: null,
     basicInfo: defaultBasicInfo,
     thumbnailFile: null,
     questions: [],
 
-    setBasicInfo: (info) => set((state) => ({
-        basicInfo: {...state.basicInfo, ...info}
-    })),
+    setQuizId: (id) => set({ quizId: id }),
 
-    setThumbnailFile: (file) => {
-        if (!file) return;
+    setBasicInfo: (info) =>
+        set((state) => ({
+            basicInfo: { ...state.basicInfo, ...info },
+        })),
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            const img = new Image();
-            img.onload = () => {
-                if (img.width <= img.height)
-                    return console.log("Only landscape images are allowed.");
+    setQuestions: (questions) => set({ questions }),
 
-                const previewUrl = URL.createObjectURL(file);
-                set((state) => ({
-                    thumbnailFile: file,
-                    basicInfo: {...state.basicInfo, thumbnailUrl: previewUrl}
-                }))
-            };
-            if (typeof reader.result === 'string') {
-                img.src = reader.result;
-            }
-        };
-        reader.readAsDataURL(file);
-    },
+    setThumbnailFile: (file) =>
+        set(() => ({
+            thumbnailFile: file,
+        })),
 
-    setQuestions: (questions) => set({questions}),
-
-    setQuizId: (id) => set({quizId: id}),
-
-    reset: () => set({
-        quizId: null,
-        basicInfo: defaultBasicInfo,
-        thumbnailFile: null,
-        questions: []
-    })
+    reset: () =>
+        set({
+            quizId: null,
+            basicInfo: defaultBasicInfo,
+            thumbnailFile: null,
+            questions: [],
+        }),
 }));

@@ -6,14 +6,7 @@ import App from './App';
 import '@styles/main.css';
 import {createTheme, ThemeProvider} from "@mui/material";
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            placeholderData: (prev: any) => prev,
-            staleTime: 1000 * 60 * 3,
-        },
-    },
-});
+const queryClient = new QueryClient();
 
 const darkTheme = createTheme({
     palette: {

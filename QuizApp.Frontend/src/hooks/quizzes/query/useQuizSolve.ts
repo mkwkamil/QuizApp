@@ -10,6 +10,5 @@ export const useQuizSolve = (quizId: number) => {
             return data;
         },
         enabled: Boolean(quizId),
-        staleTime: 1000 * 60 * 5,
     });
 };

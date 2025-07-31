@@ -12,7 +12,7 @@ export const useEditableQuestions = () => {
 
     const addNewQuestion = () => {
         const newQuestion: EditableQuestion = {
-            id: `q${Date.now()}`,
+            id: crypto.randomUUID(),
             text: "",
             type: "single",
             options: ["", ""],

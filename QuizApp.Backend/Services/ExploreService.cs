@@ -65,7 +65,7 @@ public class ExploreService(AppDbContext context) : IExploreService
             {
                 Id = q.Id,
                 Title = q.Title,
-                ThumbnailUrl = q.ThumbnailUrl,
+                ThumbnailUrl = q.ThumbnailUrl ?? "/thumbnails/default.png",
                 QuestionsCount = q.Questions.Count,
                 PlayedBy = q.Plays,
                 AverageRating = q.RatingCount > 0 ? q.AverageScore : 0.0
@@ -143,7 +143,7 @@ public class ExploreService(AppDbContext context) : IExploreService
                 Id = q.Id,
                 Title = q.Title,
                 Description = q.Description,
-                ThumbnailUrl = q.ThumbnailUrl,
+                ThumbnailUrl = q.ThumbnailUrl ?? "/thumbnails/default.png",
                 QuestionsCount = q.Questions.Count,
                 PlayedBy = q.Plays,
                 AverageRating = q.RatingCount > 0 ? q.AverageScore : 0

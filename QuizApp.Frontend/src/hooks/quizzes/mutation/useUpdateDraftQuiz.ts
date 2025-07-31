@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import type { CreateDraftPayload } from "@interfaces/quiz-manage";
 import api from "@config/axiosConfig";
 import { toast } from "react-toastify";
@@ -10,15 +10,21 @@ type UpdateDraftQuizPayload = {
 };
 
 export const useUpdateDraftQuiz = () => {
-    const navigate = useNavigate()
-    
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
     return useMutation({
+        mutationKey: ['draft', 'update'],
         mutationFn: async ({ draftId, payload }: UpdateDraftQuizPayload) => {
             const { data } = await api.put<{ draftId: number }>(`/quiz-management/draft/${draftId}`, payload);
             return data.draftId;
         },
-        onSuccess: () => {
+        onSuccess: async (draftId) => {
             toast.success("Draft updated successfully!");
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey: ['quiz-load', draftId] }),
+                queryClient.invalidateQueries({ queryKey: ['user-quizzes'] }),
+            ]);
             navigate("/profile", { replace: true });
         },
         onError: () => {
