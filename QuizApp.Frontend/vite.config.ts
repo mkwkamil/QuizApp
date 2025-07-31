@@ -33,6 +33,10 @@ export default defineConfig({
       '/thumbnails': {
         target: 'http://localhost:5203',
         changeOrigin: true,
+      },
+      '/avatars': {
+        target: 'http://localhost:5203',
+        changeOrigin: true,
       }
     }
   }

@@ -5,9 +5,7 @@ import { styled } from "@mui/material/styles";
 const CreateQuizBannerBox = styled(Paper)({
     padding: 24,
     borderRadius: 12,
-    background: "linear-gradient(145deg, #1e1e1e, #2a2a2a)",
-    border: "1px solid rgba(255,255,255,0.05)",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.6)",
     textAlign: "center",
 });
 
@@ -18,10 +16,10 @@ const CreateQuizButton = styled(Button)({
     borderRadius: "8px",
     fontWeight: 600,
     letterSpacing: "1px",
-    boxShadow: "0 0 15px rgba(48, 79, 254, 0.5)",
+    boxShadow: "0 0 15px rgba(48, 79, 254, 0.4)",
     textDecoration: "none",
     "&:hover": {
-        boxShadow: "0 0 15px rgba(48, 79, 254, 0.7)",
+        boxShadow: "0 0 15px rgba(48, 79, 254, 0.6)",
     },
 });
 

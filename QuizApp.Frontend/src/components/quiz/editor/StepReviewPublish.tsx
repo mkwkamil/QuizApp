@@ -1,4 +1,4 @@
-import { Box, Typography, Divider, Stack, AccordionSummary, AccordionDetails } from "@mui/material";
+import {Box, Typography, Divider, Stack, AccordionSummary, AccordionDetails, Tooltip} from "@mui/material";
 import { useQuizStore } from "@store/quiz/quizStore";
 import { useCreateQuiz } from "@hooks/quizzes/mutation/useCreateQuiz";
 import { useUpdateQuiz } from "@hooks/quizzes/mutation/useUpdateQuiz";
@@ -93,18 +93,26 @@ const StepReviewPublish = ({ onBack }: StepReviewPublishProps) => {
             </ReviewHeader>
 
             <Box display="flex" mb={2} mt={1.5} justifyContent="center" gap={3}>
-                <ReviewSettingsChip
-                    label={`Public: ${basicInfo.isPublic ? "Yes" : "No"}`}
-                    value={basicInfo.isPublic}
-                />
-                <ReviewSettingsChip
-                    label={`Shuffle Questions: ${basicInfo.shuffleQuestions ? "Yes" : "No"}`}
-                    value={basicInfo.shuffleQuestions}
-                />
-                <ReviewSettingsChip
-                    label={`Reveal Answers: ${basicInfo.revealAnswers ? "Yes" : "No"}`}
-                    value={basicInfo.revealAnswers}
-                />
+                <Tooltip title="This quiz will be visible to everyone" arrow>
+                    <ReviewSettingsChip
+                        label={`Public: ${basicInfo.isPublic ? "Yes" : "No"}`}
+                        value={basicInfo.isPublic}
+                    />
+                </Tooltip>
+
+                <Tooltip title="Questions will appear in random order each time" arrow>
+                    <ReviewSettingsChip
+                        label={`Shuffle Questions: ${basicInfo.shuffleQuestions ? "Yes" : "No"}`}
+                        value={basicInfo.shuffleQuestions}
+                    />
+                </Tooltip>
+
+                <Tooltip title="Correct answers will be shown after submission" arrow>
+                    <ReviewSettingsChip
+                        label={`Reveal Answers: ${basicInfo.revealAnswers ? "Yes" : "No"}`}
+                        value={basicInfo.revealAnswers}
+                    />
+                </Tooltip>
             </Box>
 
             <ReviewPaperBox>

@@ -2,11 +2,8 @@ import {Box} from "@mui/material";
 import { styled } from "@mui/system";
 export const ProfilePageWrapper = styled(Box)({
     display: 'flex',
-    minHeight: 'calc(100vh - 130px)',
     padding: 32,
     gap: 32,
-    background: 'radial-gradient(circle at top right, #202020 0%, #121212 100%)',
-    color: '#ffffff',
     overflow: 'auto',
     '&::-webkit-scrollbar': {
         height: 6,
@@ -20,19 +17,16 @@ export const ProfilePageWrapper = styled(Box)({
     }
 });
 
-export const ProfilePageMain = styled(Box)({
-    flex: 1,
+export const ProfilePageSidebar = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
+    flex: 1,
     gap: 24,
-    minWidth: '600px',
-    overflow: 'auto',
 });
 
-export const ProfilePageSidebar = styled(Box)({
-    width: '320px',
+export const ProfilePageMain = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
+    flex: 3,
     gap: 24,
-    minWidth: '350px',
 });

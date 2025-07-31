@@ -21,7 +21,8 @@ const ProfileUserInfoCard = ({ profileData }: { profileData: ProfileSummary }) =
             id: "joinDate",
             label: "Member Since",
             value: new Date(profileData.joinDate).toLocaleDateString("en-US", {
-                month: "short",
+                day: "numeric",
+                month: "long",
                 year: "numeric"
             }),
             icon: <Cake fontSize="small" />
@@ -30,7 +31,7 @@ const ProfileUserInfoCard = ({ profileData }: { profileData: ProfileSummary }) =
 
     return (
         <BasicInfoCardWrapper>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" fontWeight={600} mb={2} gutterBottom>
                 Basic Info
             </Typography>
 

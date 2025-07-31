@@ -13,7 +13,7 @@ const ProfileAvatar = ({ src }: { src: string }) => {
 
     const { mutate: uploadAvatar } = useAvatarUpload();
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selected = e.target.files?.[0];
         if (selected) {
             setFile(selected);
@@ -21,11 +21,7 @@ const ProfileAvatar = ({ src }: { src: string }) => {
         }
     };
 
-    const handleUpload = () => {
-        if (!file) return;
-
-        uploadAvatar(file, { onSuccess: () => setOpen(false) });
-    };
+    const onUpload = () => file && uploadAvatar(file, { onSuccess: () => setOpen(false) });
 
     return (
         <>
@@ -43,8 +39,8 @@ const ProfileAvatar = ({ src }: { src: string }) => {
                 onClose={() => setOpen(false)}
                 preview={preview}
                 file={file}
-                handleFileChange={handleFileChange}
-                handleUpload={handleUpload}
+                handleFileChange={onFileChange}
+                handleUpload={onUpload}
             />
         </>
     );

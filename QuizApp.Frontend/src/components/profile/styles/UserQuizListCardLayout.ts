@@ -4,8 +4,6 @@ import { Box, Button, Paper } from "@mui/material";
 export const UserQuizListWrapper = styled(Paper)({
     padding: 24,
     borderRadius: 12,
-    background: "linear-gradient(145deg, #1e1e1e, #2a2a2a)",
-    border: "1px solid rgba(255, 255, 255, 0.05)",
     boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
     flex: 1,
 });

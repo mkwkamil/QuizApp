@@ -8,6 +8,6 @@ public class ProfileSummaryDto
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string JoinDate { get; set; } = string.Empty;
-    public int QuizzesCreated { get; set; }
-    public string Accuracy { get; set; } = "0%";
+    public int FollowersCount { get; set; }
+    public int FollowingCount { get; set; }
 }

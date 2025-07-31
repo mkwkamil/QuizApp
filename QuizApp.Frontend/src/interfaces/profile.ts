@@ -5,8 +5,8 @@ export interface ProfileSummary {
     username: string;
     email: string;
     joinDate: string;
-    quizzesCreated: number;
-    accuracy: string;
+    followersCount: number;
+    followingCount: number;
 }
 
 export interface ProfileUpdate {

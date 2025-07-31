@@ -1,7 +1,8 @@
-import {Stack, Chip, Typography} from "@mui/material";
-import { Edit, EmojiEvents, Quiz } from "@mui/icons-material";
+import {Divider, Stack, Typography} from "@mui/material";
+import {Edit, Group, Person} from "@mui/icons-material";
 import { useState } from "react";
 import {
+    ProfileChip,
     ProfileEditIconButton,
     ProfileStatsChips,
     ProfileUserCardWrapper
@@ -24,24 +25,28 @@ const ProfileUserCard = ({ profileData }: { profileData: ProfileSummary }) => {
                 
                 <Stack spacing={2} alignItems="center">
                     <ProfileAvatar src={profileData.avatarUrl} />
-                    <Typography variant="h5" fontWeight={600}>
+                    <Typography variant="h5" fontWeight={600} paddingTop="4px">
                         {profileData.publicName}
                     </Typography>
                     <Typography variant="body2" sx={{ color: "#aaa", textAlign: "center", fontStyle: "italic" }}>
                         {profileData.bio || "This user has not set a bio yet."}
                     </Typography>
                     
+                    <Divider sx={{ width: "100%", opacity: 0.6, paddingTop: "4px" }} />
+                    
                     <ProfileStatsChips>
-                        <Chip
-                            icon={<Quiz />}
-                            label={`Quizzes Created: ${profileData.quizzesCreated}`}
-                            color="primary"
-                        />
-                        <Chip
-                            icon={<EmojiEvents />}
-                            label={`Accuracy: ${profileData.accuracy}`}
-                            color="secondary"
-                        />
+                        <ProfileChip>
+                            <Group sx={{ fontSize: 20}} />
+                            <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
+                                Followers: {profileData.followersCount}
+                            </Typography>
+                        </ProfileChip>
+                        <ProfileChip>
+                            <Person sx={{ fontSize: 18}} />
+                            <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
+                                Following: {profileData.followingCount}
+                            </Typography>
+                        </ProfileChip>
                     </ProfileStatsChips>
                 </Stack>
             </ProfileUserCardWrapper>
