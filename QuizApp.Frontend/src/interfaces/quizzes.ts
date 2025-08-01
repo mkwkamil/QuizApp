@@ -6,7 +6,7 @@ export interface UserQuizSummary {
     description: string;
     thumbnailUrl: string;
     isDraft: boolean;
-    questionCount: number;
+    questionsCount: number;
     playedBy: number;
     averageRating: number;
 }

@@ -10,5 +10,5 @@ public class UserQuizSummaryDto
     public bool IsDraft { get; set; }
     public int QuestionsCount { get; set; }
     public int PlayedBy { get; set; }
-    public double AverageRating { get; set; }
+    public double? AverageRating { get; set; }
 }

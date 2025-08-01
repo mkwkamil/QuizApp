@@ -214,7 +214,7 @@ public class QuizManagementService(AppDbContext context) : IQuizManagementServic
                 IsDraft = q.IsDraft,
                 QuestionsCount = q.Questions.Count,
                 PlayedBy = q.Plays,
-                AverageRating = q.RatingCount > 0 ? q.AverageScore : 0.0
+                AverageRating = q.RatingCount > 0 ? q.AverageScore : null
             })
             .ToListAsync();
     }
