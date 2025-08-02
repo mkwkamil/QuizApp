@@ -1,7 +1,8 @@
-import { Modal, Stack, TextField, Typography, Button } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useUpdateProfileMutation } from "@hooks/profile/useUpdateProfileMutation";
-import {EditProfileModalBox} from "@components/profile/modal/EditProfileModalLayout.ts";
+import BaseModal from "@components/common/BaseModal.tsx";
+import {ConfirmCancelButton, ConfirmUpdateButton} from "@components/profile/modal/styles/EditProfileModalLayout.ts";
 
 type EditProfileModalProps = {
     initialName: string;
@@ -31,9 +32,9 @@ const EditProfileModal = ({ initialName, initialBio, open, onClose }: EditProfil
     };
 
     return (
-        <Modal open={open} onClose={onClose}>
-            <EditProfileModalBox>
-                <Typography variant="h6" fontWeight="bold" gutterBottom>
+        <BaseModal open={open} onClose={onClose}>
+            <Stack spacing={3}>
+                <Typography variant="h6" fontWeight={600}>
                     Edit Your Profile
                 </Typography>
                 <Stack spacing={2}>
@@ -51,17 +52,17 @@ const EditProfileModal = ({ initialName, initialBio, open, onClose }: EditProfil
                         multiline
                         rows={3}
                     />
-                    <Stack direction="row" spacing={2} justifyContent="flex-end">
-                        <Button variant="outlined" onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button variant="contained" onClick={handleSave} disabled={isPending}>
-                            Save
-                        </Button>
-                    </Stack>
                 </Stack>
-            </EditProfileModalBox>
-        </Modal>
+                <Stack direction="row" spacing={2} justifyContent="center">
+                    <ConfirmCancelButton onClick={onClose} fullWidth>
+                        Cancel
+                    </ConfirmCancelButton>
+                    <ConfirmUpdateButton onClick={handleSave} disabled={isPending} fullWidth>
+                        Update
+                    </ConfirmUpdateButton>
+                </Stack>
+            </Stack>
+        </BaseModal>
     );
 };
 

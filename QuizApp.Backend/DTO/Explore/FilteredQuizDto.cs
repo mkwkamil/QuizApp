@@ -9,5 +9,5 @@ public class FilteredQuizDto
     
     public int QuestionsCount { get; set; }
     public int PlayedBy { get; set; }
-    public double AverageRating { get; set; }
+    public double? AverageRating { get; set; }
 }

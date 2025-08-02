@@ -43,7 +43,7 @@ const UserQuizListCard = ({ userQuizzes, onDeleteClick }: UserQuizListCardProps)
         <UserQuizListWrapper>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="h5" color="#fff" fontWeight={600}>
-                    My Quizzes
+                    My Quizzes ({filteredQuizzes.length})
                 </Typography>
                 {totalPages > 1 && (
                     <Box display="flex" justifyContent="center">
@@ -64,57 +64,63 @@ const UserQuizListCard = ({ userQuizzes, onDeleteClick }: UserQuizListCardProps)
             </Box>
 
             <Stack spacing={2}>
-                {paginatedQuizzes.map((quiz) => (
-                    <UserQuizCard key={quiz.id}>
-                        <Link to={!quiz.isDraft ? `/quiz/${quiz.id}` : `/quiz/edit/${quiz.id}`} style={{ textDecoration: 'none', display: 'flex', flex: 1, gap: 16 }}>
-                            <UserQuizThumbnail sx={{ backgroundImage: `url(${quiz.thumbnailUrl})` }} />
-                            <UserQuizHeader>
-                                <Box sx={{ flexGrow: 1, marginTop: "-4px" }}>
-                                    <Typography variant="subtitle1" fontWeight="bold" color="#fff" noWrap>
-                                        {quiz.title}
-                                    </Typography>
-                                    <UserQuizDescription>
-                                        {quiz.description}
-                                    </UserQuizDescription>
-                                </Box>
-                                <Stack direction="row" spacing={1} sx={{ color: "#aaa", marginTop: "auto" }}>
-                                    {quiz.isDraft && (
-                                        <>
-                                            <TagTypography variant="caption">DRAFT</TagTypography>
-                                            <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
-                                        </>
-                                    )}
-                                    <QuizIcon fontSize="inherit" sx={{ opacity: 0.7 }} />
-                                    <Typography variant="caption">{quiz.questionsCount} Questions</Typography>
-
-                                    <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
-
-                                    <PeopleIcon fontSize="inherit" sx={{ opacity: 0.7 }} />
-                                    <Typography variant="caption">{quiz.playedBy} Played</Typography>
-
-                                    <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
-
-                                    <StarIcon fontSize="inherit" sx={{ opacity: 0.7 }} />
-                                    <Typography variant="caption">{quiz.averageRating?.toFixed(1) ?? "N/A"}</Typography>
-                                </Stack>
-                            </UserQuizHeader>
-                        </Link>
-
-                        <Stack direction="row" spacing={1} alignSelf="center">
-                            <Tooltip title="Edit Quiz">
-                                <IconButton component={Link} to={`/quiz/edit/${quiz.id}`} size="small" sx={{ color: "#aaa" }}>
-                                    <EditIcon fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
-
-                            <Tooltip title="Delete Quiz">
-                                <IconButton onClick={() => onDeleteClick(quiz)} size="small" sx={{ color: "#f44336" }}>
-                                    <DeleteIcon fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
-                        </Stack>
-                    </UserQuizCard>
-                ))}
+                {filteredQuizzes.length === 0 ? (
+                    <Typography color="text.secondary" fontStyle="italic" fontSize={18} fontWeight={700} textAlign="center" pt={4}>
+                        You haven’t created any quizzes yet. Create your first quiz to see it here!
+                    </Typography>
+                ) : (
+                    paginatedQuizzes.map((quiz) => (
+                        <UserQuizCard key={quiz.id}>
+                            <Link to={!quiz.isDraft ? `/quiz/${quiz.id}` : `/quiz/edit/${quiz.id}`} style={{ textDecoration: 'none', display: 'flex', flex: 1, gap: 16 }}>
+                                <UserQuizThumbnail sx={{ backgroundImage: `url(${quiz.thumbnailUrl})` }} />
+                                <UserQuizHeader>
+                                    <Box sx={{ flexGrow: 1, marginTop: "-4px" }}>
+                                        <Typography variant="subtitle1" fontWeight="bold" color="#fff" noWrap>
+                                            {quiz.title}
+                                        </Typography>
+                                        <UserQuizDescription>
+                                            {quiz.description}
+                                        </UserQuizDescription>
+                                    </Box>
+                                    <Stack direction="row" spacing={1} sx={{ color: "#aaa", marginTop: "auto" }}>
+                                        {quiz.isDraft && (
+                                            <>
+                                                <TagTypography variant="caption">DRAFT</TagTypography>
+                                                <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
+                                            </>
+                                        )}
+                                        <QuizIcon fontSize="inherit" sx={{ opacity: 0.7 }} />
+                                        <Typography variant="caption">{quiz.questionsCount} Questions</Typography>
+    
+                                        <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
+    
+                                        <PeopleIcon fontSize="inherit" sx={{ opacity: 0.7 }} />
+                                        <Typography variant="caption">{quiz.playedBy} Played</Typography>
+    
+                                        <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
+    
+                                        <StarIcon fontSize="inherit" sx={{ opacity: 0.7, color: "#ffcc00"  }} />
+                                        <Typography variant="caption">{quiz.averageRating?.toFixed(1) ?? "N/A"}</Typography>
+                                    </Stack>
+                                </UserQuizHeader>
+                            </Link>
+    
+                            <Stack direction="row" spacing={1} alignSelf="center">
+                                <Tooltip title="Edit Quiz">
+                                    <IconButton component={Link} to={`/quiz/edit/${quiz.id}`} size="small" sx={{ color: "#aaa" }}>
+                                        <EditIcon fontSize="small" />
+                                    </IconButton>
+                                </Tooltip>
+    
+                                <Tooltip title="Delete Quiz">
+                                    <IconButton onClick={() => onDeleteClick(quiz)} size="small" sx={{ color: "#f44336" }}>
+                                        <DeleteIcon fontSize="small" />
+                                    </IconButton>
+                                </Tooltip>
+                            </Stack>
+                        </UserQuizCard>
+                    ))
+                )}
             </Stack>
         </UserQuizListWrapper>
     );

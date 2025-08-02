@@ -7,7 +7,6 @@ export interface ExploreUserStats {
     avatarUrl: string;
     followers: number;
     following: number;
-    quizzesCreated: number;
     quizzesSolved: number;
     accuracy: string;
     favoriteCategory: string;
@@ -20,7 +19,7 @@ export interface PopularQuiz {
     thumbnailUrl: string;
     questionsCount: number;
     playedBy: number;
-    averageRating: number;
+    averageRating: number | null;
 }
 
 export interface FilteredQuiz {
@@ -30,7 +29,7 @@ export interface FilteredQuiz {
     thumbnailUrl: string;
     questionsCount: number;
     playedBy: number;
-    averageRating: number;
+    averageRating: number | null;
 }
 
 export interface FilteredQuizzesResponse {

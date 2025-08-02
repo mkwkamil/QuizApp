@@ -23,7 +23,7 @@ export interface AuthCredentials {
 export interface AuthUser {
     id: number;
     username: string;
-    publicname: string;
+    publicName: string;
     email: string;
     role: string;
 }

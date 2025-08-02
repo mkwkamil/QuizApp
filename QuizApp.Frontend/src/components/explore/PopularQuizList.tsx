@@ -5,8 +5,11 @@ import { Link } from "react-router-dom";
 import {
     PopularQuizCard, PopularQuizInfo,
     PopularQuizListWrapper,
-    PopularQuizThumbnail
+    PopularQuizThumbnail, PopularQuizTitle
 } from "@components/explore/styles/PopularQuizListLayout";
+import QuizIcon from "@mui/icons-material/Quiz";
+import PeopleIcon from "@mui/icons-material/People";
+import StarIcon from "@mui/icons-material/Star";
 
 const PopularQuizList = () => {
     const { data: popularQuizzes = [], isLoading } = usePopularQuizzes();
@@ -26,15 +29,22 @@ const PopularQuizList = () => {
                             <PopularQuizCard>
                                 <PopularQuizThumbnail sx={{ backgroundImage: `url(${quiz.thumbnailUrl})` }} />
                                 <PopularQuizInfo>
-                                    <Typography variant="subtitle1" fontWeight="bold">
+                                    <PopularQuizTitle>
                                         {quiz.title}
-                                    </Typography>
-                                    <Stack direction="row" spacing={1} sx={{ color: "#aaa" }}>
-                                        <Typography variant="caption">{quiz.questionsCount} questions</Typography>
-                                        <Typography variant="caption">• {quiz.playedBy} plays</Typography>
-                                        <Typography variant="caption">
-                                            • ⭐ {quiz.averageRating.toFixed(1)}
-                                        </Typography>
+                                    </PopularQuizTitle>
+                                    <Stack direction="row" spacing={1} sx={{ color: "#aaa", marginTop: "auto", pb: "4px" }}>
+                                        <QuizIcon fontSize="inherit" sx={{ opacity: 0.7 }} />
+                                        <Typography variant="caption">{quiz.questionsCount} Questions</Typography>
+
+                                        <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
+
+                                        <PeopleIcon fontSize="inherit" sx={{ opacity: 0.7 }} />
+                                        <Typography variant="caption">{quiz.playedBy} Played</Typography>
+
+                                        <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
+
+                                        <StarIcon fontSize="inherit" sx={{ opacity: 0.7, color: "#ffcc00" }} />
+                                        <Typography variant="caption">{quiz.averageRating?.toFixed(1) ?? "N/A"}</Typography>
                                     </Stack>
                                 </PopularQuizInfo>
                             </PopularQuizCard>

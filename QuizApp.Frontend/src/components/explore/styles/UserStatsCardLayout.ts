@@ -2,13 +2,13 @@ import { styled } from "@mui/material/styles";
 import { Avatar, Box, Button, Paper, Stack } from "@mui/material";
 
 export const UserStatsCardWrapper = styled(Paper)({
-    padding: "35px 20px",
+    padding: "35px 20px 25px 20px",
     borderRadius: 12,
     border: "1px solid rgba(255,255,255,0.05)",
     boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
     display: "flex",
     flexDirection: "column",
-    gap: 34,
+    gap: 24,
     overflowY: "auto",
 });
 
@@ -16,6 +16,7 @@ export const UserStatsHeader = styled(Box)({
     display: "flex",
     alignItems: "center",
     gap: 16,
+    padding: "0px 10px"
 });
 
 export const UserStatsAvatar = styled(Avatar)({
@@ -25,9 +26,29 @@ export const UserStatsAvatar = styled(Avatar)({
 });
 
 export const UserStatsChipRow = styled(Stack)({
+    display: "flex",
     flexDirection: "row",
-    gap: 20,
+    flexWrap: "wrap",
+    gap: 12,
     justifyContent: "center",
+    width: "90%",
+    margin: "0 auto",
+    paddingTop: 30
+});
+
+export const UserStatsChip = styled(Box)({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    padding: "6px 8px",
+    borderRadius: 18,
+    backgroundColor: "rgba(255,255,255,0.08)",
+    color: "#ccc",
+    border: "1px solid rgba(255,255,255,0.15)",
+    cursor: "pointer",
+    flexGrow: 1,
+    minWidth: 80,
 });
 
 export const UserStatsGrid = styled(Paper)({

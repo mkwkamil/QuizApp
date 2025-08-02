@@ -2,12 +2,13 @@ import { useAuthStore } from "@store/auth/authStore";
 import { useExploreUserStats } from "@hooks/explore/useExploreUserStats";
 import {
     UserStatsAvatar,
-    UserStatsCardWrapper, UserStatsChipRow, UserStatsGrid, UserStatsHeader,
+    UserStatsCardWrapper, UserStatsChip, UserStatsChipRow, UserStatsGrid, UserStatsHeader,
     UserStatsLoginButton,
     UserStatsLoginPrompt
 } from "@components/explore/styles/UserStatsCardLayout";
-import { Box, Chip, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Link}  from "react-router-dom";
+import { Group, Person } from "@mui/icons-material";
 
 const UserStatsCard = () => {
     const token = useAuthStore((state) => state.token);
@@ -44,23 +45,34 @@ const UserStatsCard = () => {
 
     return (
         <UserStatsCardWrapper>
-            <UserStatsHeader>
-                <UserStatsAvatar src={profileData.avatarUrl || ""} />
-                <Box>
-                    <Typography variant="h6" fontWeight="bold" color="#fff">
-                        {profileData.publicName}
-                    </Typography>
-                    <Typography variant="body2" color="#bbb">
-                        {profileData.bio}
-                    </Typography>
-                </Box>
-            </UserStatsHeader>
+            <Link to={`/profile`} style={{ textDecoration: "none" }}>
+                <UserStatsHeader>
+                    <UserStatsAvatar src={profileData.avatarUrl || ""} />
+                    <Box>
+                        <Typography variant="h6" fontWeight="bold" color="#fff">
+                            {profileData.publicName}
+                        </Typography>
+                        <Typography variant="body2" color="#bbb">
+                            {profileData.bio}
+                        </Typography>
+                    </Box>
+                </UserStatsHeader>
 
-            <UserStatsChipRow>
-                <Chip label={`${profileData.followers} followers`} color="primary" />
-                <Chip label={`${profileData.following} following`} color="secondary" />
-                <Chip label={`${profileData.quizzesCreated} Quizzes`} color="default" />
-            </UserStatsChipRow>
+                <UserStatsChipRow>
+                    <UserStatsChip>
+                        <Group sx={{ fontSize: 20}} />
+                        <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
+                            Followers: {profileData.followers}
+                        </Typography>
+                    </UserStatsChip>
+                    <UserStatsChip>
+                        <Person sx={{ fontSize: 18}} />
+                        <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
+                            Following: {profileData.following}
+                        </Typography>
+                    </UserStatsChip>
+                </UserStatsChipRow>
+            </Link>
 
             <UserStatsGrid>
                 <Box textAlign="center">

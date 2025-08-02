@@ -1,4 +1,4 @@
-import { Box, Paper } from "@mui/material";
+import {Box, Paper, Typography} from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const FilteredQuizListWrapper = styled(Box)({
@@ -23,25 +23,38 @@ export const FilteredQuizCard = styled(Paper)({
 });
 
 export const FilteredQuizThumbnail = styled(Box)({
-    width: 100,
-    minWidth: 100,
+    aspectRatio: "16 / 9",
     height: 80,
-    minHeight: 80,
-    borderRadius: 8,
-    backgroundColor: "#444",
-    backgroundSize: "100% 100%",
-    backgroundRepeat: "no-repeat",
+    borderRadius: 12,
+    backgroundSize: "cover",
     backgroundPosition: "center",
-    overflow: "hidden",
+    flexShrink: 0,
+    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    marginRight: 8,
 });
 
-export const FilteredQuizContent = styled(Box)({
+export const FilteredQuizHeader = styled(Box)({
     flex: 1,
     display: "flex",
     flexDirection: "column",
+    position: "relative",
     justifyContent: "flex-start",
     overflow: "hidden",
 });
+
+export const FilteredQuizDescription = styled(Typography)({
+    color: "#aaa",
+    fontSize: 11,
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    wordBreak: "break-word",
+    maxWidth: "100%",
+});
+
 
 export const FilteredQuizPaginationBox = styled(Box)({
     display: "flex",

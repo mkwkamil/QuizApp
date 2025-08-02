@@ -1,15 +1,16 @@
 import React from "react";
 import type { ExploreFilters, FilteredQuizListProps } from "@interfaces/explore";
 import { Link } from "react-router-dom";
-import { Stack, Typography, Pagination } from "@mui/material";
-import { 
-    FilteredQuizListWrapper, FilteredQuizCard, 
-    FilteredQuizThumbnail, FilteredQuizContent, 
-    FilteredQuizPaginationBox 
+import {Stack, Typography, Pagination, Box} from "@mui/material";
+import {
+    FilteredQuizListWrapper, FilteredQuizCard,
+    FilteredQuizThumbnail,
+    FilteredQuizPaginationBox, FilteredQuizHeader, FilteredQuizDescription
 } from "@components/explore/styles/FilteredQuizListLayout";
 import { ExploreQuizSkeleton } from "@components/explore/ExplorePageSkeletons";
-
-
+import QuizIcon from "@mui/icons-material/Quiz";
+import PeopleIcon from "@mui/icons-material/People";
+import StarIcon from "@mui/icons-material/Star";
 
 const FilteredQuizList = ({ quizzes, loading, totalPages, page, setFilters }: FilteredQuizListProps) => {
     const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
@@ -36,29 +37,30 @@ const FilteredQuizList = ({ quizzes, loading, totalPages, page, setFilters }: Fi
                             <Link to={`/quiz/${quiz.id}`} key={quiz.id} style={{ textDecoration: 'none' }}>
                                 <FilteredQuizCard>
                                     <FilteredQuizThumbnail sx={{ backgroundImage: `url(${quiz.thumbnailUrl})` }} />
-                                    <FilteredQuizContent>
-                                        <Typography variant="subtitle1" fontWeight="bold" noWrap>
-                                            {quiz.title}
-                                        </Typography>
-                                        <Typography
-                                            variant="caption"
-                                            color="#aaa"
-                                            sx={{
-                                                display: "-webkit-box",
-                                                WebkitLineClamp: 2,
-                                                WebkitBoxOrient: "vertical",
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                            }}
-                                        >
-                                            {quiz.description}
-                                        </Typography>
-                                        <Stack direction="row" spacing={1} sx={{ color: "#aaa" }}>
-                                            <Typography variant="caption">{quiz.questionsCount} questions</Typography>
-                                            <Typography variant="caption">• {quiz.playedBy} plays</Typography>
-                                            <Typography variant="caption">• ⭐ {quiz.averageRating.toFixed(1)}</Typography>
+                                    <FilteredQuizHeader>
+                                        <Box sx={{ flexGrow: 1, marginTop: "-4px" }}>
+                                            <Typography variant="subtitle1" fontWeight="bold" color="#fff" noWrap>
+                                                {quiz.title}
+                                            </Typography>
+                                            <FilteredQuizDescription>
+                                                {quiz.description}
+                                            </FilteredQuizDescription>
+                                        </Box>
+                                        <Stack direction="row" spacing={1} sx={{ color: "#aaa", marginTop: "auto", marginBottom: "-2px" }}>
+                                            <QuizIcon fontSize="inherit" sx={{ opacity: 0.7 }} />
+                                            <Typography variant="caption">{quiz.questionsCount} Questions</Typography>
+
+                                            <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
+
+                                            <PeopleIcon fontSize="inherit" sx={{ opacity: 0.7 }} />
+                                            <Typography variant="caption">{quiz.playedBy} Played</Typography>
+
+                                            <Typography variant="caption" sx={{ px: 0.5 }}>|</Typography>
+
+                                            <StarIcon fontSize="inherit" sx={{ opacity: 0.7, color: "#ffcc00" }} />
+                                            <Typography variant="caption">{quiz.averageRating?.toFixed(1) ?? "N/A"}</Typography>
                                         </Stack>
-                                    </FilteredQuizContent>
+                                    </FilteredQuizHeader>
                                 </FilteredQuizCard>
                             </Link>
                         ))}

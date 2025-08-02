@@ -350,7 +350,7 @@ namespace QuizApp.Backend.Migrations
 
                     b.HasIndex("FollowingId");
 
-                    b.ToTable("UserFollow");
+                    b.ToTable("UserFollows");
                 });
 
             modelBuilder.Entity("QuizApp.Backend.Models.Answer", b =>

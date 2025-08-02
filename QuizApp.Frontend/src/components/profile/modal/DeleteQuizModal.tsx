@@ -1,11 +1,8 @@
-import { Modal, Typography, Backdrop, Fade, Stack } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import { useDeleteQuizMutation } from '@hooks/profile/useDeleteQuizMutation';
 import { toast } from 'react-toastify';
-import {
-    ConfirmCancelButton,
-    ConfirmDeleteButton,
-    ConfirmDeleteModalBox
-} from "@components/profile/modal/DeleteQuizModalLayout.ts";
+import { ConfirmCancelButton, ConfirmDeleteButton } from "@components/profile/modal/styles/DeleteQuizModalLayout";
+import BaseModal from "@components/common/BaseModal.tsx";
 
 type ConfirmDeleteQuizModalProps = {
     quiz: { id: number; title?: string } | null;
@@ -29,40 +26,24 @@ const DeleteQuizModal = ({ quiz, onClose }: ConfirmDeleteQuizModalProps) => {
     };
 
     return (
-        <Modal
-            open={!!quiz}
-            onClose={onClose}
-            closeAfterTransition
-            slots={{ backdrop: Backdrop }}
-            slotProps={{
-                backdrop: {
-                    timeout: 300,
-                    sx: { backdropFilter: 'blur(6px)', backgroundColor: 'rgba(0,0,0,0.3)' }
-                }
-            }}
-            aria-labelledby="confirm-delete-quiz"
-        >
-            <Fade in={!!quiz} unmountOnExit>
-                <ConfirmDeleteModalBox>
-                    <Typography variant="h6" mb={2}>
-                        Are you sure you want to delete this quiz?
-                    </Typography>
+        <BaseModal open={!!quiz} onClose={onClose}>
+                <Typography variant="h6" fontWeight={600} mb={2}>
+                    Are you sure you want to delete this quiz?
+                </Typography>
 
-                    <Typography variant="subtitle1" fontWeight="bold" color="error" mb={4}>
-                        {quiz?.title || "Untitled Quiz"}
-                    </Typography>
+                <Typography variant="body2" fontWeight={600} color="#999" mb={4}>
+                    {quiz?.title || null}
+                </Typography>
 
-                    <Stack direction="row" spacing={2} justifyContent="center">
-                        <ConfirmCancelButton onClick={onClose} fullWidth>
-                            Cancel
-                        </ConfirmCancelButton>
-                        <ConfirmDeleteButton color="error" onClick={handleDelete} fullWidth disabled={isPending}>
-                            Delete
-                        </ConfirmDeleteButton>
-                    </Stack>
-                </ConfirmDeleteModalBox>
-            </Fade>
-        </Modal>
+                <Stack direction="row" spacing={3} justifyContent="center">
+                    <ConfirmCancelButton onClick={onClose} fullWidth>
+                        Cancel
+                    </ConfirmCancelButton>
+                    <ConfirmDeleteButton onClick={handleDelete} disabled={isPending} fullWidth>
+                        Delete
+                    </ConfirmDeleteButton>
+                </Stack>
+        </BaseModal>
     );
 };
 

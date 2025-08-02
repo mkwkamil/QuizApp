@@ -23,8 +23,8 @@ export const ExploreLayoutWrapper = styled(Box)({
 });
 
 export const ExploreSidebar = styled(Box)({
-    minWidth: 450,
-    maxWidth: 450,
+    minWidth: 470,
+    maxWidth: 470,
     padding: 16,
     borderRadius: 12,
     display: "flex",

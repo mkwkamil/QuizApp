@@ -1,11 +1,9 @@
 import { styled } from "@mui/material/styles";
 import {Box, Paper, Typography} from "@mui/material";
 
-export const UserQuizListWrapper = styled(Paper)({
+export const UserQuizListWrapper = styled(Box)({
     padding: "12px 24px",
     borderRadius: 12,
-    backgroundColor: "black",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
     flex: 1,
 });
 

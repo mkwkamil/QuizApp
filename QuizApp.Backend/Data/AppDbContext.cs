@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Answer> Answers { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Rating> Ratings { get; set; }
+    public DbSet<UserFollow> UserFollows { get; set; }
     public DbSet<QuizResult> QuizResults { get; set; }
     public DbSet<BlacklistedToken> BlackListedTokens { get; set; }
 

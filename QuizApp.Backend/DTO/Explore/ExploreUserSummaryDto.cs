@@ -10,7 +10,6 @@ public class ExploreUserSummaryDto
     public int Followers { get; set; }
     public int Following { get; set; }
     
-    public int QuizzesCreated { get; set; }
     public int QuizzesSolved { get; set; }
     
     public string Accuracy { get; set; } = "0%";

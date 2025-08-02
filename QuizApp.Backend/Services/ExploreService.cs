@@ -10,7 +10,6 @@ public class ExploreService(AppDbContext context) : IExploreService
     public async Task<ExploreUserSummaryDto?> GetExploreUserSummaryAsync(int userId)
     {
         var user = await context.Users
-            .Include(u => u.Quizzes)
             .Include(u => u.SolvedQuizzes).ThenInclude(sq => sq.Quiz)
             .Include(u => u.Following)
             .Include(u => u.Followers)
@@ -47,7 +46,6 @@ public class ExploreService(AppDbContext context) : IExploreService
             AvatarUrl = user.Avatar ?? "/avatars/default.png",
             Followers = user.Followers.Count,
             Following = user.Following.Count,
-            QuizzesCreated = user.Quizzes.Count,
             QuizzesSolved = user.SolvedQuizzes.Count,
             Accuracy = accuracy,
             FavoriteCategory = favoriteCategory,
@@ -68,7 +66,7 @@ public class ExploreService(AppDbContext context) : IExploreService
                 ThumbnailUrl = q.ThumbnailUrl ?? "/thumbnails/default.png",
                 QuestionsCount = q.Questions.Count,
                 PlayedBy = q.Plays,
-                AverageRating = q.RatingCount > 0 ? q.AverageScore : 0.0
+                AverageRating = q.RatingCount > 0 ? q.AverageScore : null
             })
             .ToListAsync();
     }
@@ -117,7 +115,7 @@ public class ExploreService(AppDbContext context) : IExploreService
                 3 => 2,
                 _ => 0
             };
-            query = query.Where(q => q.RatingCount == 0 || q.AverageScore >= threshold);
+            query = query.Where(q => q.AverageScore >= threshold);
         }
         
         query = dto.Sort?.ToLower() switch
@@ -146,7 +144,7 @@ public class ExploreService(AppDbContext context) : IExploreService
                 ThumbnailUrl = q.ThumbnailUrl ?? "/thumbnails/default.png",
                 QuestionsCount = q.Questions.Count,
                 PlayedBy = q.Plays,
-                AverageRating = q.RatingCount > 0 ? q.AverageScore : 0
+                AverageRating = q.RatingCount > 0 ? q.AverageScore : null
             })
             .ToListAsync();
 

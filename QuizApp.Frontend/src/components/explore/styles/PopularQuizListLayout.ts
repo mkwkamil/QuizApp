@@ -1,4 +1,4 @@
-import { Box, Paper } from "@mui/material";
+import {Box, Paper, Typography} from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const PopularQuizListWrapper = styled(Paper)({
@@ -13,7 +13,7 @@ export const PopularQuizListWrapper = styled(Paper)({
 export const PopularQuizCard = styled(Paper)({
     display: "flex",
     gap: 16,
-    padding: 15,
+    padding: "15px 10px",
     borderRadius: 12,
     background: "linear-gradient(145deg, #1e1e1e, #2a2a2a)",
     border: "1px solid rgba(255,255,255,0.05)",
@@ -26,16 +26,14 @@ export const PopularQuizCard = styled(Paper)({
 });
 
 export const PopularQuizThumbnail = styled(Box)({
-    width: 100,
-    minWidth: 100,
+    aspectRatio: "16 / 11",
     height: 80,
-    minHeight: 80,
-    borderRadius: 8,
-    backgroundColor: "#444",
-    backgroundSize: "100% 100%",
-    backgroundRepeat: "no-repeat",
+    borderRadius: 12,
+    backgroundSize: "cover",
     backgroundPosition: "center",
-    overflow: "hidden",
+    flexShrink: 0,
+    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+    border: "1px solid rgba(255,255,255,0.1)",
 });
 
 export const PopularQuizInfo = styled(Box)({
@@ -44,4 +42,17 @@ export const PopularQuizInfo = styled(Box)({
     flexDirection: "column",
     justifyContent: "flex-start",
     overflow: "hidden",
+    gap: 15
+});
+
+export const PopularQuizTitle = styled(Typography)({
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    wordBreak: "break-word",
+    maxWidth: "100%",
+    fontWeight: 600,
+    fontSize: 16
 });

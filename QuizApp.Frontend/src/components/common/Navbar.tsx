@@ -61,8 +61,8 @@ const Navbar = () => {
                                 aria-haspopup="true"
                                 aria-expanded={open ? "true" : undefined}
                             >
-                                <Typography variant="body2">{user.username}</Typography>
-                                <UserInitial>{user.username[0].toUpperCase()}</UserInitial>
+                                <Typography variant="body2">{user.publicName}</Typography>
+                                <UserInitial>{user.publicName[0].toUpperCase()}</UserInitial>
                             </UserBox>
 
                             <Menu

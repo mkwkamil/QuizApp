@@ -21,8 +21,22 @@ const ProfileAvatar = ({ src }: { src: string }) => {
         }
     };
 
-    const onUpload = () => file && uploadAvatar(file, { onSuccess: () => setOpen(false) });
+    const handleClose = () => {
+        setOpen(false);
+        setFile(null);
+        setPreview(null);
+    };
 
+    const onUpload = (blob: Blob) => {
+        uploadAvatar(new File([blob], "avatar.jpg", { type: "image/jpeg" }), {
+            onSuccess: () => {
+                setOpen(false);
+                setFile(null);
+                setPreview(null);
+            }
+        });
+    };
+    
     return (
         <>
             <ProfileAvatarWrapper onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
@@ -36,7 +50,7 @@ const ProfileAvatar = ({ src }: { src: string }) => {
 
             <UploadAvatarModal
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={handleClose}
                 preview={preview}
                 file={file}
                 handleFileChange={onFileChange}
