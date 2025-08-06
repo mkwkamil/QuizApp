@@ -122,7 +122,7 @@ Make sure you have installed:
 
 ### **1. Clone the repository**
 ```bash
-git clone https://github.com/mkwkamil/quizapp.git
+git clone https://github.com/mkwkamil/QuizApp.git
 cd quizapp
 ```
 
